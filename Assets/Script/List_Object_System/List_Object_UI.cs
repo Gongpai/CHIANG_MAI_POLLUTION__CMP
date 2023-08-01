@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Unity;
-using UnityEngine.PlayerLoop;
 
 namespace GDD
 {
@@ -26,6 +24,7 @@ namespace GDD
                 GameObject element = Instantiate(Content_Element, Content_List.transform);
                 Object_Element_UI element_ui = element.GetComponent<Object_Element_UI>();
                 element_ui.text.text = ob_data.Key;
+                
                 element_ui.botton.onClick.AddListener(() => { buildingPlace.Select_Building(ob_data.Value); });
             }
         }

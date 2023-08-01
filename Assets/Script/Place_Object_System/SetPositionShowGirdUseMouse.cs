@@ -14,16 +14,16 @@ namespace GDD
         private Material _material;
         private MeshRenderer _meshRenderer;
 
-        private Vector3 meshSize;
+        private Vector3 _landscapeSize;
         private Spawner_Object_Grid _spawnerObjectGrid;
 
         private RaycastHit hit1;
         private RaycastHit hit2;
 
-        public Vector3 MeshSize
+        public Vector3 LandscapeSize
         {
-            get { return meshSize; }
-            set { meshSize = value; }
+            get { return _landscapeSize; }
+            set { _landscapeSize = value; }
         }
         
         // Start is called before the first frame update
@@ -32,8 +32,8 @@ namespace GDD
             _spawnerObjectGrid = FindObjectOfType<Spawner_Object_Grid>();
             _meshRenderer = GetComponent<MeshRenderer>();
             _material = _meshRenderer.sharedMaterial;
-            meshSize = _meshRenderer.bounds.size;
-            _material.SetVector("_Call_Size", new Vector4(meshSize.x, meshSize.x));
+            _landscapeSize = _meshRenderer.bounds.size;
+            _material.SetVector("_Call_Size", new Vector4(_landscapeSize.x, _landscapeSize.x));
             _material.SetFloat("_CircleSize", 0.9f - ((_spawnerObjectGrid.SizeObjectForGrid(_spawnerObjectGrid.Place_Object_Size).x * 0.1f) / 4));
         }
 
@@ -64,7 +64,7 @@ namespace GDD
             }
 
 
-            _material.SetVector("_worldPosition", new Vector4(1 - ((raycast_hit.Item3.x / meshSize.x) + 0.5f), 1 - ((raycast_hit.Item3.y / meshSize.x) + 0.5f)));
+            _material.SetVector("_worldPosition", new Vector4(1 - ((raycast_hit.Item3.x / _landscapeSize.x) + 0.5f), 1 - ((raycast_hit.Item3.y / _landscapeSize.x) + 0.5f)));
         }
 
         private void OnDrawGizmos()
