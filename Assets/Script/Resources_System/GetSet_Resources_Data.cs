@@ -16,13 +16,13 @@ namespace GDD
         }
         void Start()
         {
-            var R_Data = Resources.LoadAll("Building");
+            var R_Data = Resources.LoadAll("Construction");
             Interface_Resources_PreferencesData IRP = new SaveLoad_Resources_Data();
 
             foreach (var r in R_Data)
             {
                 print(r.name);
-                var path = "Building/" + r.name;
+                var path = "Construction/" + r.name;
                 Resources_Data.Add(r.name, path);
             }
 

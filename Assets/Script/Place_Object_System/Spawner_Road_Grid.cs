@@ -22,10 +22,10 @@ namespace GDD
 
         void Start()
         {
+            _setPositionShowGirdUseMouse = FindObjectOfType<SetPositionShowGirdUseMouse>();
             L_Default = LayerMask.NameToLayer("Default");
             L_Building = LayerMask.NameToLayer("Place_Object");
             L_Obstacle = LayerMask.NameToLayer("Obstacle_Ojbect");
-            _setPositionShowGirdUseMouse = FindObjectOfType<SetPositionShowGirdUseMouse>();
             Renderer r = _setPositionShowGirdUseMouse.GetComponent<Renderer>();
 
             hitdata.Add(new RaycastHit());

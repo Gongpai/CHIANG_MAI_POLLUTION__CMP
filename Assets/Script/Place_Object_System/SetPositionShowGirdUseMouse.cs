@@ -25,7 +25,12 @@ namespace GDD
             get { return _landscapeSize; }
             set { _landscapeSize = value; }
         }
-        
+
+        private void Awake()
+        {
+            this.enabled = false;
+        }
+
         // Start is called before the first frame update
         void Start()
         {

@@ -26,14 +26,19 @@ namespace GDD
         private int L_Default;
         private int L_Building;
         private int L_Obstacle;
-        
+
+        private void Awake()
+        {
+            setPositionShowGirdUseMouse = FindObjectOfType<SetPositionShowGirdUseMouse>();
+            this.enabled = false;
+        }
+
         // Start is called before the first frame update
         void Start()
         {
             L_Default = LayerMask.NameToLayer("Default");
             L_Building = LayerMask.NameToLayer("Place_Object");
             L_Obstacle = LayerMask.NameToLayer("Obstacle_Ojbect");
-            setPositionShowGirdUseMouse = FindObjectOfType<SetPositionShowGirdUseMouse>();
             Snawner();
         }
 
@@ -41,6 +46,11 @@ namespace GDD
         {
             get { return ObjectSize; }
             set { ObjectSize = value; }
+        }
+
+        public SetPositionShowGirdUseMouse SetPositionShowGirdUseMouse
+        {
+            get { return setPositionShowGirdUseMouse; }
         }
 
         public GameObject ObjectToSapwn
@@ -166,10 +176,10 @@ namespace GDD
             for (int index = 0; index < raysastResults.Count; index++)
             {
                 RaycastResult curRaysastResult = raysastResults[index];
-                print(curRaysastResult.gameObject.layer + " : " + UILayer);
+                //print(curRaysastResult.gameObject.layer + " : " + UILayer);
                 if (curRaysastResult.gameObject.layer == UILayer)
                 {
-                    print("Detect UI !!!!!!!!!!!!!");
+                    //print("Detect UI !!!!!!!!!!!!!");
                     return true;
                 }
             }
