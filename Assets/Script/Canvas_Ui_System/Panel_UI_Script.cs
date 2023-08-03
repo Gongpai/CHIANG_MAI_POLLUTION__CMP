@@ -12,10 +12,17 @@ namespace GDD
         [SerializeField] private Animator panel_Animator;
         [SerializeField] private List<GameObject> List_Button = new List<GameObject>();
         private List<Button_Control_Script> List_BC_Script = new List<Button_Control_Script>();
+        private UI_Control_Script UI_CS;
 
         private PanelActionMode actionMode;
         private bool IsPointEnter = false;
 
+        public UI_Control_Script ui_cs
+        {
+            get { return UI_CS; }
+            set { UI_CS = value; }
+        }
+        
         public PanelActionMode ActionMode
         {
             get { return actionMode; }
@@ -33,6 +40,7 @@ namespace GDD
                 if (panel_Animator == null)
                     panel_Animator = GetComponent<Animator>();
                 
+                print("------------------- : " + panel_Animator);
                 return panel_Animator;
             }
             set { panel_Animator = value; }
@@ -70,6 +78,12 @@ namespace GDD
                     List_BC_Script.Add(list_button.GetComponent<Button_Control_Script>());
                     print(list_button.GetComponent<Button_Control_Script>() == null);
                 }
+
+                foreach (var bc_script in List_BC_Script)
+                {
+                    bc_script.UI_CS = UI_CS;
+                    bc_script.panelUIScript = this;
+                }
             }
         }
 
@@ -77,8 +91,26 @@ namespace GDD
         {
             if (actionMode == PanelActionMode.Auto_Hide && !IsPointEnter && panel_Animator.GetCurrentAnimatorStateInfo(0).IsName("ToolPanal_Anim_In"))
             {
+                //print("mode " + (actionMode == PanelActionMode.Auto_Hide));
                 PlayPanelAniOut();
             }
+            
+        }
+
+        public int CheckUI_StillOpen()
+        {
+            int OpenCanvasOrder = 0;
+            foreach (var bc_script in List_BC_Script)
+            {
+                if (bc_script.canvasSpawn != null)
+                {
+                    bc_script.canvasSpawn.GetComponent<Canvas>().sortingOrder = 0;
+                    OpenCanvasOrder = 1;
+                    bc_script.OnDestroyCanvas(false);
+                }
+            }
+
+            return OpenCanvasOrder;
         }
 
         public void OnPointerEnter(PointerEventData pointerEventData)
@@ -98,8 +130,8 @@ namespace GDD
 
         public void PlayPanelAniOut()
         {
-            panel_Animator.SetBool("IsStart", false);
-            List_BC_Script[0].GameUI_ACS.PlayAnimHomeBar();
+            List_BC_Script[0].UI_CS.PlayAnimPanel(1, true);
+            List_BC_Script[0].UI_CS.PlayAnimPanel(0, false);
         }
     }
 }

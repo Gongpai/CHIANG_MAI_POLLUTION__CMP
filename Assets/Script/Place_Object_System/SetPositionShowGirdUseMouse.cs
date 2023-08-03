@@ -7,10 +7,11 @@ namespace GDD
 {
     public class SetPositionShowGirdUseMouse : MonoBehaviour
     {
-        [SerializeField] private Shader _shader;
+        [SerializeField] private Material _materialGrid;
         [SerializeField] private Color activate_Color;
         [SerializeField] private Color deactivate_Color;
 
+        private Material _defaultMaterial;
         private Material _material;
         private MeshRenderer _meshRenderer;
 
@@ -31,6 +32,20 @@ namespace GDD
             this.enabled = false;
         }
 
+        private void OnEnable()
+        {
+            _defaultMaterial = GetComponent<Renderer>().sharedMaterial;
+            _materialGrid.SetColor("_HighLightGrid", Color.white);
+            GetComponent<Renderer>().sharedMaterial = _materialGrid;
+        }
+
+        private void OnDisable()
+        {
+            _spawnerObjectGrid.isSelectObject = false;
+            _spawnerObjectGrid.ClearObjectSpawn();
+            GetComponent<Renderer>().sharedMaterial = _defaultMaterial;
+        }
+
         // Start is called before the first frame update
         void Start()
         {
@@ -45,7 +60,8 @@ namespace GDD
         // Update is called once per frame
         void Update()
         {
-            Ray_to_Lanscape(_spawnerObjectGrid.GetRayFromMouse());
+            if(_spawnerObjectGrid.isSelectObject)
+                Ray_to_Lanscape(_spawnerObjectGrid.GetRayFromMouse());
         }
 
         private void Ray_to_Lanscape(Ray ray)

@@ -22,26 +22,11 @@ namespace GDD
         private RaycastHit box_Cast;
         private SetPositionShowGirdUseMouse setPositionShowGirdUseMouse;
         private int ObjectRotation = 0;
+        private bool IsSelectObject = false;
         
         private int L_Default;
         private int L_Building;
         private int L_Obstacle;
-
-        private void Awake()
-        {
-            setPositionShowGirdUseMouse = FindObjectOfType<SetPositionShowGirdUseMouse>();
-            this.enabled = false;
-        }
-
-        // Start is called before the first frame update
-        void Start()
-        {
-            L_Default = LayerMask.NameToLayer("Default");
-            L_Building = LayerMask.NameToLayer("Place_Object");
-            L_Obstacle = LayerMask.NameToLayer("Obstacle_Ojbect");
-            Snawner();
-        }
-
         public Vector3 Place_Object_Size
         {
             get { return ObjectSize; }
@@ -58,12 +43,33 @@ namespace GDD
             get { return objectToSapwn;}
             set
             {
+                IsSelectObject = true;
                 objectToSapwn = value;
                 Destroy(ObjectSpawn);
                 Snawner();
             }
         }
 
+        public bool isSelectObject
+        {
+            get { return IsSelectObject; }
+            set { IsSelectObject = value; }
+        }
+
+        private void Awake()
+        {
+            setPositionShowGirdUseMouse = FindObjectOfType<SetPositionShowGirdUseMouse>();
+            this.enabled = false;
+        }
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            L_Default = LayerMask.NameToLayer("Default");
+            L_Building = LayerMask.NameToLayer("Place_Object");
+            L_Obstacle = LayerMask.NameToLayer("Obstacle_Ojbect");
+            //Snawner();
+        }
         // Update is called once per frame
         void Update()
         {
@@ -74,7 +80,7 @@ namespace GDD
                     raycast_hit.Item1.point.y + (ObjectSize.y / 2), raycast_hit.Item3.y);
             }
             
-            if (!IsPointerOverUIElement() && hit_floor)
+            if (!IsPointerOverUIElement() && hit_floor && IsSelectObject)
             {
                 if (ObjectSpawn == null)
                 {
@@ -163,6 +169,14 @@ namespace GDD
                 Gizmos.DrawLine(box_Cast.point, box_Cast.normal);
             }
             */
+        }
+
+        public void ClearObjectSpawn()
+        {
+            if (ObjectSpawn != null)
+            {
+                Destroy(ObjectSpawn);
+            }
         }
 
         public bool IsPointerOverUIElement()

@@ -8,8 +8,7 @@ namespace GDD
     {
         [SerializeField] private GameObject Content_List;
         [SerializeField] private GameObject Content_Element;
-
-        private Animator _animator;
+        
         private Dictionary<string, string> Object_Data = new Dictionary<string, string>();
         private bool Is_UI_Open = false;
         private Building_place buildingPlace;
@@ -18,8 +17,6 @@ namespace GDD
         {
             buildingPlace = gameObject.AddComponent<Building_place>();
             Is_UI_Open = true;
-            _animator = GetComponent<Animator>();
-            _animator.SetBool("IsStart", true);
             Interface_Resources_PreferencesData IRPD = new SaveLoad_Resources_Data();
             GetSet_Resources_Data GS_RD = new GetSet_Resources_Data();
             

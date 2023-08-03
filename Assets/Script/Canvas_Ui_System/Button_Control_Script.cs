@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Button = UnityEngine.UI.Button;
 
 namespace GDD
 {
@@ -14,22 +13,29 @@ namespace GDD
         private Animator _animator;
         private Button Bg_button_sc;
         private Animator Bg_animator;
-        private GameUI_Anim_Controller_Script _GameUI_ACS;
+        private UI_Control_Script _ui_cs;
         private GameObject Canvas_to_create;
-        private GameObject CanvasSpawn;
+        private GameObject CanvasSpawn = null;
+        private Panel_UI_Script _panelUIScript;
         private bool isCreateCanvas;
 
         private bool Isp = false;
 
+        public Panel_UI_Script panelUIScript
+        {
+            get { return _panelUIScript; }
+            set { _panelUIScript = value; }
+        }
+        
         public bool IsCreateCanvas
         {
             get { return isCreateCanvas;}
             set { isCreateCanvas = value; }
         }
-        public GameUI_Anim_Controller_Script GameUI_ACS
+        public UI_Control_Script UI_CS
         {
-            get { return _GameUI_ACS; }
-            set { _GameUI_ACS = value; }
+            get { return _ui_cs; }
+            set { _ui_cs = value; }
         }
 
         public GameObject canvas_to_create
@@ -42,6 +48,12 @@ namespace GDD
         {
             get { return button_BG; }
             set { button_BG = value; }
+        }
+
+        public GameObject canvasSpawn
+        {
+            get { return CanvasSpawn; }
+            set { CanvasSpawn = value; }
         }
 
         private void Start()
@@ -104,25 +116,33 @@ namespace GDD
 
         public void OnCreateCanvas()
         {
+            int OrderLayer = _panelUIScript.CheckUI_StillOpen();
+            UI_CS.PlayAnimPanel(0, false);
+            UI_CS.PlayAnimPanel(1, true);
+            
             isCreateCanvas = true;
-            GameUI_ACS.PlayAnimToolBar(false);
-            GameUI_ACS.PlayAnimHomeBar();
+
             CanvasSpawn = Instantiate(Canvas_to_create);
-            Canvas canvas = Canvas_to_create.GetComponent<Canvas>();
+            Canvas canvas = CanvasSpawn.GetComponent<Canvas>();
             canvas.worldCamera = Camera.main;
             canvas.sortingLayerName = "SortingLayerName";
-            canvas.sortingOrder = 0;
+            canvas.sortingOrder = OrderLayer;
             Canvas_to_create.GetComponent<Canvas>().planeDistance = 2.0f;
         }
-        
-        public void OnDestroyCanvas()
+
+        public void OnDestroyCanvas(bool IsSetPanelActionMode = true)
         {
-            isCreateCanvas = false;
-            GameUI_ACS.PanelUIScriptToolPanel.ActionMode = PanelActionMode.Dont_Hide;
-            GameUI_ACS.PlayAnimToolBar();
-            GameUI_ACS.PlayAnimHomeBar(false);
             CanvasSpawn.GetComponent<Animator>().SetBool("IsStart", false);
+            isCreateCanvas = false;
+            
+            if(IsSetPanelActionMode)
+                UI_CS.PanelUIScript[0].ActionMode = PanelActionMode.Dont_Hide;
+            
+            UI_CS.PlayAnimPanel(0, true);
+            UI_CS.PlayAnimPanel(1, false);
+            
             Destroy(CanvasSpawn, CanvasSpawn.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+            CanvasSpawn = null;
         }
     }
 }

@@ -204,7 +204,7 @@ Material:
     - _COAT_ROUGHNESS: 0
     - _COAT_THICKNESS: 5
     - _COAT_WEIGHT: 0
-    - _CircleSize: 0.84999996
+    - _CircleSize: 0.9
     - _CoatMask: 0
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 0
@@ -315,7 +315,7 @@ Material:
     m_Colors:
     - ObjectColor: {r: 0, g: 1, b: 0, a: 0}
     - _BASE_COLOR: {r: 1, g: 1, b: 1, a: 1}
-    - _BG_Color: {r: 0.24528301, g: 0.2025266, b: 0.08446065, a: 1}
+    - _BG_Color: {r: 0.2830189, g: 0.15934306, b: 0.06541475, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _COAT_COLOR: {r: 0, g: 0, b: 0, a: 0}
@@ -341,7 +341,7 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
-    - _worldPosition: {r: 0.45, g: 0.95, b: 0, a: 0}
+    - _worldPosition: {r: 0.375, g: 0.675, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6979137621881596073
 MonoBehaviour:

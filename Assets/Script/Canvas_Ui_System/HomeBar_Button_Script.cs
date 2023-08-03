@@ -15,7 +15,7 @@ namespace GDD
         private void Awake()
         {
             BC_Script = gameObject.AddComponent<Button_Control_Script>();
-            BC_Script.GameUI_ACS = FindObjectOfType<GameUI_Anim_Controller_Script>();
+            BC_Script.UI_CS = FindObjectOfType<UI_Control_Script>();
         }
 
         void Start()
@@ -23,9 +23,9 @@ namespace GDD
             homeBar_button = GetComponent<Button>();
             homeBar_button.onClick.AddListener(() =>
             {
-                BC_Script.GameUI_ACS.PlayAnimToolBar();
-                BC_Script.GameUI_ACS.PlayAnimHomeBar(false);
-                BC_Script.GameUI_ACS.PanelUIScriptToolPanel.ActionMode = PanelActionMode.Auto_Hide;
+                BC_Script.UI_CS.PlayAnimPanel(0, true);
+                BC_Script.UI_CS.PlayAnimPanel(1, false);
+                BC_Script.UI_CS.PanelUIScript[0].ActionMode = PanelActionMode.Auto_Hide;
             });
         }
 
