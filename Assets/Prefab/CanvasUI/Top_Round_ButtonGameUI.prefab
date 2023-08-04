@@ -61,7 +61,7 @@ PrefabInstance:
     - target: {fileID: 2597881102491861019, guid: aff530ebfe628b347862a8b3e2f0b6cc,
         type: 3}
       propertyPath: m_FlexibleWidth
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2597881102491861019, guid: aff530ebfe628b347862a8b3e2f0b6cc,
         type: 3}

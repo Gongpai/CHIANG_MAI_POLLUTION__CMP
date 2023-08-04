@@ -1,5 +1,7 @@
-using System.Collections;
+using System.IO;
 using System.Collections.Generic;
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GDD
@@ -16,14 +18,21 @@ namespace GDD
         }
         void Start()
         {
-            var R_Data = Resources.LoadAll("Construction");
+            var info = new DirectoryInfo(Application.dataPath + "/Resources/Construction/");
+            var folder = info.GetDirectories("**");
             Interface_Resources_PreferencesData IRP = new SaveLoad_Resources_Data();
-
-            foreach (var r in R_Data)
+            
+            foreach (var dir in folder)
             {
-                print(r.name);
-                var path = "Construction/" + r.name;
-                Resources_Data.Add(r.name, path);
+                print("Dir : " + dir.Name);
+                
+                var R_Data = Resources.LoadAll( "Construction/" + dir.Name);
+                foreach (var r in R_Data)
+                {
+                    var path = "Construction/" + dir.Name + "/" + r.name;
+                    print("path : " + path);
+                    Resources_Data.Add(r.name, path);
+                }
             }
 
             Resources_PreferencesData RPD = new Resources_PreferencesData { Resources_Data = Resources_Data };

@@ -45,7 +45,7 @@ namespace GDD
         {
             foreach (var panal in list_Panel)
             {
-                print("Add panel : " + panal); 
+                //print("Add panel : " + panal); 
                 if(panal != null && panal.GetComponent<Panel_UI_Script>() != null)
                     panal.GetComponent<Panel_UI_Script>().ui_cs = this;
                 
@@ -55,7 +55,7 @@ namespace GDD
             {
                 if (panal_script != null && panal_script.Panel_Animator != null)
                 {
-                    print("Add Anim ui : " + panal_script.name);
+                    //print("Add Anim ui : " + panal_script.name);
                     _AnimPanal.Add(panal_script.Panel_Animator);
                 }
             }
@@ -79,7 +79,7 @@ namespace GDD
                 }
             }
             
-            print(_AnimPanal.Count + " : " + panelIndex);
+            //print(_AnimPanal.Count + " : " + panelIndex);
             _AnimPanal[panelIndex].SetBool("IsStart", IsPlayStart);
             
         }

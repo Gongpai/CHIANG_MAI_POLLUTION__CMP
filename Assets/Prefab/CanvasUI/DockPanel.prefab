@@ -615,7 +615,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button_BG: {fileID: 8712279418058021054}
-  Canvas_to_create: {fileID: 0}
+  Canvas_to_create: {fileID: 5199538740723095235, guid: a6587b93f78ec974290754af4040e113,
+    type: 3}
 --- !u!1001 &3789524206160768051
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -902,7 +903,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button_BG: {fileID: 3757824680427112598}
-  Canvas_to_create: {fileID: 0}
+  Canvas_to_create: {fileID: 5199538740723095235, guid: 1d2a112861131e54191a31f15f1aad83,
+    type: 3}
 --- !u!1001 &6363172068936187943
 PrefabInstance:
   m_ObjectHideFlags: 0

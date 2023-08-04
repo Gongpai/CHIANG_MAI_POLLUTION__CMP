@@ -72,6 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4167932473937551455}
   - component: {fileID: 4167932473937551452}
+  - component: {fileID: 103549250410721235}
   m_Layer: 0
   m_Name: Road_Line_Generate
   m_TagString: Untagged
@@ -108,7 +109,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c0d2ccf3888764bad9ecc4463f8589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Endlocation: {x: 5, y: -9}
+  RoadMesh: {fileID: 3596278172179602897, guid: 9d52016f6da692940b8df9b70b960609,
+    type: 3}
   StartLocation: {x: 0, y: 0}
+  Endlocation: {x: 5, y: -9}
   Start_X: {fileID: 440367338318787603}
   Start_Y: {fileID: 3572446669466940599}
+--- !u!114 &103549250410721235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4167932473937551453}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eacc08f33962b842bb3eea26d7b7575, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mesh: {fileID: -5495902117074765545, guid: f17bafd1f85921545964293e947202db, type: 3}
+  _material: {fileID: 2100000, guid: a00afda211f274f6ca6cce958e4e13a5, type: 2}
+  positions:
+  - {x: 0, y: 5, z: 0}
+  - {x: 1, y: 5, z: 0}
+  - {x: 1, y: 5, z: 1}

@@ -40,7 +40,7 @@ namespace GDD
                 if (panel_Animator == null)
                     panel_Animator = GetComponent<Animator>();
                 
-                print("------------------- : " + panel_Animator);
+                //print("------------------- : " + panel_Animator);
                 return panel_Animator;
             }
             set { panel_Animator = value; }
@@ -76,7 +76,7 @@ namespace GDD
                 foreach (var list_button in List_Button)
                 {
                     List_BC_Script.Add(list_button.GetComponent<Button_Control_Script>());
-                    print(list_button.GetComponent<Button_Control_Script>() == null);
+                    //print(list_button.GetComponent<Button_Control_Script>() == null);
                 }
 
                 foreach (var bc_script in List_BC_Script)
