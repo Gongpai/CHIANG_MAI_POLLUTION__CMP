@@ -46,18 +46,31 @@ namespace GDD
             
             foreach (var ob_data in Object_Data)
             {
-                if (ob_data.Value.Split("/")[1] == NameObjectTypeFolder)
+                var nameAsset = ob_data.Value.Split("/")[1];
+                if (nameAsset == NameObjectTypeFolder)
                 {
                     GameObject element = Instantiate(Content_Element, Content_List.transform);
                     Object_Element_UI element_ui = element.GetComponent<Object_Element_UI>();
                     element_ui.text.text = ob_data.Key;
-                    element_ui.botton.onClick.AddListener(() => { buildingPlace.Select_Building(ob_data.Value); });
+                    element_ui.botton.onClick.AddListener(() =>
+                    {
+                        if (nameAsset != "Road")
+                        {
+                            buildingPlace.Select_Building(ob_data.Value);
+                        }
+                        else
+                        {
+                            buildingPlace.Select_Road(ob_data.Value);
+                        }
+                        
+                    });
                 }
             }
         }
         
         private void OnDestroy()
         {
+            buildingPlace.OnDisabledRoad_Place();
             buildingPlace.OnDisabledBuilding_Place();
             Is_UI_Open = false;
         }

@@ -27,6 +27,8 @@ namespace GDD
         private int L_Default;
         private int L_Building;
         private int L_Obstacle;
+        private int L_Road;
+        
         public Vector3 Place_Object_Size
         {
             get { return ObjectSize; }
@@ -68,6 +70,12 @@ namespace GDD
             L_Default = LayerMask.NameToLayer("Default");
             L_Building = LayerMask.NameToLayer("Place_Object");
             L_Obstacle = LayerMask.NameToLayer("Obstacle_Ojbect");
+            L_Road = LayerMask.NameToLayer("Road_Ojbect");
+
+            if (GameObjectLayer == null)
+            {
+                GameObjectLayer = gameObject;
+            }
             //Snawner();
         }
         // Update is called once per frame
@@ -203,7 +211,7 @@ namespace GDD
         
         public Tuple<RaycastHit, RaycastHit, Vector2, Vector3> CreateRaycast(Ray ray, Color color, out bool hit_obj, out bool hit_floor)
         {
-            hit_floor = Physics.Raycast(ray, out var hit_floorraycasthit, 1000f,1<<L_Default|0<<L_Building|0<<L_Obstacle);
+            hit_floor = Physics.Raycast(ray, out var hit_floorraycasthit, 1000f,1<<L_Default|0<<L_Building|0<<L_Obstacle|0<<L_Road);
             var hit1 = hit_floorraycasthit;
 
             Vector3 snapPosV3 = new Vector3(GridSnap(hit_floorraycasthit.point, default, true).x, 0,

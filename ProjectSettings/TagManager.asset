@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Construction_Layer
+  - Road_Layer
+  - Landscape
   layers:
   - Default
   - TransparentFX
@@ -13,7 +16,7 @@ TagManager:
   - UI
   - Place_Object
   - Obstacle_Ojbect
-  - 
+  - Road_Ojbect
   - 
   - 
   - 

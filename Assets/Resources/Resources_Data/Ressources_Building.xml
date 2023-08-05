@@ -21,8 +21,8 @@
     <Value xsi:type="xsd:string">Construction/Resources/Cylinder2x2</Value>
   </Entry>
   <Entry>
-    <Key xsi:type="xsd:string">Cube1x0_25</Key>
-    <Value xsi:type="xsd:string">Construction/Road/Cube1x0_25</Value>
+    <Key xsi:type="xsd:string">Road</Key>
+    <Value xsi:type="xsd:string">Construction/Road/Road</Value>
   </Entry>
   <Entry>
     <Key xsi:type="xsd:string">Cylinder1x1</Key>

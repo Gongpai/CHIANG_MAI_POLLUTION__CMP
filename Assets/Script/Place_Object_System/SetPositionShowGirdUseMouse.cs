@@ -14,6 +14,7 @@ namespace GDD
         private Material _defaultMaterial;
         private Material _material;
         private MeshRenderer _meshRenderer;
+        private bool isShowGrid = true;
 
         private Vector3 _landscapeSize;
         private Spawner_Object_Grid _spawnerObjectGrid;
@@ -21,6 +22,12 @@ namespace GDD
         private RaycastHit hit1;
         private RaycastHit hit2;
 
+        public bool IsShowGrid
+        {
+            get { return isShowGrid; }
+            set { isShowGrid = value; }
+        }
+        
         public Vector3 LandscapeSize
         {
             get { return _landscapeSize; }
@@ -60,8 +67,15 @@ namespace GDD
         // Update is called once per frame
         void Update()
         {
-            if(_spawnerObjectGrid.isSelectObject)
+            if (_spawnerObjectGrid.isSelectObject && isShowGrid)
+            {
                 Ray_to_Lanscape(_spawnerObjectGrid.GetRayFromMouse());
+            }
+            else if(!isShowGrid)
+            {
+                _materialGrid.SetColor("_HighLightGrid", Color.black);
+            }
+                
         }
 
         private void Ray_to_Lanscape(Ray ray)
@@ -83,8 +97,8 @@ namespace GDD
             {
                 _material.SetColor("_HighLightGrid", Color.white);
             }
-
-
+            
+            _material.SetFloat("_CircleSize", 0.9f - ((_spawnerObjectGrid.SizeObjectForGrid(_spawnerObjectGrid.Place_Object_Size).x * 0.1f) / 4));
             _material.SetVector("_worldPosition", new Vector4(1 - ((raycast_hit.Item3.x / _landscapeSize.x) + 0.5f), 1 - ((raycast_hit.Item3.y / _landscapeSize.x) + 0.5f)));
         }
 
