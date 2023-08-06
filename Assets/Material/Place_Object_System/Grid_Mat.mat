@@ -204,7 +204,7 @@ Material:
     - _COAT_ROUGHNESS: 0
     - _COAT_THICKNESS: 5
     - _COAT_WEIGHT: 0
-    - _CircleSize: 0.84999996
+    - _CircleSize: 0.9
     - _CoatMask: 0
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 0
