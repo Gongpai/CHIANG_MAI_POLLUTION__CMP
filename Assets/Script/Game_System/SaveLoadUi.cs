@@ -5,6 +5,8 @@ using System.IO;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -21,17 +23,17 @@ namespace GDD
         [SerializeField] private Button BackButton;
 
         private bool IsOpenSaveUi = false;
+        private GameManager GM;
+        private SaveManager SM;
+        private Ui_Utilities uiUtilities;
+        private string NameSaveGame_File;
+        
         enum SelectModeSaveGame
         {
             remove,
             overwrite,
             read
         }
-
-        private GameManager GM = default;
-        private SaveManager SM = default;
-        private Ui_Utilities uiUtilities;
-        private string NameSaveGame_File;
 
         public void OnOpenUi(bool OpenSaveUi)
         {
@@ -148,10 +150,11 @@ namespace GDD
 
         public void LoadSave(string fileName)
         {
-            GamePreferencesData GPD = new GamePreferencesData();
-            GPD = SM.LoadGamePreferencesData(Application.persistentDataPath + "/" + fileName);
+            var saveData = SM.LoadGamePreferencesData(Application.persistentDataPath + "/" + fileName, GM.gameInstance.GetType());
 
-            GM.GetSetGameManager = GPD.GameDataSave;
+            GM.GetSetGameManager = saveData;
+            GM.OnGameLoad();
+            SceneManager.LoadScene(1, LoadSceneMode.Single);
         }
 
         public void OnChangeSaveGameFile(string value)
@@ -164,12 +167,7 @@ namespace GDD
             if (fileName != null)
             {
                 print(fileName + " save");
-                GamePreferencesData GPD = new GamePreferencesData
-                {
-                    GameDataSave = GM.GetSetGameManager
-                };
-
-                SM.SaveGamePreferencesData(GPD, Application.persistentDataPath + "/" + fileName);
+                SM.SaveGamePreferencesData(GM.gameInstance, Application.persistentDataPath + "/" + fileName);
                 NameSaveGame_File = null;
             }
         }

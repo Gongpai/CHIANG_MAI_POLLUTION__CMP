@@ -32,7 +32,6 @@ namespace GDD
         private void Start()
         {
             CM_3rdPF = CM_Vcam.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
-            ScreenResolution = new Vector2(Screen.width, Screen.height);
         }
 
         public void Update()
@@ -48,24 +47,30 @@ namespace GDD
             
             //Move with Screen edge
             float screen_totalmove = MovementScale * Time.deltaTime;
-            if (Input.mousePosition.x > ScreenResolution.x - Boundary && Input.mousePosition.x <= ScreenResolution.x)
+            ScreenResolution = new Vector2(Screen.width, Screen.height);
+            if (!PointerOverUIElement.OnPointerOverUIElement())
             {
-                transform.position += new Vector3(transform.right.x, 0, transform.right.z) * screen_totalmove;
-            }
+                if (Input.mousePosition.x > ScreenResolution.x - Boundary &&
+                    Input.mousePosition.x <= ScreenResolution.x)
+                {
+                    transform.position += new Vector3(transform.right.x, 0, transform.right.z) * screen_totalmove;
+                }
 
-            if (Input.mousePosition.x < 0 + Boundary && Input.mousePosition.x >= 0)
-            {
-                transform.position -= new Vector3(transform.right.x, 0, transform.right.z) * screen_totalmove;
-            }
+                if (Input.mousePosition.x < 0 + Boundary && Input.mousePosition.x >= 0)
+                {
+                    transform.position -= new Vector3(transform.right.x, 0, transform.right.z) * screen_totalmove;
+                }
 
-            if (Input.mousePosition.y > ScreenResolution.y - Boundary && Input.mousePosition.y <= ScreenResolution.y)
-            {
-                transform.position += (transform.forward + transform.up) * screen_totalmove; // move on +Z axis
-            }
+                if (Input.mousePosition.y > ScreenResolution.y - Boundary &&
+                    Input.mousePosition.y <= ScreenResolution.y)
+                {
+                    transform.position += (transform.forward + transform.up) * screen_totalmove; // move on +Z axis
+                }
 
-            if (Input.mousePosition.y < 0 + Boundary && Input.mousePosition.y >= 0)
-            {
-                transform.position -= (transform.forward + transform.up) * screen_totalmove; // move on -Z axis
+                if (Input.mousePosition.y < 0 + Boundary && Input.mousePosition.y >= 0)
+                {
+                    transform.position -= (transform.forward + transform.up) * screen_totalmove; // move on -Z axis
+                }
             }
 
             //Limit Horizontal Movement

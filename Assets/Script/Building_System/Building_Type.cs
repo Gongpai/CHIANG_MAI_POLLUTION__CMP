@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace GDD
 {
-    public enum BuildingType
+    public enum BuildingType : Byte
     {
         Home_Small,
         Home_Large,

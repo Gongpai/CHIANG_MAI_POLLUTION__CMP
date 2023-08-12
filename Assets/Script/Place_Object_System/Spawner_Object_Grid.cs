@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace GDD
@@ -23,12 +24,13 @@ namespace GDD
         private SetPositionShowGirdUseMouse setPositionShowGirdUseMouse;
         private int ObjectRotation = 0;
         private bool IsSelectObject = false;
+        private List<string> m_ObjectData = new();
         
         private int L_Default;
         private int L_Building;
         private int L_Obstacle;
         private int L_Road;
-        
+
         public Vector3 Place_Object_Size
         {
             get { return ObjectSize; }
@@ -56,6 +58,12 @@ namespace GDD
         {
             get { return IsSelectObject; }
             set { IsSelectObject = value; }
+        }
+
+        public List<string> objectData
+        {
+            get { return m_ObjectData; }
+            set { m_ObjectData = value; }
         }
 
         private void Awake()
@@ -88,7 +96,7 @@ namespace GDD
                     raycast_hit.Item1.point.y + (ObjectSize.y / 2), raycast_hit.Item3.y);
             }
             
-            if (!IsPointerOverUIElement() && hit_floor && IsSelectObject)
+            if (!PointerOverUIElement.OnPointerOverUIElement()&& hit_floor && IsSelectObject)
             {
                 if (ObjectSpawn == null)
                 {
@@ -117,8 +125,9 @@ namespace GDD
 
                     if (halfObjectSize.x > 0.5f)
                     {
-                        GameObject Child_SpawnObject = Instantiate(new GameObject(), ObjectSpawn.transform);
-                        Child_SpawnObject.name = "Obstacle";
+                        GameObject Child_SpawnObject = new GameObject("Obstacle");
+                        Child_SpawnObject.transform.parent = ObjectSpawn.transform;
+                        Child_SpawnObject.transform.localPosition = Vector3.zero;
                         Child_SpawnObject.layer = L_Obstacle;
                         Child_SpawnObject.AddComponent<BoxCollider>();
                         BoxCollider childboxCollider = Child_SpawnObject.GetComponent<BoxCollider>();
@@ -187,28 +196,6 @@ namespace GDD
             }
         }
 
-        public bool IsPointerOverUIElement()
-        {
-            int UILayer = LayerMask.NameToLayer("UI");
-            PointerEventData eventData = new PointerEventData(EventSystem.current);
-            eventData.position = Input.mousePosition;
-            List<RaycastResult> raysastResults = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(eventData, raysastResults);
-            
-            for (int index = 0; index < raysastResults.Count; index++)
-            {
-                RaycastResult curRaysastResult = raysastResults[index];
-                //print(curRaysastResult.gameObject.layer + " : " + UILayer);
-                if (curRaysastResult.gameObject.layer == UILayer)
-                {
-                    //print("Detect UI !!!!!!!!!!!!!");
-                    return true;
-                }
-            }
-            //print("Not Detect UI !!!!!!!!!!!!!");
-            return false;
-        }
-        
         public Tuple<RaycastHit, RaycastHit, Vector2, Vector3> CreateRaycast(Ray ray, Color color, out bool hit_obj, out bool hit_floor)
         {
             hit_floor = Physics.Raycast(ray, out var hit_floorraycasthit, 1000f,1<<L_Default|0<<L_Building|0<<L_Obstacle|0<<L_Road);
@@ -298,6 +285,14 @@ namespace GDD
         public void Snawner()
         {
             GameObject Old_ObjectSpawn = ObjectSpawn;
+
+            if (Old_ObjectSpawn != null)
+            {
+                Old_ObjectSpawn.GetComponent<Building_System_Script>().name = objectData[0];
+                Old_ObjectSpawn.GetComponent<Building_System_Script>().path = objectData[1];
+                Old_ObjectSpawn.GetComponent<Building_System_Script>().OnPlaceBuilding();   
+            }
+            
             ObjectSpawn = Instantiate(objectToSapwn, GameObjectLayer.transform);
             //print(ObjectSpawn.name);
             ObjectSpawn.GetComponent<Collider>().enabled = false;
@@ -307,8 +302,8 @@ namespace GDD
             _defaultMaterial = _renderer.material;
             _renderer.material = _highLightMaterial;
 
-            if (Old_ObjectSpawn == null || Old_ObjectSpawn.GetComponent<Building_Object_Script>().BuildingType !=
-                ObjectToSapwn.GetComponent<Building_Object_Script>().BuildingType)
+            if (Old_ObjectSpawn == null || Old_ObjectSpawn.GetComponent<Building_System_Script>()._buildingType !=
+                ObjectToSapwn.GetComponent<Building_System_Script>()._buildingType)
             {
                 ObjectRotation = 0;
             }
@@ -317,6 +312,21 @@ namespace GDD
                 ObjectSpawn.transform.rotation = Old_ObjectSpawn.transform.rotation;
             }
                 
+        }
+
+        public void SpawnerWithLoadScene(BuildingSaveData buildingSaveData, GameObject buildingObject)
+        {
+            if (GameObjectLayer == null)
+            {
+                GameObjectLayer = gameObject;
+            }
+            
+            GameObject spawn = Instantiate(buildingObject, GameObjectLayer.transform);
+            Building_System_Script buildingSystemScript = spawn.GetComponent<Building_System_Script>();
+            
+            //print(buildingSaveData.Position.X + " | " + buildingSaveData.Position.Y + " | " + buildingSaveData.Position.Z);
+            buildingSystemScript.buildingSaveData = buildingSaveData;
+            buildingSystemScript.OnGameLoad();
         }
 
         public Vector2 SizeObjectForGrid(Vector2 size)

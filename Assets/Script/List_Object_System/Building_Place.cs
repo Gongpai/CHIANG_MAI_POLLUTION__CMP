@@ -21,6 +21,11 @@ public class Building_place : MonoBehaviour
         OnDisabledRoad_Place();
         var asset = Resources.Load(assetPath);
         S_Obj_place.ObjectToSapwn = asset.GameObject();
+        S_Obj_place.objectData = new List<string>();
+
+        int indexNameObject = assetPath.Split("/").Length;
+        S_Obj_place.objectData.Add(assetPath.Split("/")[indexNameObject - 1]);
+        S_Obj_place.objectData.Add(assetPath);
     }
     
     public void Select_Road(string assetPath)
@@ -29,6 +34,10 @@ public class Building_place : MonoBehaviour
         OnActivateRoad_Place();
         var asset = Resources.Load(assetPath);
         S_Road_place.RoadMesh = asset.GameObject().GetComponent<MeshFilter>().sharedMesh;
+        
+        int indexNameObject = assetPath.Split("/").Length;
+        S_Road_place.objectData.Add(assetPath.Split("/")[indexNameObject - 1]);
+        S_Road_place.objectData.Add(assetPath);
     }
 
     public void OnActivateBuilding_Place()

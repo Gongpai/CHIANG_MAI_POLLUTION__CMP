@@ -19,7 +19,7 @@ namespace GDD
         [SerializeField] private GameObject Start_Y;
         private GameObject start_point;
         private GameObject end_point;
-        private Mesh roadMesh;
+        private Mesh m_roadMesh;
         private RoadLineMesh _roadLineMesh;
         private bool IsPlaceRoad = false;
         
@@ -31,16 +31,17 @@ namespace GDD
         private bool IsSpawnRoad = false;
         private bool canPlaceRoad = true;
         private float landscapePos;
+        private List<string> m_ObjectData = new();
 
         List<RaycastHit> hitdata = new List<RaycastHit>();
         
         public Mesh RoadMesh
         {
-            get { return roadMesh; }
+            get { return m_roadMesh; }
             set
             {
                 IsSelectObject = true;
-                roadMesh = value;
+                m_roadMesh = value;
             }
         }
 
@@ -55,6 +56,12 @@ namespace GDD
             get { return IsSelectObject; }
             set { IsSelectObject = value; }
         }
+        
+        public List<string> objectData
+        {
+            get { return m_ObjectData; }
+            set { m_ObjectData = value; }
+        }
 
         private void Awake()
         {
@@ -64,7 +71,9 @@ namespace GDD
 
         private void OnDisable()
         {
+            print("On Disable");
             _roadLineMesh.ClearRoad();
+            ShowMarker(false);
         }
 
         void Start()
@@ -77,8 +86,8 @@ namespace GDD
             _materialCheck.SetColor("_ColorHighLight", Color.green);
             _roadLineMesh = GetComponent<RoadLineMesh>();
 
-            if (roadMesh != null)
-                _roadLineMesh.mesh = roadMesh;
+            if (m_roadMesh != null)
+                _roadLineMesh.mesh = m_roadMesh;
             
             _roadLineMesh.material_Check = _materialCheck;
             CreateMarkPoint();
@@ -102,7 +111,8 @@ namespace GDD
                 Debug.DrawLine(hit.normal, hit.point, Color.yellow);
             }
 
-            if (!IsPointerOverUIElement())
+            //print(canPlaceRoad);
+            if (!PointerOverUIElement.OnPointerOverUIElement())
             {
                 ShowMarker(true, false);
                 if (Input.GetMouseButtonUp(0) && canPlaceRoad)
@@ -116,16 +126,17 @@ namespace GDD
                         if(!_roadLineMesh.enabled)
                             _roadLineMesh.enabled = true;
                         
-                        _roadLineMesh.GenerateRoad(roadMesh);
+                        _roadLineMesh.GenerateRoad(m_roadMesh);
                         StartLocation = mousePosGrid;
                     }
                 }
                 else if (Input.GetMouseButtonUp(1))
                 {
                     IsPlaceRoad = false;
+                    canPlaceRoad = true;
                     _roadLineMesh.ClearRoad();
                 }
-            
+
                 if (IsPlaceRoad)
                 {
                     start_point.SetActive(true);
@@ -171,26 +182,28 @@ namespace GDD
             end_point.SetActive(isHide);
         }
         
-        public bool IsPointerOverUIElement()
+        public void SpawnerWithLoadScene(RoadSaveData roadSaveData, GameObject roadObject)
         {
-            int UILayer = LayerMask.NameToLayer("UI");
-            PointerEventData eventData = new PointerEventData(EventSystem.current);
-            eventData.position = Input.mousePosition;
-            List<RaycastResult> raysastResults = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(eventData, raysastResults);
+            _roadLineMesh = GetComponent<RoadLineMesh>();
+            _roadLineMesh.enabled = true;
             
-            for (int index = 0; index < raysastResults.Count; index++)
-            {
-                RaycastResult curRaysastResult = raysastResults[index];
-                //print(curRaysastResult.gameObject.layer + " : " + UILayer);
-                if (curRaysastResult.gameObject.layer == UILayer)
-                {
-                    //print("Detect UI !!!!!!!!!!!!!");
-                    return true;
-                }
-            }
-            //print("Not Detect UI !!!!!!!!!!!!!");
-            return false;
+            if (_roadLineMesh.RoadLayer == null)
+                _roadLineMesh.RoadLayer = GameObject.FindGameObjectWithTag("Road_Layer");
+
+            if (_setPositionShowGirdUseMouse == null)
+                _setPositionShowGirdUseMouse = FindObjectOfType<SetPositionShowGirdUseMouse>();
+
+            Mesh roadMesh = roadObject.GetComponent<MeshFilter>().sharedMesh;
+            landscapePos = _setPositionShowGirdUseMouse.gameObject.transform.position.y;
+            Vector3 StartPos = new Vector3(roadSaveData.Start_Position.X, landscapePos, roadSaveData.Start_Position.Y);
+            Vector3 EndPos = new Vector3(roadSaveData.End_Position.X, landscapePos, roadSaveData.End_Position.Y);
+            GameObject spawn = _roadLineMesh.GenerateRoad(roadMesh, StartPos, EndPos);
+            spawn.GetComponent<Renderer>().sharedMaterial = _roadLineMesh.defaultMaterial;
+            Road_System_Script roadSystemScript = spawn.GetComponent<Road_System_Script>();
+            
+            //print(buildingSaveData.Position.X + " | " + buildingSaveData.Position.Y + " | " + buildingSaveData.Position.Z);
+            roadSystemScript.roadSaveData = roadSaveData;
+            roadSystemScript.OnGameLoad();
         }
 
         private void RayCast_RoadLine_Checker()

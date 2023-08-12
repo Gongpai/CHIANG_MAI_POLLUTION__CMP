@@ -1,32 +1,36 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
 using Newtonsoft.Json;
 using Unity.VisualScripting;
+using Object = UnityEngine.Object;
 
 namespace GDD
 {
     public class SaveManager : Singleton<SaveManager>
     {
-        public GamePreferencesData LoadGamePreferencesData(string location)
+        public object LoadGamePreferencesData(string location, Type type)
         {
             location += ".json";
             string json = "";
             StreamReader sr = new StreamReader(location);
             json = sr.ReadToEnd();
             sr.Close();
-
-            GamePreferencesData GPD = new GamePreferencesData();
-            GPD = JsonConvert.DeserializeObject<GamePreferencesData>(json);
-            return GPD;
+            
+            var data = JsonConvert.DeserializeObject(json, type);
+            print(data);
+            return data;
         }
 
-        public void SaveGamePreferencesData(GamePreferencesData gpd, string location)
+        public void SaveGamePreferencesData(dynamic gpd, string location)
         {
+            GameManager gm = FindObjectOfType<GameManager>();
+            
             location += ".json";
             string json = null;
-            json = JsonConvert.SerializeObject(gpd);
+            json = JsonConvert.SerializeObject(gm.gameInstance);
             
             StreamWriter sw = new StreamWriter(location);
             sw.Write(json);

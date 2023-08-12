@@ -17,14 +17,14 @@ namespace GDD
 
         public static List<object> GetFieldValues(object object_var)
         {
-            var fieldValues = object_var.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Select(field => field.GetValue(object_var)).ToList();
+            var fieldValues = object_var.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance).Select(field => field.GetValue(object_var)).ToList();
             
             return fieldValues;
         }
 
         public static void SetFieldValues(List<object> value, object Object)
         {
-            var fieldValues = Object.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).ToList();
+            var fieldValues = Object.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance).ToList();
             int i = 0;
             var _value = value.ToList();
                

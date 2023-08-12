@@ -82,7 +82,7 @@ namespace GDD
         {
             var raycast_hit = _spawnerObjectGrid.CreateRaycast(ray, Color.red, out bool hit_obj, out bool hit_floor);
 
-            if (hit_floor && !_spawnerObjectGrid.IsPointerOverUIElement())
+            if (hit_floor && !PointerOverUIElement.OnPointerOverUIElement())
             {
                 if (hit_obj && raycast_hit.Item2.collider.gameObject == gameObject)
                 {
