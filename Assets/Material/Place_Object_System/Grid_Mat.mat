@@ -204,7 +204,7 @@ Material:
     - _COAT_ROUGHNESS: 0
     - _COAT_THICKNESS: 5
     - _COAT_WEIGHT: 0
-    - _CircleSize: 0.84999996
+    - _CircleSize: 0.9
     - _CoatMask: 0
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 0
@@ -341,7 +341,7 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
-    - _worldPosition: {r: 0.95, g: 0.75, b: 0, a: 0}
+    - _worldPosition: {r: 0.45, g: 0.45, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6979137621881596073
 MonoBehaviour:

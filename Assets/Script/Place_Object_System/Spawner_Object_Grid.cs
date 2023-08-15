@@ -26,6 +26,7 @@ namespace GDD
         private bool IsSelectObject = false;
         private List<string> m_ObjectData = new();
         
+        private int L_Landscape;
         private int L_Default;
         private int L_Building;
         private int L_Obstacle;
@@ -75,10 +76,11 @@ namespace GDD
         // Start is called before the first frame update
         void Start()
         {
+            L_Landscape = LayerMask.NameToLayer("Landscape");
             L_Default = LayerMask.NameToLayer("Default");
             L_Building = LayerMask.NameToLayer("Place_Object");
             L_Obstacle = LayerMask.NameToLayer("Obstacle_Ojbect");
-            L_Road = LayerMask.NameToLayer("Road_Ojbect");
+            L_Road = LayerMask.NameToLayer("Road_Object");
 
             if (GameObjectLayer == null)
             {
@@ -132,6 +134,7 @@ namespace GDD
                         Child_SpawnObject.AddComponent<BoxCollider>();
                         BoxCollider childboxCollider = Child_SpawnObject.GetComponent<BoxCollider>();
                         childboxCollider.size = new Vector3(0.5f, 1, ((float)(Math.Floor(halfObjectSize.y) / 2) - halfObjectSize.x) * -1);
+                        print("H Size : " + halfObjectSize.x);
                     }
 
                     Snawner();
@@ -163,8 +166,10 @@ namespace GDD
             Quaternion q = Quaternion.Euler(vector_q).normalized;
             //Debug.LogWarning("Q : " + q + " | Axis : " + q.eulerAngles + " | Bool : " + (q.eulerAngles.y == 0 || q.eulerAngles.y == 180));
 
+            //print("X : " + halfObjectSize.x + " | Y : " + halfObjectSize.y);
             if (halfObjectSize.x != halfObjectSize.y)
             {
+                //print("IsCanRotation : " + (halfObjectSize.x != halfObjectSize.y));
                 if (((int)q.eulerAngles.y == 0 || (int)q.eulerAngles.y == 180))
                 {
                     ObjectRotation = 0;
@@ -198,7 +203,7 @@ namespace GDD
 
         public Tuple<RaycastHit, RaycastHit, Vector2, Vector3> CreateRaycast(Ray ray, Color color, out bool hit_obj, out bool hit_floor)
         {
-            hit_floor = Physics.Raycast(ray, out var hit_floorraycasthit, 1000f,1<<L_Default|0<<L_Building|0<<L_Obstacle|0<<L_Road);
+            hit_floor = Physics.Raycast(ray, out var hit_floorraycasthit, 1000f, 1<<L_Landscape|0<<L_Default|0<<L_Building|0<<L_Obstacle|0<<L_Road);
             var hit1 = hit_floorraycasthit;
 
             Vector3 snapPosV3 = new Vector3(GridSnap(hit_floorraycasthit.point, default, true).x, 0,
@@ -268,7 +273,7 @@ namespace GDD
                         snapPos.y -= Mathf.FloorToInt(offset.x * 2);
 
                     }
-                    print("Snap pos : " + snapPos.y);
+                    //print("Snap pos : " + snapPos.y);
                 }
                 //print("snap int y : " + ((int)point.z - Mathf.FloorToInt(ObjectSize.y)) + " Offset y : " + Mathf.FloorToInt(ObjectSize.y) + " result y : " + snapPos.y);
             }
@@ -296,7 +301,8 @@ namespace GDD
             ObjectSpawn = Instantiate(objectToSapwn, GameObjectLayer.transform);
             //print(ObjectSpawn.name);
             ObjectSpawn.GetComponent<Collider>().enabled = false;
-            ObjectSize = ObjectSpawn.GetComponent<Renderer>().bounds.size;
+            ObjectSize = vector_one_decimal(ObjectSpawn.GetComponent<Renderer>().bounds.size);
+            print("Object Size : " + ObjectSize);
             halfObjectSize = new Vector2(ObjectSize.x / 2, ObjectSize.z / 2);
             _renderer = ObjectSpawn.GetComponent<Renderer>();
             _defaultMaterial = _renderer.material;
@@ -312,6 +318,19 @@ namespace GDD
                 ObjectSpawn.transform.rotation = Old_ObjectSpawn.transform.rotation;
             }
                 
+        }
+
+        public Vector3 vector_one_decimal(Vector3 vector_decimal)
+        {
+            float x = Mathf.Floor(vector_decimal.x * 10f);
+            float y = Mathf.Floor(vector_decimal.y * 10f);
+            float z = Mathf.Floor(vector_decimal.z * 10f);
+
+            x /= 10f;
+            y /= 10f;
+            z /= 10f;
+
+            return new Vector3(x, y, z);
         }
 
         public void SpawnerWithLoadScene(BuildingSaveData buildingSaveData, GameObject buildingObject)

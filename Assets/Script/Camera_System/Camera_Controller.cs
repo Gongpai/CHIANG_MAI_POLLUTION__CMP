@@ -96,7 +96,7 @@ namespace GDD
             //--------------------------------------- Rotation Cam with mouse-----------------------------------------------//
             if (IsCanRotWithMouse)
             {
-                print("CanRot");
+                //print("CanRot");
                 //Rotation Up/Down
                 float m_verticalRot = currentMouseRotation.y * RotationScale * Time.deltaTime;
                 float m_horizontalRot = currentMouseRotation.x * RotationScale * Time.deltaTime;
@@ -145,7 +145,7 @@ namespace GDD
         {
             if(value.performed)
                 IsCanRotWithMouse = !IsCanRotWithMouse;
-            print(IsCanRotWithMouse + " : " + value);
+            //print(IsCanRotWithMouse + " : " + value);
         }
 
         public void OnZoomCamera(InputAction.CallbackContext value)

@@ -47,6 +47,15 @@ namespace GDD
             get => m_road_Layer;
             set => m_road_Layer = value;
         }
+
+        public float Hight_Light_Alpha
+        {
+            set
+            {
+                print("Alpha : " + value);
+                _material_check.SetFloat("_HighLightAlpha", value);
+            } 
+        }
         
         // Start is called before the first frame update
         void Start()
@@ -62,7 +71,7 @@ namespace GDD
 
         }
         
-        public GameObject GenerateRoad(Mesh meshRoad = null, Vector3 posStart = default, Vector3 posEnd = default)
+        public GameObject GenerateRoad(Mesh meshRoad = null, LayerMask layerMask = default, Vector3 posStart = default, Vector3 posEnd = default)
         {
             if (meshRoad != null)
             {
@@ -79,6 +88,7 @@ namespace GDD
             roads = new List<GameObject>();
             GameObject roadGroup = new GameObject("RoadGroup");
             roadGroup.transform.parent = m_road_Layer.transform;
+            roadGroup.layer = LayerMask.NameToLayer("Road_Object");
 
             if (posStart == default || posEnd == default)
             {
@@ -88,7 +98,7 @@ namespace GDD
                     _element[i].Start = positions[i];
                     _element[i].End = positions[i + 1];
                     
-                    GameObject road_element = CreateRoad(("Road Element " + i), roadGroup, _element[i]);
+                    GameObject road_element = CreateRoad(("Road Element " + i), roadGroup, _element[i], layerMask);
                     SetTransformRoad(road_element, i, _element[i].Start, _element[i].End);
                     roads.Add(road_element);
                 }
@@ -98,8 +108,8 @@ namespace GDD
                 _element.Add(new LineElement());
                 _element[0].Start = posStart;
                 _element[0].End = posEnd;
-                GameObject road_element = CreateRoad(("Road Element "), roadGroup, _element[0], false);
-                //print("start : " + _element[0].Start + " end : " + _element[0].End);
+                GameObject road_element = CreateRoad(("Road Element "), roadGroup, _element[0], layerMask, false);
+                print("start : " + _element[0].Start + " end : " + _element[0].End);
                 SetTransformRoad(road_element, 0, _element[0].Start, _element[0].End);
                 return road_element;
             }
@@ -107,16 +117,18 @@ namespace GDD
             return null;
         }
 
-        private GameObject CreateRoad(string name, GameObject group, LineElement _element, bool isOnPlace = true)
+        private GameObject CreateRoad(string name, GameObject group, LineElement _element, LayerMask layerMask, bool isOnPlace = true)
         {
             GameObject road_element = new GameObject(name);
             road_element.transform.parent = group.transform;
             road_element.transform.position = _element.Start;
-            road_element.layer = LayerMask.NameToLayer("Road_Ojbect");
+            road_element.layer = layerMask;
             road_element.AddComponent<MeshFilter>().mesh = mesh;
             road_element.AddComponent<MeshRenderer>().sharedMaterial = _material_check;
             road_element.AddComponent<BoxCollider>();
             road_element.AddComponent<Non_asphalt_Road_Script>();
+            BoxCollider boxCollider = road_element.GetComponent<BoxCollider>();
+            boxCollider.size = new Vector3(boxCollider.size.x, 1, boxCollider.size.z);
             
             if(isOnPlace)
                 road_element.GetComponent<Road_System_Script>().OnPlaceRoad(new Vector2(_element.Start.x,_element.Start.z), new Vector2(_element.End.x, _element.End.z));
@@ -147,10 +159,8 @@ namespace GDD
         {
             if (roads != null && roads.Count > 0)
             {
-                foreach (var road in roads)
-                {
-                    Destroy(road);
-                }
+                Destroy(roads[0].transform.parent.gameObject);
+                roads = new List<GameObject>();
             }
         }
         
@@ -189,7 +199,7 @@ namespace GDD
                 GameObject nav_p = new GameObject("Nav : " + road.name);
                 NavPoint.Add(nav_p);
             }
-            print("start : " + _element[0].Start + " end : " + _element[0].End);
+            //print("start : " + _element[0].Start + " end : " + _element[0].End);
             NavPoint[index].transform.parent = Navigation_point.transform;
             NavPoint[index].transform.position = endPos;
             
@@ -199,6 +209,15 @@ namespace GDD
             Vector3 r_forward = road.transform.forward;
             road.transform.position += r_forward * (distance / 2);
             road.transform.localScale = new Vector3(1, 1, distance + 0.2f);
+            
+            BoxCollider boxCollider = road.GetComponent<BoxCollider>();
+            float colliderZsize = (distance - ((int)((boxCollider.size.x * 2) * 10f) / 10f)) / distance;
+            //print("Coll Size : " + colliderZsize);
+            if (colliderZsize <= 0)
+            {
+                colliderZsize = 0.1f;
+            }
+            boxCollider.size = new Vector3(boxCollider.size.x, boxCollider.size.y, colliderZsize);
         }
     }
 }

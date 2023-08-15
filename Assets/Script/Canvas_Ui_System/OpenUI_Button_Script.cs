@@ -22,7 +22,7 @@ namespace GDD
             BC_Script.button_bg = button_BG;
             BC_Script.OnClickButton(() =>
             {
-                print(gameObject.name + " Click!!!!!!!!!!!!!!!!!");
+                //print(gameObject.name + " Click!!!!!!!!!!!!!!!!!");
                 if (Canvas_to_create != null && !BC_Script.IsCreateCanvas)
                 {
                     BC_Script.canvas_to_create = Canvas_to_create;

@@ -16,7 +16,8 @@ TagManager:
   - UI
   - Place_Object
   - Obstacle_Ojbect
-  - Road_Ojbect
+  - Road_Object
+  - Remove
   - 
   - 
   - 
@@ -38,8 +39,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Landscape
   m_SortingLayers:
   - name: Default
     uniqueID: 0

@@ -39,7 +39,7 @@ namespace GDD
             // !GI.IsObjectEmpty() && (index < GI.buildingSystemScript.Count || index < GI.roadSystemScripts.Count)
             if (!GI.IsObjectEmpty() && (index < GI.buildingSystemScript.Count || index < GI.roadSystemScripts.Count))
             {
-                if (time >= 0.5f)
+                if (time >= 0.1f)
                 {
                     if (index < GI.buildingSystemScript.Count)
                     {

@@ -93,7 +93,7 @@ namespace GDD
         public void OnPointerEnter(PointerEventData pointerEventData)
         {
             Isp = true;
-            Debug.Log(this.gameObject.name + " was Selected");
+            //Debug.Log(this.gameObject.name + " was Selected");
             
             if(_animator != null)
                 _animator.SetBool("IsStart", true);

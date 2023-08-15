@@ -32,12 +32,20 @@ public class Building_place : MonoBehaviour
     {
         OnDisabledBuilding_Place(false);
         OnActivateRoad_Place();
-        var asset = Resources.Load(assetPath);
-        S_Road_place.RoadMesh = asset.GameObject().GetComponent<MeshFilter>().sharedMesh;
         
-        int indexNameObject = assetPath.Split("/").Length;
-        S_Road_place.objectData.Add(assetPath.Split("/")[indexNameObject - 1]);
-        S_Road_place.objectData.Add(assetPath);
+        if (assetPath != null)
+        {
+            var asset = Resources.Load(assetPath);
+            S_Road_place.RoadMesh = asset.GameObject().GetComponent<MeshFilter>().sharedMesh;
+            S_Road_place.roadMode = RoadMode.Place;
+            int indexNameObject = assetPath.Split("/").Length;
+            S_Road_place.objectData.Add(assetPath.Split("/")[indexNameObject - 1]);
+            S_Road_place.objectData.Add(assetPath);
+        }
+        else
+        {
+            S_Road_place.roadMode = RoadMode.Remove;
+        }
     }
 
     public void OnActivateBuilding_Place()
