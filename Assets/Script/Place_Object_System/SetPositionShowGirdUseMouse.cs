@@ -69,7 +69,7 @@ namespace GDD
         {
             if (_spawnerObjectGrid.isSelectObject && isShowGrid)
             {
-                Ray_to_Lanscape(_spawnerObjectGrid.GetRayFromMouse());
+                Ray_to_Lanscape(RaycastFromMouse.GetRayFromMouse());
             }
             else if(!isShowGrid)
             {
@@ -80,7 +80,7 @@ namespace GDD
 
         private void Ray_to_Lanscape(Ray ray)
         {
-            var raycast_hit = _spawnerObjectGrid.CreateRaycast(ray, Color.red, out bool hit_obj, out bool hit_floor);
+            var raycast_hit = _spawnerObjectGrid.CreateRaycast(ray, Color.red, out bool hit_obj, out GameObject obj_out, out bool hit_floor);
 
             if (hit_floor && !PointerOverUIElement.OnPointerOverUIElement())
             {

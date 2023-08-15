@@ -4,6 +4,8 @@ namespace GDD
 {
     public class Generator_Script : Building_System_Script
     {
+        [SerializeField] private Building_Preset m_Preset;
+        
         public override void OnPlaceBuilding()
         {
             base.OnPlaceBuilding();

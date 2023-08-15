@@ -25,6 +25,7 @@ namespace GDD
         private int ObjectRotation = 0;
         private bool IsSelectObject = false;
         private List<string> m_ObjectData = new();
+        GameObject old_objecthit = null;
         
         private int L_Landscape;
         private int L_Default;
@@ -91,7 +92,8 @@ namespace GDD
         // Update is called once per frame
         void Update()
         {
-            var raycast_hit = CreateRaycast(GetRayFromMouse(), Color.blue, out bool hit_obj, out bool hit_floor);
+            var raycast_hit = CreateRaycast(RaycastFromMouse.GetRayFromMouse(), Color.blue, out bool hit_obj, out GameObject objectHit, out bool hit_floor);
+                
             if (ObjectSpawn != null)
             {
                 ObjectSpawn.transform.position = new Vector3(raycast_hit.Item3.x,
@@ -201,7 +203,7 @@ namespace GDD
             }
         }
 
-        public Tuple<RaycastHit, RaycastHit, Vector2, Vector3> CreateRaycast(Ray ray, Color color, out bool hit_obj, out bool hit_floor)
+        public Tuple<RaycastHit, RaycastHit, Vector2, Vector3> CreateRaycast(Ray ray, Color color, out bool hit_obj, out GameObject object_hit, out bool hit_floor)
         {
             hit_floor = Physics.Raycast(ray, out var hit_floorraycasthit, 1000f, 1<<L_Landscape|0<<L_Default|0<<L_Building|0<<L_Obstacle|0<<L_Road);
             var hit1 = hit_floorraycasthit;
@@ -213,7 +215,12 @@ namespace GDD
             
             Ray rayfloor = new Ray(snapPosV3 + (Vector3.up * 100), Vector3.down);
             hit_obj = Physics.Raycast(rayfloor, out var hit_objraycast);
+
+            if (hit_objraycast.transform.parent == GameObjectLayer)
+                object_hit = hit_objraycast.transform.gameObject;
+            
             var hit2 = hit_objraycast;
+            object_hit = null;
 
             return new Tuple<RaycastHit, RaycastHit, Vector2, Vector3>(hit1, hit2, snapPosV2, snapPosV3);
         }
@@ -293,6 +300,9 @@ namespace GDD
 
             if (Old_ObjectSpawn != null)
             {
+                Outliner old_outliner = Old_ObjectSpawn.AddComponent<Outliner>();
+                old_outliner.OutlineWidth = 1.05f;
+                old_outliner.enabled = false;
                 Old_ObjectSpawn.GetComponent<Building_System_Script>().name = objectData[0];
                 Old_ObjectSpawn.GetComponent<Building_System_Script>().path = objectData[1];
                 Old_ObjectSpawn.GetComponent<Building_System_Script>().OnPlaceBuilding();   
@@ -341,6 +351,9 @@ namespace GDD
             }
             
             GameObject spawn = Instantiate(buildingObject, GameObjectLayer.transform);
+            Outliner old_outliner = spawn.AddComponent<Outliner>();
+            old_outliner.OutlineWidth = 1.05f;
+            old_outliner.enabled = false;
             Building_System_Script buildingSystemScript = spawn.GetComponent<Building_System_Script>();
             
             //print(buildingSaveData.Position.X + " | " + buildingSaveData.Position.Y + " | " + buildingSaveData.Position.Z);
@@ -351,16 +364,6 @@ namespace GDD
         public Vector2 SizeObjectForGrid(Vector2 size)
         {
             return new Vector2((float)Math.Ceiling(size.x), (float)Math.Ceiling(size.y));
-        }
-
-        public Ray GetRayFromMouse()
-        {
-            Camera camera = Camera.main;
-
-            Vector2 mousePosition = Input.mousePosition;
-            Ray ray = camera.ScreenPointToRay(new Vector3(mousePosition.x, mousePosition.y, camera.nearClipPlane));
-
-            return ray;
         }
     }
 }

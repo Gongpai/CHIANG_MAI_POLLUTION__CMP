@@ -110,5 +110,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a508689bb860d8c4a8542989d69ba1ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  b_buildingtype: 0
   enum_buildingType: 0
+  m_Preset: {fileID: 11400000, guid: d6f4e0ef40ab43c4d884f3a110b35ab8, type: 2}

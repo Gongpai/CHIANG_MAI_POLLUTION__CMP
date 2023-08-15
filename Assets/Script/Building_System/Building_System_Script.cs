@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace GDD
 {
-    public abstract class Building_System_Script : MonoBehaviour, IConstruction_System
+    public abstract class Building_System_Script : MonoBehaviour, IConstruction_System, IMenuInteractable
     {
         [SerializeField] protected BuildingType enum_buildingType;
         private BuildingSaveData _buildingSaveData = new BuildingSaveData();
@@ -58,6 +60,31 @@ namespace GDD
                 
                 _buildingSaveData.pathObject = value;
             }
+        }
+
+        public virtual List<Menu_Data> GetInteractAction()
+        {
+            List<Menu_Data> menuDatas = new List<Menu_Data>();
+            menuDatas.Add(new Menu_Data("Interact", Resources.Load<Sprite>("Icon/build_"), Interact));
+            menuDatas.Add(new Menu_Data("Change Enable Building", Resources.Load<Sprite>("Icon/construction"), ChangeEnableBuilding));
+            menuDatas.Add(new Menu_Data("Remove", Resources.Load<Sprite>("Icon/account_tree"), RemoveBuilding));
+
+            return menuDatas;
+        }
+
+        public virtual void Interact()
+        {
+            print("Innnnteerrraaacccttt : " + name);
+        }
+
+        public virtual void ChangeEnableBuilding()
+        {
+            print("OnChangeEnableBuilding : " + name);
+        }
+
+        public virtual void RemoveBuilding()
+        {
+            print("Remove : " + name);
         }
 
         public void OnGameLoad()
