@@ -13,11 +13,43 @@ namespace GDD
         [SerializeField] protected BuildingType enum_buildingType;
         private BuildingSaveData _buildingSaveData = new BuildingSaveData();
         protected GameManager GM;
+        protected int people_max = 10;
+        protected int worker_max = 10;
         
         public BuildingType _buildingType
         {
             get { return enum_buildingType; }
             set { enum_buildingType = value; }
+        }
+
+        public bool active
+        {
+            get => _buildingSaveData.Building_active;
+            set => _buildingSaveData.Building_active = value;
+        }
+
+        public int people
+        {
+            get => _buildingSaveData.people;
+            set => _buildingSaveData.people = value;
+        }
+
+        public int worker
+        {
+            get => _buildingSaveData.worker;
+            set => _buildingSaveData.worker = value;
+        }
+
+        public int people_Max
+        {
+            get => people_max;
+            set => people_max = value;
+        }
+        
+        public int worker_Max
+        {
+            get => worker_max;
+            set => worker_max = value;
         }
 
         public BuildingSaveData buildingSaveData
@@ -84,7 +116,8 @@ namespace GDD
 
         public virtual void RemoveBuilding()
         {
-            print("Remove : " + name);
+            print("Reomove : " + name);
+            Destroy(gameObject);
         }
 
         public void OnGameLoad()

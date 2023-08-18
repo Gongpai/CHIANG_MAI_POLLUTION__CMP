@@ -15,4 +15,11 @@ namespace GDD
         Dont_Hide,
         Auto_Hide
     }
+
+    public enum Building_Setting_Button
+    {
+        Centor_Button_only,
+        Centor_Button_with_progress,
+        Bottom_Button_only
+    }
 }

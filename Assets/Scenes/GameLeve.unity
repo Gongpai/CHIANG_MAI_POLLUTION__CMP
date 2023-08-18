@@ -2167,7 +2167,7 @@ PrefabInstance:
     - target: {fileID: 7775620695393246319, guid: 32a165a3af8caf74dbb08357238f96b6,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -25
+      value: -25.00003
       objectReference: {fileID: 0}
     - target: {fileID: 7961937660052740665, guid: 32a165a3af8caf74dbb08357238f96b6,
         type: 3}
@@ -2520,6 +2520,8 @@ MonoBehaviour:
   - {fileID: 1229980381}
   - {fileID: 80307619}
   m_MenuUI: {fileID: 7314859931434231262, guid: eb94293f0d002f9438c9fe0603f403b6,
+    type: 3}
+  m_Building_Setting_UI: {fileID: 2773267168009729230, guid: 99c35984b7b55c04c8130bd6205a8992,
     type: 3}
   m_Button_list: {fileID: 6651099512062301682, guid: 2f9e924dd9518434982999ead8c7bc9d,
     type: 3}
