@@ -6,6 +6,10 @@ namespace GDD
     {
         //OnGameLoad
        public void OnGameLoad();
+       
+       //OnStart
+       public void BeginStart();
+       public void EndStart();
         
         //Place
        public void OnBeginPlace();

@@ -116,47 +116,11 @@ namespace GDD
             buildingSettingUIScript.buildingSettingUIDatas = new List<Building_Setting_UI_Data>();
             buildingSettingUIScript.buildingName_text = buildingSystemScript.name;
             buildingSettingUIScript.building_Icon = Resources.Load<Sprite>("Icon/construction");
-            
-            Building_Setting_UI_Data buildingSettingUIData = new Building_Setting_UI_Data();
-            buildingSettingUIData.actions = new List<UnityAction>();
-            buildingSettingUIData.actions.Add(() =>
-                {
-                    print("Busssssssssssssssssssssssssssssssssss active");
-                    buildingSystemScript.active = !buildingSystemScript.active;
-                });
-            buildingSettingUIData.buildingSystemScript = buildingSystemScript;
-            buildingSettingUIData.buildingSettingButton = Building_Setting_Button.Centor_Button_only;
-            buildingSettingUIData.icon_enable = Resources.Load<Sprite>("Icon/lightbulb_On");
-            buildingSettingUIData.icon_disable = Resources.Load<Sprite>("Icon/lightbulb_Off");
-            buildingSettingUIData.text_enable = "On";
-            buildingSettingUIData.text_disable = "Off";
-            buildingSettingUIData.light_Color = Color.white;
-            buildingSettingUIData.dark_Color = Color.white;
-            buildingSettingUIScript.buildingSettingUIDatas.Add(buildingSettingUIData);
-            
-            Building_Setting_UI_Data buildingSettingUIData2 = new Building_Setting_UI_Data();
-            buildingSettingUIData2.actions = new List<UnityAction>();
-            buildingSettingUIData2.actions.Add(() =>
-                {
-                    print("Busssssssssssssssssssssssssssssssssss -----");
-                    if(buildingSystemScript.people > 0)
-                        buildingSystemScript.people--;
-                });
-            buildingSettingUIData2.actions.Add(() =>
-                {
-                    print("Busssssssssssssssssssssssssssssssssss +++++");
-                    if(buildingSystemScript.people < buildingSystemScript.people_Max)
-                    buildingSystemScript.people++;
-                });
-            buildingSettingUIData2.buildingSystemScript = buildingSystemScript;
-            buildingSettingUIData2.buildingSettingButton = Building_Setting_Button.Centor_Button_with_progress;
-            buildingSettingUIData2.icon_enable = Resources.Load<Sprite>("Icon/lightbulb_On");
-            buildingSettingUIData2.icon_disable = Resources.Load<Sprite>("Icon/lightbulb_Off");
-            buildingSettingUIData2.text_enable = "People";
-            buildingSettingUIData2.text_disable = "People";
-            buildingSettingUIData2.light_Color = Color.white;
-            buildingSettingUIData2.dark_Color = Color.white;
-            buildingSettingUIScript.buildingSettingUIDatas.Add(buildingSettingUIData2);
+
+            foreach (var actionbuilding in buildingSystemScript.actionsBuilding)
+            {
+                Create_Button_Data(buildingSettingUIScript, buildingSystemScript, actionbuilding.Key, actionbuilding.Value);
+            }
             
             Canvas canvas = buiding_setting_ui.GetComponent<Canvas>();
             canvas.worldCamera = Camera.main;
@@ -177,6 +141,33 @@ namespace GDD
             }
         }
 
+        private void Create_Button_Data(Building_Setting_UI_Script buildingSettingUIScript, Building_System_Script buildingSystemScript, UnityAction<object> actionbuilding, Building_Setting_Data buildingSettingData)
+        {
+            Building_Setting_UI_Data buildingSettingUIData = new Building_Setting_UI_Data();
+            buildingSettingUIData.actions = new List<UnityAction>();
+
+            if (buildingSettingUIData.buildingSettingType == Building_Setting_Type.Centor_Button_only && buildingSettingUIData.buildingSettingType == Building_Setting_Type.Bottom_Button_only)
+            {
+                buildingSettingUIData.actions.Add((() => { actionbuilding.Invoke(0); }));
+            }
+            else
+            {
+                buildingSettingUIData.actions.Add((() => { actionbuilding.Invoke(-1); }));
+                buildingSettingUIData.actions.Add((() => { actionbuilding.Invoke(1); }));
+            }
+
+            buildingSettingUIData.buildingSystemScript = buildingSystemScript;
+            buildingSettingUIData.buildingSettingType = buildingSettingData.buildingSettingType;
+            buildingSettingUIData.icon_enable = buildingSettingData.icon_enable;
+            buildingSettingUIData.icon_disable = buildingSettingData.icon_disable;
+            buildingSettingUIData.text_enable = buildingSettingData.text_enable;
+            buildingSettingUIData.text_disable = buildingSettingData.text_disable;
+            buildingSettingUIData.light_Color = buildingSettingData.light_Color;
+            buildingSettingUIData.dark_Color = buildingSettingData.dark_Color;
+            buildingSettingUIScript.buildingSettingUIDatas.Add(buildingSettingUIData);
+
+        }
+        
         private bool CheckComponentDisable()
         {
             bool isDisable = true;

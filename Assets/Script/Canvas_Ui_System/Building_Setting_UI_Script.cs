@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,42 +47,61 @@ namespace GDD
             m_BuildingNameText.text = _buildingName_text;
             m_BuildingIcon.sprite = _Building_Icon;
 
+            int i = 0;
             foreach (var BS_ui in _buildingSettingUIDatas)
             {
-                CreateButton(m_Prefab_Button, BS_ui);
+                CreateButton(m_Prefab_Button, BS_ui, BS_ui.buildingSystemScript.GetValueBuiling(i));
+                //print("Object Type : ");
+                i++;
             }
         }
 
         private void Update()
         {
+            Update_Button_Data();
+        }
+
+        private void Update_Button_Data()
+        {
+            int i = 0;
             foreach (var button in List_Button_Centor_Panels)
             {
                 Button_Element_List buttonElementList = button.Key.GetComponent<Button_Element_List>();
                 Building_System_Script buildingSystemScript = button.Value.buildingSystemScript;
                 
-                if (button.Value.buildingSettingButton == Building_Setting_Button.Centor_Button_with_progress)
+                Tuple<float, float> building_value;
+                try
+                {
+                    building_value = buildingSystemScript.GetValueBuiling(i).ConvertTo<Tuple<float, float>>();
+                }
+                catch (Exception e)
+                {
+                    building_value = new Tuple<float, float>(0, 0);
+                }
+                
+                if (button.Value.buildingSettingType == Building_Setting_Type.Centor_Button_with_progress)
                 {
                     if (buildingSystemScript.active)
                     {
-                        buttonElementList.tests[0].text = button.Value.text_enable + Environment.NewLine + buildingSystemScript.people + "/" + buildingSystemScript.people_Max;
+                        buttonElementList.tests[0].text = button.Value.text_enable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
                         
                         if(buttonElementList.animators[0] != null)
                             buttonElementList.animators[0].SetBool("IsStart", true);
                     }
                     else
                     {
-                        buttonElementList.tests[0].text = button.Value.text_disable + Environment.NewLine + buildingSystemScript.people + "/" + buildingSystemScript.people_Max;
+                        buttonElementList.tests[0].text = button.Value.text_disable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
                         
                         if(buttonElementList.animators[0] != null)
                             buttonElementList.animators[0].SetBool("IsStart", false);
                     }
                     
                     //print("Amount : " + ((float)buildingSystemScript.people / (float)buildingSystemScript.people_Max));
-                    buttonElementList.image[2].fillAmount = (float)buildingSystemScript.people / (float)buildingSystemScript.people_Max;
+                    buttonElementList.image[2].fillAmount = building_value.Item1 / building_value.Item2;
                 }
-                else if (button.Value.buildingSettingButton == Building_Setting_Button.Centor_Button_only)
+                else if (button.Value.buildingSettingType == Building_Setting_Type.Centor_Button_only)
                 {
-                    if (buildingSystemScript.active)
+                    if (buildingSystemScript.GetValueBuiling(i).ConvertTo<bool>() && buildingSystemScript.active)
                     {
                         buttonElementList.tests[0].text = button.Value.text_enable;
                         buttonElementList.image[0].sprite = button.Value.icon_enable;
@@ -98,11 +118,23 @@ namespace GDD
                             buttonElementList.animators[0].SetBool("IsStart", false);
                     }
                 }
+
+                i++;
             }
         }
 
-        private void CreateButton(List<GameObject> button, Building_Setting_UI_Data buildingSettingUIData)
+        private void CreateButton(List<GameObject> button, Building_Setting_UI_Data buildingSettingUIData, object building_object)
         {
+            Tuple<float, float> building_value;
+            try
+            {
+                building_value = building_object.ConvertTo<Tuple<float, float>>();
+            }
+            catch (Exception e)
+            {
+                building_value = new Tuple<float, float>(0, 0);
+            }
+            
             if (List_Button_Centor_Panels.Count % 2 == 0)
             {
                 horizontal_group = new GameObject("Horizontal Group");
@@ -118,16 +150,16 @@ namespace GDD
             
             Building_System_Script buildingSystemScript = buildingSettingUIData.buildingSystemScript;
             
-            switch(buildingSettingUIData.buildingSettingButton)
+            switch(buildingSettingUIData.buildingSettingType)
             {
-                case Building_Setting_Button.Centor_Button_only:
+                case Building_Setting_Type.Centor_Button_only:
                     GameObject button_element = Instantiate(button[0]);
                     Button_Element_List buttonElementList = button_element.GetComponent<Button_Element_List>();
                     List_Button_Centor_Panels.Add(button_element, buildingSettingUIData);
                     button_element.transform.parent = horizontal_group.transform;
                     buttonElementList.buttons[0].onClick.AddListener(buildingSettingUIData.actions[0]);
 
-                    if (buildingSystemScript.active)
+                    if (building_object.ConvertTo<bool>() && buildingSystemScript.active)
                     {
                         buttonElementList.image[0].sprite = buildingSettingUIData.icon_enable;
                         buttonElementList.tests[0].text = buildingSettingUIData.text_enable;
@@ -147,7 +179,7 @@ namespace GDD
                     SetRectTransform(button_element);
                     
                     break;
-                case Building_Setting_Button.Centor_Button_with_progress:
+                case Building_Setting_Type.Centor_Button_with_progress:
                     GameObject progress_button_element = Instantiate(button[1]);
                     Button_Element_List progress_buttonElementList = progress_button_element.GetComponent<Button_Element_List>();
                     List_Button_Centor_Panels.Add(progress_button_element, buildingSettingUIData);
@@ -157,24 +189,24 @@ namespace GDD
                     
                     if (buildingSystemScript.active)
                     {
-                        progress_buttonElementList.tests[0].text = buildingSettingUIData.text_enable + Environment.NewLine + buildingSystemScript.people + "/" + buildingSystemScript.people_Max;
+                        progress_buttonElementList.tests[0].text = buildingSettingUIData.text_enable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
                         
                         if(progress_buttonElementList.animators[0] != null)
                             progress_buttonElementList.animators[0].SetBool("IsStart", true);
                     }
                     else
                     {
-                        progress_buttonElementList.tests[0].text = buildingSettingUIData.text_disable + Environment.NewLine + buildingSystemScript.people + "/" + buildingSystemScript.people_Max;
+                        progress_buttonElementList.tests[0].text = buildingSettingUIData.text_disable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
                         
                         if(progress_buttonElementList.animators[0] != null)
                             progress_buttonElementList.animators[0].SetBool("IsStart", false);
                     }
                     
-                    progress_buttonElementList.image[2].fillAmount = (float)buildingSystemScript.people / (float)buildingSystemScript.people_Max;
+                    progress_buttonElementList.image[2].fillAmount = building_value.Item1 / building_value.Item2;
                     
                     SetRectTransform(progress_button_element);
                     break;
-                case Building_Setting_Button.Bottom_Button_only:
+                case Building_Setting_Type.Bottom_Button_only:
                     GameObject bar_button_element = Instantiate(button[2]);
                     Button_Element_List bar_buttonElementList = bar_button_element.GetComponent<Button_Element_List>();
                     List_Button_Bottom_Bars.Add(bar_button_element);
@@ -190,7 +222,7 @@ namespace GDD
                     colorBlock.disabledColor = Color.black;
                     element.colors = colorBlock;
                     
-                    if (buildingSystemScript.active)
+                    if (building_object.ConvertTo<bool>())
                     {
                         /*
                         colorBlock.normalColor = new Color(100, 0, 0, 200);

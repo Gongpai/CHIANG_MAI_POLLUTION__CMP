@@ -67,6 +67,8 @@ namespace GDD
             GM.gameInstance.roadSystemScripts.Add(_roadSaveData);
         }
 
+        public abstract void BeginStart();
+        public abstract void EndStart();
         public abstract void OnBeginPlace();
         public abstract void OnEndPlace();
         public abstract void OnBeginRemove();

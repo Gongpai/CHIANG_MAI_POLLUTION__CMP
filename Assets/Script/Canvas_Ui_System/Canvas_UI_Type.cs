@@ -16,7 +16,7 @@ namespace GDD
         Auto_Hide
     }
 
-    public enum Building_Setting_Button
+    public enum Building_Setting_Type
     {
         Centor_Button_only,
         Centor_Button_with_progress,

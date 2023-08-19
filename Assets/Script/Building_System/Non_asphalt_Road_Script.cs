@@ -2,6 +2,16 @@
 {
     public class Non_asphalt_Road_Script : Road_System_Script
     {
+        public override void BeginStart()
+        {
+            
+        }
+
+        public override void EndStart()
+        {
+            
+        }
+        
         public override void OnBeginPlace()
         {
             

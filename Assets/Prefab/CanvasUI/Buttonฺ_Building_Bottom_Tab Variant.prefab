@@ -307,6 +307,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5873277414651095883, guid: aff530ebfe628b347862a8b3e2f0b6cc,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5873277414651095883, guid: aff530ebfe628b347862a8b3e2f0b6cc,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 6840970227797101159, guid: aff530ebfe628b347862a8b3e2f0b6cc,
         type: 3}
       propertyPath: m_Sprite

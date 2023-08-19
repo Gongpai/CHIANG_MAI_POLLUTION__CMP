@@ -1,15 +1,41 @@
-﻿namespace GDD
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Unity.VisualScripting;
+
+namespace GDD
 {
     public class Resources_Script : Building_System_Script
     {
-        public override void OnPlaceBuilding()
+        private Resources_SaveData _resourcesSaveData = new Resources_SaveData();
+        
+        public override void BeginStart()
         {
-            base.OnPlaceBuilding();
+            
+        }
+
+        public override void EndStart()
+        {
+            
+        }
+
+        protected override void OnUpdateValue()
+        {
+            
         }
 
         public override void OnBeginPlace()
         {
+            if(_buildingSaveData.saveDataObject != null)
+            {
+                var savedata = JsonConvert.SerializeObject(_buildingSaveData.saveDataObject);
+                var a = JsonConvert.DeserializeObject<Resources_SaveData>(savedata);
+                //print("SaveData : " + savedata);
+                _resourcesSaveData = a;
+                
+                //print("Over Is : " + _generatorSaveData.IsOverdrive);
+            }
             
+            _buildingSaveData.saveDataObject = _resourcesSaveData;
         }
 
         public override void OnEndPlace()

@@ -8,7 +8,7 @@ namespace GDD
     {
         public List<UnityAction> actions;
         public Building_System_Script buildingSystemScript;
-        public Building_Setting_Button buildingSettingButton;
+        public Building_Setting_Type buildingSettingType;
         public string text_enable;
         public string text_disable;
         public Sprite icon_enable;
@@ -16,11 +16,11 @@ namespace GDD
         public Color light_Color;
         public Color dark_Color;
 
-        public Building_Setting_UI_Data(List<UnityAction> _unityActions, Building_System_Script _buildingSystemScript, Building_Setting_Button _buildingSettingButton, Sprite _iconEnable, Sprite _icon_disable, string _textEnable, string _textDisable, Color _lightColor, Color _darkColor)
+        public Building_Setting_UI_Data(List<UnityAction> _unityActions, Building_System_Script _buildingSystemScript, Building_Setting_Type buildingSettingType, bool _active, float _value, float _maxValue, Sprite _iconEnable, Sprite _icon_disable, string _textEnable, string _textDisable, Color _lightColor, Color _darkColor)
         {
             actions = _unityActions;
             buildingSystemScript = _buildingSystemScript;
-            buildingSettingButton = _buildingSettingButton;
+            this.buildingSettingType = buildingSettingType;
             icon_enable = _iconEnable;
             icon_disable = _icon_disable;
             text_enable = _textEnable;

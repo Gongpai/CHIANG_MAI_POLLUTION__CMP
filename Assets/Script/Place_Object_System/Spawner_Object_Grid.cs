@@ -297,7 +297,7 @@ namespace GDD
         public void Snawner()
         {
             GameObject Old_ObjectSpawn = ObjectSpawn;
-
+            
             if (Old_ObjectSpawn != null)
             {
                 Outliner old_outliner = Old_ObjectSpawn.AddComponent<Outliner>();
