@@ -88,7 +88,7 @@ namespace GDD
         }
         private void ListAllSaveGame(SelectModeSaveGame savemode)
         {
-            SaveManager SM = FindObjectOfType<SaveManager>();
+            SaveManager SM = SaveManager.Instance;
             var SaveGameList = SM.GetAllSaveGame(isDefaultPath: true);
             
             foreach (var SG in SaveGameList)

@@ -62,7 +62,7 @@ namespace GDD
         private void OnGUI()
         {
             string s = "Building count : " + gameInstance.buildingSystemScript.Count + " | Road count : " + gameInstance.roadSystemScripts.Count;
-            GUI.Label(new Rect(new Vector2(5, 5), new Vector2(350, 30)), "Save Data : " + s);
+            GUI.Label(new Rect(new Vector2(5, 40), new Vector2(350, 30)), "Save Data : " + s);
         }
         
         public void OnGameLoad()
