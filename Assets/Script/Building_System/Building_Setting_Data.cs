@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GDD
@@ -25,6 +26,45 @@ namespace GDD
             text_disable = _textDisable;
             light_Color = _lightColor;
             dark_Color = _darkColor;
+        }
+    }
+
+    [Serializable]
+    public struct Building_Information_Preset
+    {
+        [SerializeField] public string title;
+        [SerializeField][TextArea] public string text;
+        
+        public Building_Information_Preset(string _title, string _text)
+        {
+            title = _title;
+            text = _text;
+        }
+    }
+    
+    public struct Building_info_struct
+    {
+        public List<Building_Information_Data> status;
+        public List<Building_Information_Data> informations;
+
+        public Building_info_struct(List<Building_Information_Data> _status, List<Building_Information_Data> _informations)
+        {
+            status = _status;
+            informations = _informations;
+        }
+    }
+
+    public struct Building_Information_Data
+    {
+        public string title;
+        public string text;
+        public Building_Information_Type buildingInformationType;
+        
+        public Building_Information_Data(string _title, string _text, Building_Information_Type _buildingInformationType)
+        {
+            title = _title;
+            text = _text;
+            buildingInformationType = _buildingInformationType;
         }
     }
 }

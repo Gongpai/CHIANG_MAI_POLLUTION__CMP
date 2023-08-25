@@ -29,4 +29,22 @@ namespace GDD
             dark_Color = _darkColor;
         }
     }
+
+    public struct Building_Information_UI_Data
+    {
+        public string title;
+        public string text;
+        public float value;
+        public float max_value;
+        public Building_Information_Type buildingInformationType;
+
+        public Building_Information_UI_Data(string _title, string _text, float _value, float _max_value, Building_Information_Type _buildingInformationType)
+        {
+            title = _title;
+            text = _text;
+            value = _value;
+            max_value = _max_value;
+            buildingInformationType = _buildingInformationType;
+        }
+    }
 }

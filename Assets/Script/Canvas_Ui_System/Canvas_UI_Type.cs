@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,5 +22,11 @@ namespace GDD
         Centor_Button_only,
         Centor_Button_with_progress,
         Bottom_Button_only
+    }
+
+    [Serializable] public enum Building_Information_Type
+    {
+        ShowStatus,
+        ShowInformation
     }
 }

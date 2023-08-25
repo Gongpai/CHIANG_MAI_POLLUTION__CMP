@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
 
@@ -10,7 +11,8 @@ namespace GDD
         
         public override void BeginStart()
         {
-            
+            add_action.Add(RemoveAndAddPeople);
+            is_addSettingother = false;
         }
 
         public override void EndStart()
@@ -18,7 +20,12 @@ namespace GDD
             
         }
 
-        protected override void OnUpdateValue()
+        protected override void OnUpdateSettingValue()
+        {
+            list_setting_value.Add(new Tuple<float, float>(_buildingSaveData.people, m_Preset.max_people));
+        }
+
+        protected override void OnUpdateInformationValue()
         {
             
         }

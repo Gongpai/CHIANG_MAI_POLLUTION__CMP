@@ -81,7 +81,12 @@ namespace GDD
 
             //---------------------------------- Zoom Cam -----------------------------------//
             ////Zoom
-            float zoomCam = (currentZoom * ZoomScale) * Time.deltaTime;
+            float zoomCam = 0;
+            if (!PointerOverUIElement.OnPointerOverUIElement())
+            {
+                zoomCam = (currentZoom * ZoomScale) * Time.deltaTime;
+            }
+
             //Limit Zoom Camera
             CM_3rdPF.CameraDistance += zoomCam;
             CM_3rdPF.CameraDistance = Mathf.Clamp(CM_3rdPF.CameraDistance, LimitZoom.min, LimitZoom.max);
@@ -94,7 +99,7 @@ namespace GDD
             transform.Rotate(Vector3.up, -horizontalRot, Space.World);
             
             //--------------------------------------- Rotation Cam with mouse-----------------------------------------------//
-            if (IsCanRotWithMouse)
+            if (IsCanRotWithMouse && !PointerOverUIElement.OnPointerOverUIElement())
             {
                 //print("CanRot");
                 //Rotation Up/Down

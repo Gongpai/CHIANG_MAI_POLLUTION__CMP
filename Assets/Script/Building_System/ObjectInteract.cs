@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -113,6 +115,10 @@ namespace GDD
             GameObject buiding_setting_ui = Instantiate(m_Building_Setting_UI);
             buiding_setting_ui.GetComponent<Animator>().SetBool("IsStart", true);
             Building_Setting_UI_Script buildingSettingUIScript = buiding_setting_ui.GetComponent<Building_Setting_UI_Script>();
+            
+            if(buildingSettingUIScript == null)
+                print("gehghgdhdfghdfg n : ");
+            
             buildingSettingUIScript.buildingSettingUIDatas = new List<Building_Setting_UI_Data>();
             buildingSettingUIScript.buildingName_text = buildingSystemScript.name;
             buildingSettingUIScript.building_Icon = Resources.Load<Sprite>("Icon/construction");
@@ -121,6 +127,9 @@ namespace GDD
             {
                 Create_Button_Data(buildingSettingUIScript, buildingSystemScript, actionbuilding.Key, actionbuilding.Value);
             }
+            
+            Create_Info_Ui_data(buildingSettingUIScript, buildingSystemScript, Building_Information_Type.ShowStatus);
+            Create_Info_Ui_data(buildingSettingUIScript, buildingSystemScript, Building_Information_Type.ShowInformation);
             
             Canvas canvas = buiding_setting_ui.GetComponent<Canvas>();
             canvas.worldCamera = Camera.main;
@@ -138,6 +147,40 @@ namespace GDD
                 Animator animator = canvas_ui.GetComponent<Animator>();
                 animator.SetBool("IsStart", false);
                 Destroy(canvas_ui, animator.GetCurrentAnimatorStateInfo(0).length);
+            }
+        }
+
+        private void Create_Info_Ui_data(Building_Setting_UI_Script buildingSettingUIScript, Building_System_Script buildingSystemScript, Building_Information_Type buildingInformationType)
+        {
+            if (buildingInformationType == Building_Information_Type.ShowStatus)
+            {
+                int i = 0;
+                foreach (var BI_data in buildingSystemScript.buildingInfoStruct.status)
+                {
+                    buildingSettingUIScript.buildingStatusDatas.Add(new Building_Information_UI_Data(
+                        BI_data.title,
+                        BI_data.text + buildingSystemScript.GetValueBuildingInformation(i).Item3,
+                        buildingSystemScript.GetValueBuildingInformation(i).Item1.ConvertTo<float>(),
+                        buildingSystemScript.GetValueBuildingInformation(i).Item2.ConvertTo<float>(),
+                        BI_data.buildingInformationType
+                    ));
+                    i++;
+                }
+            }
+            else
+            {
+                int i = 0;
+                foreach (var BI_data in buildingSystemScript.buildingInfoStruct.informations)
+                {
+                    buildingSettingUIScript.buildingInformationDatas.Add(new Building_Information_UI_Data(
+                        BI_data.title,
+                        BI_data.text,
+                        0,
+                        0,
+                        BI_data.buildingInformationType
+                    ));
+                    i++;
+                }
             }
         }
 

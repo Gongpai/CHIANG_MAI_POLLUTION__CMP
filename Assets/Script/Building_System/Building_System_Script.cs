@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 namespace GDD
 {
@@ -15,9 +11,13 @@ namespace GDD
         [SerializeField] protected Building_Preset m_Preset;
         protected BuildingSaveData _buildingSaveData = new BuildingSaveData();
         protected GameManager GM;
-        protected Dictionary<UnityAction<object>, Building_Setting_Data> _actions = new();
+        protected Dictionary<UnityAction<object>, Building_Setting_Data> _actions;
         protected List<UnityAction<object>> add_action;
+
+        protected Building_info_struct _information_Datas = new Building_info_struct();
         protected List<object> list_setting_value = new List<object>();
+        protected List<Tuple<object, object, string>> list_information_value = new List<Tuple<object, object, string>>();
+        protected bool is_addSettingother = true;
         
         public BuildingType _buildingType
         {
@@ -95,6 +95,20 @@ namespace GDD
             }
         }
 
+        public Building_info_struct buildingInfoStruct
+        {
+            get
+            {
+                if(_information_Datas.informations == null)
+                    _information_Datas.informations = new List<Building_Information_Data>();
+                
+                if(_information_Datas.status == null)
+                    _information_Datas.status = new List<Building_Information_Data>();
+                
+                return _information_Datas;
+            }
+        }
+
         public Dictionary<UnityAction<object>, Building_Setting_Data> actionsBuilding
         {
             get => _actions;
@@ -160,18 +174,32 @@ namespace GDD
         private void Start()
         {
             GM = FindObjectOfType<GameManager>();
+            
+            //Building info and status
+            List<Building_Information_Data> BI_datas = new List<Building_Information_Data>();
+            foreach (var BI in m_Preset.m_building_information)
+            {
+                BI_datas.Add(new Building_Information_Data(BI.title, BI.text, Building_Information_Type.ShowInformation));
+            }
+            _information_Datas.informations = BI_datas;
+               
+            //Building setting
             add_action = new List<UnityAction<object>>();
             add_action.Add(SetActiveBuilding);
             
             BeginStart();
-            
-            add_action.Add(SetAirPurifierSpeedUp);
-            add_action.Add(SetWorkOverTime);
-            add_action.Add(RemoveAndAddPeople);
-            add_action.Add(RemoveAndAddWorker);
-            
+
+            if (is_addSettingother)
+            {
+                add_action.Add(SetAirPurifierSpeedUp);
+                add_action.Add(SetWorkOverTime);
+                add_action.Add(RemoveAndAddPeople);
+                add_action.Add(RemoveAndAddWorker);
+            }
+
             EndStart();
 
+            _actions = new();
             print( "Is NoooottttNuuuuulllllllllll : " + m_Preset.m_building_setting != null);
             int i = 0;
             foreach (var buildingSetting in m_Preset.m_building_setting)
@@ -179,23 +207,36 @@ namespace GDD
                 _actions.Add(add_action[i], buildingSetting);
                 i++;
             }
+             
         }
 
-        public object GetValueBuiling(int index)
+        public object GetValueBuilingSetting(int index)
         {
             list_setting_value = new List<object>();
             list_setting_value.Add(active);
-            OnUpdateValue();
-            list_setting_value.Add(_buildingSaveData.Air_purifier_Speed_Up);
-            list_setting_value.Add(_buildingSaveData.WorkOverTime);
-            list_setting_value.Add(new Tuple<float, float>(_buildingSaveData.people, m_Preset.max_people));
-            list_setting_value.Add(new Tuple<float, float>(_buildingSaveData.worker, m_Preset.max_worker));
-            
+            OnUpdateSettingValue();
+
+            if (is_addSettingother)
+            {
+                list_setting_value.Add(_buildingSaveData.Air_purifier_Speed_Up);
+                list_setting_value.Add(_buildingSaveData.WorkOverTime);
+                list_setting_value.Add(new Tuple<float, float>(_buildingSaveData.people, m_Preset.max_people));
+                list_setting_value.Add(new Tuple<float, float>(_buildingSaveData.worker, m_Preset.max_worker));
+            }
+
             return list_setting_value[index];
         }
 
-        protected abstract void OnUpdateValue();
+        public Tuple<object, object, string> GetValueBuildingInformation(int index)
+        {
+            OnUpdateInformationValue();
+            print("List Info Value : " + list_information_value[index]);
+            return list_information_value[index];
+        }
 
+        protected abstract void OnUpdateSettingValue();
+        protected abstract void OnUpdateInformationValue();
+        
         public abstract void BeginStart();
         public abstract void EndStart();
 

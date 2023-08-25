@@ -111,4 +111,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enum_buildingType: 0
-  m_Preset: {fileID: 11400000, guid: db1a2feaba91bcb4e98a4bed330ade6a, type: 2}
+  m_Preset: {fileID: 11400000, guid: 32590d7824f1b484685f14b1c48ba08f, type: 2}
+  m_generatorPreset: {fileID: 11400000, guid: 9f9aca53557bee0409cfdf997472c496, type: 2}

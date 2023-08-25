@@ -18,7 +18,12 @@ namespace GDD
             
         }
 
-        protected override void OnUpdateValue()
+        protected override void OnUpdateSettingValue()
+        {
+            
+        }
+
+        protected override void OnUpdateInformationValue()
         {
             
         }

@@ -97,7 +97,9 @@ namespace GDD
         {
             print("On Disable");
             _roadLineMesh.ClearRoad();
-            ShowMarker(false);
+            
+            if(start_point != null && end_point != null)
+                ShowMarker(false);
         }
 
         void Start()
