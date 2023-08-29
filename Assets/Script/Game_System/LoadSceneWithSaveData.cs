@@ -12,6 +12,7 @@ namespace GDD
     {
         private GameManager GM;
         private GameInstance GI;
+        private TimeManager TM;
         private Spawner_Object_Grid spawnerObjectGrid;
         private Spawner_Road_Grid spawnerRoadGrid;
 
@@ -27,11 +28,13 @@ namespace GDD
             this.enabled = true;
             time = 0;
             print("OnSceneLoadddddd");
-            GM = FindObjectOfType<GameManager>();
+            GM = GameManager.Instance;
             GI = GM.gameInstance;
+            TM = TimeManager.Instance;
+            
             spawnerObjectGrid = FindObjectOfType<Spawner_Object_Grid>();
             spawnerRoadGrid = FindObjectOfType<Spawner_Road_Grid>();
-
+            
             if (!GI.IsObjectEmpty())
             {
                 print("Gotoloaddddd");

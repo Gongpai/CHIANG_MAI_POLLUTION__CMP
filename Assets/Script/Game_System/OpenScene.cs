@@ -9,7 +9,7 @@ namespace GDD
 
         private void Start()
         {
-            GM = FindObjectOfType<GameManager>();
+            GM = GameManager.Instance;
         }
         public void NextScene()
         {

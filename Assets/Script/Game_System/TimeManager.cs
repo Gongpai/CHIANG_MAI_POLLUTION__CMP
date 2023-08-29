@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace GDD
 {
-    public class TimeManager : Singleton<TimeManager>
+    public class TimeManager : MonoBehaviour
     {
         private GameManager GM;
+        private GameInstance GI;
         private DateTime date_Time;
         private int oldyear = 1970;
         private int totalDay = 0;
@@ -14,6 +15,28 @@ namespace GDD
         private float _timescale = 1f;
         private float _deltaTime;
 
+        private static TimeManager _instance;
+
+        public static TimeManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = FindObjectOfType<TimeManager>();
+
+                    if (_instance == null)
+                    {
+                        GameObject obj = new GameObject();
+                        obj.name = typeof(TimeManager).Name;
+                        _instance = obj.AddComponent<TimeManager>();
+                    }
+                }
+
+                return _instance;
+            }
+        }
+        
         public float timeScale
         {
             get => _timescale;
@@ -23,6 +46,16 @@ namespace GDD
         public float deltaTime
         {
             get => _deltaTime;
+        }
+
+        public int getTotalSecond
+        {
+            get => Mathf.FloorToInt(To_TotalSecond(date_Time));
+        }
+
+        public DateTime get_DateTime
+        {
+            get => date_Time;
         }
         
         public int getGameTimeMinute
@@ -35,19 +68,24 @@ namespace GDD
             get => date_Time.Hour;
         }
 
-        public int getDayTotal
+        public int getTotalDay
         {
             get => day - 1;
         }
-        
+
         private void OnEnable()
         {
             GM = GameManager.Instance;
-        }
+            GI = GM.gameInstance;
 
-        private void Start()
-        {
-            date_Time = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            if (GI.gameDateTime == null)
+            {
+                NewDateTime();
+            }
+            else
+            {
+                LoadDateTime();
+            }
         }
 
         private void Update()
@@ -75,8 +113,27 @@ namespace GDD
                 isSetTIme = false;
                 day = totalDay + date_Time.DayOfYear;
             }
-            
+
+            GI.gameDateTime = new GameDateTime(date_Time.Year, date_Time.Month, date_Time.Day, date_Time.Hour, date_Time.Minute, date_Time.Second, date_Time.Millisecond);
             //print("Old Year : " + date_Time.Minute + " :: " + date_Time.DayOfYear);
+        }
+
+        public void NewDateTime()
+        {
+            date_Time = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+        }
+        
+        public void LoadDateTime()
+        {
+            print("D" + GI.gameDateTime.day + " H" + GI.gameDateTime.hour + " M" + GI.gameDateTime.minute + " Sec" + GI.gameDateTime.second + " MiSec" + GI.gameDateTime.millisecond);
+            date_Time = GI.getSaveGameDateTime;
+        }
+
+        public float To_TotalSecond(DateTime _dateTime)
+        {
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            TimeSpan diff = _dateTime - origin;
+            return (float)diff.TotalSeconds;
         }
     }
 }

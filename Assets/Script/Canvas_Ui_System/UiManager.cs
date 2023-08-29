@@ -20,8 +20,8 @@ namespace GDD
 
         private void Start()
         {
-            GM = FindObjectOfType<GameManager>();
-            SM = FindObjectOfType<SaveManager>();
+            GM = GameManager.Instance;
+            SM = SaveManager.Instance;
         }
 
         private void Update()

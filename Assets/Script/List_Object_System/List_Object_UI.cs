@@ -23,7 +23,7 @@ namespace GDD
             Interface_Resources_PreferencesData IRPD = new SaveLoad_Resources_Data();
             GetSet_Resources_Data GS_RD = new GetSet_Resources_Data();
             
-            Object_Data = IRPD.Get_Resources_PreferencesData(Application.dataPath + GS_RD.resources_data_path)
+            Object_Data = IRPD.Get_Resources_PreferencesData(GS_RD.resources_data_path)
                 .Resources_Data;
 
             foreach (var _but in buttonTabs)

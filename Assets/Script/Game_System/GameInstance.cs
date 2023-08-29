@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,6 +8,7 @@ namespace GDD
     {
         public List<BuildingSaveData> buildingSystemScript = new List<BuildingSaveData>();
         public List<RoadSaveData> roadSystemScripts = new List<RoadSaveData>();
+        public GameDateTime gameDateTime;
 
         public bool IsObjectEmpty()
         {
@@ -14,6 +16,44 @@ namespace GDD
             isEmpty = buildingSystemScript.Count <= 0 && roadSystemScripts.Count <= 0;
 
             return isEmpty;
+        }
+
+        public DateTime getSaveGameDateTime
+        {
+            get
+            {
+                if (gameDateTime != null)
+                {
+                    return new DateTime(gameDateTime.year, gameDateTime.month, gameDateTime.day,
+                        gameDateTime.hour, gameDateTime.minute, gameDateTime.second, gameDateTime.millisecond);
+                }
+                else
+                {
+                    return new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                }
+            }
+        }
+    }
+
+    public class GameDateTime
+    {
+        public int year;
+        public int month;
+        public int day;
+        public int hour;
+        public int minute;
+        public int second;
+        public int millisecond;
+
+        public GameDateTime(int Year, int Month, int Day, int Hour, int Minute, int Second, int Millisecond)
+        {
+            year = Year;
+            month = Month;
+            day = Day;
+            hour = Hour;
+            minute = Minute;
+            second = Second;
+            millisecond = Millisecond;
         }
     }
 

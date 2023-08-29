@@ -39,8 +39,8 @@ namespace GDD
         {
             IsOpenSaveUi = OpenSaveUi;
             
-            GM = FindObjectOfType<GameManager>();
-            SM = FindObjectOfType<SaveManager>();
+            GM = GameManager.Instance;
+            SM = SaveManager.Instance;
 
             if(GetComponent<Ui_Utilities>() == null)
                 gameObject.AddComponent<Ui_Utilities>();

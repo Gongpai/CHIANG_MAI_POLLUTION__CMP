@@ -173,7 +173,7 @@ namespace GDD
 
         private void Start()
         {
-            GM = FindObjectOfType<GameManager>();
+            GM = GameManager.Instance;
             
             //Building info and status
             List<Building_Information_Data> BI_datas = new List<Building_Information_Data>();

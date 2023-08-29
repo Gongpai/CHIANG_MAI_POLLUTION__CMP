@@ -19,7 +19,7 @@ namespace GDD
         private void Update()
         {
             m_worktime.text = "Work TIme " + FixTimeText(TM.getGameTimeHour.ToString()) + ":" + FixTimeText(TM.getGameTimeMinute.ToString());
-            m_day.text = "Day " + TM.getDayTotal;
+            m_day.text = "Day " + TM.getTotalDay;
         }
 
         private string FixTimeText(string time_text)

@@ -52,14 +52,14 @@ namespace GDD
 
         public void OnGameLoad()
         {
-            GM = FindObjectOfType<GameManager>();
+            GM = GameManager.Instance;
             OnBeginPlace();
             OnEndPlace();
         }
 
         public void OnPlaceRoad(Vector2 StartPos, Vector2 EndPos)
         {
-            GM = FindObjectOfType<GameManager>();
+            GM = GameManager.Instance;
             OnBeginPlace();
             _roadSaveData.Start_Position = new Vector2D(StartPos.x, StartPos.y);
             _roadSaveData.End_Position = new Vector2D(EndPos.x, EndPos.y);
