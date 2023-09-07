@@ -9,6 +9,9 @@ namespace GDD
     {
         [SerializeField] private GameObject button_BG;
         [SerializeField] private GameObject Canvas_to_create;
+        [SerializeField] private float m_planeDistance = 2.0f;
+        [SerializeField] private bool useCameraOverlay = false;
+        [SerializeField] private int index = 0;
 
         private Button_Control_Script BC_Script;
         private void Awake()
@@ -26,7 +29,7 @@ namespace GDD
                 if (Canvas_to_create != null && !BC_Script.IsCreateCanvas)
                 {
                     BC_Script.canvas_to_create = Canvas_to_create;
-                    BC_Script.OnCreateCanvas();
+                    BC_Script.OnCreateCanvas(m_planeDistance, useCameraOverlay, index);
                 }
                 else
                 {

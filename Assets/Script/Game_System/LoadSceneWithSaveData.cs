@@ -23,29 +23,44 @@ namespace GDD
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
+        private void OnDisable()
+        {
+            //SceneManager.sceneUnloaded += OnSceneUnLoaded;
+        }
+
         public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            this.enabled = true;
-            time = 0;
-            print("OnSceneLoadddddd");
-            GM = GameManager.Instance;
-            GI = GM.gameInstance;
-            TM = TimeManager.Instance;
-            
-            spawnerObjectGrid = FindObjectOfType<Spawner_Object_Grid>();
-            spawnerRoadGrid = FindObjectOfType<Spawner_Road_Grid>();
-            
-            if (!GI.IsObjectEmpty())
+            if (scene.buildIndex != 0)
             {
-                print("Gotoloaddddd");
-                StartCoroutine(LoadGameSave());
+                this.enabled = true;
+                time = 0;
+                print("OnSceneLoadddddd");
+                GM = GameManager.Instance;
+                GI = GM.gameInstance;
+                TM = TimeManager.Instance;
+                spawnerObjectGrid = FindObjectOfType<Spawner_Object_Grid>();
+                spawnerRoadGrid = FindObjectOfType<Spawner_Road_Grid>();
+
+                if (!GI.IsObjectEmpty())
+                {
+                    print("Gotoloaddddd");
+                    StartCoroutine(LoadGameSave());
+                }
+
+                this.enabled = false;
+
+                if (spawnerObjectGrid != null)
+                    spawnerObjectGrid.enabled = false;
+                if (spawnerRoadGrid != null)
+                    spawnerRoadGrid.enabled = false;
+
+                SceneManager.sceneLoaded -= OnSceneLoaded;
             }
+        }
 
-            this.enabled = false;
-            spawnerObjectGrid.enabled = false;
-            spawnerRoadGrid.enabled = false;
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-
+        public void OnSceneUnLoaded(Scene current)
+        {
+            
         }
 
         IEnumerator LoadGameSave()

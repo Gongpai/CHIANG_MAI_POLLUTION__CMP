@@ -104,14 +104,14 @@ namespace GDD
                 {
                     if (buildingSystemScript.active)
                     {
-                        canvasElementList.tests[0].text = button.Value.text_enable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
+                        canvasElementList.texts[0].text = button.Value.text_enable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
                         
                         if(canvasElementList.animators[0] != null)
                             canvasElementList.animators[0].SetBool("IsStart", true);
                     }
                     else
                     {
-                        canvasElementList.tests[0].text = button.Value.text_disable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
+                        canvasElementList.texts[0].text = button.Value.text_disable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
                         
                         if(canvasElementList.animators[0] != null)
                             canvasElementList.animators[0].SetBool("IsStart", false);
@@ -124,7 +124,7 @@ namespace GDD
                 {
                     if (buildingSystemScript.GetValueBuilingSetting(i).ConvertTo<bool>() && buildingSystemScript.active)
                     {
-                        canvasElementList.tests[0].text = button.Value.text_enable;
+                        canvasElementList.texts[0].text = button.Value.text_enable;
                         canvasElementList.image[0].sprite = button.Value.icon_enable;
                         
                         if(canvasElementList.animators[0] != null)
@@ -132,7 +132,7 @@ namespace GDD
                     }
                     else
                     {
-                        canvasElementList.tests[0].text = button.Value.text_disable;
+                        canvasElementList.texts[0].text = button.Value.text_disable;
                         canvasElementList.image[0].sprite = button.Value.icon_disable;
                         
                         if(canvasElementList.animators[0] != null)
@@ -183,7 +183,7 @@ namespace GDD
                     if (building_object.ConvertTo<bool>() && buildingSystemScript.active)
                     {
                         canvasElementList.image[0].sprite = buildingSettingUIData.icon_enable;
-                        canvasElementList.tests[0].text = buildingSettingUIData.text_enable;
+                        canvasElementList.texts[0].text = buildingSettingUIData.text_enable;
                         
                         if(canvasElementList.animators[0] != null)
                             canvasElementList.animators[0].SetBool("IsStart", true);
@@ -191,7 +191,7 @@ namespace GDD
                     else
                     {
                         canvasElementList.image[0].sprite = buildingSettingUIData.icon_disable;
-                        canvasElementList.tests[0].text = buildingSettingUIData.text_disable;
+                        canvasElementList.texts[0].text = buildingSettingUIData.text_disable;
                         
                         if(canvasElementList.animators[0] != null)
                             canvasElementList.animators[0].SetBool("IsStart", false);
@@ -210,14 +210,14 @@ namespace GDD
                     
                     if (buildingSystemScript.active)
                     {
-                        progressCanvasElementList.tests[0].text = buildingSettingUIData.text_enable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
+                        progressCanvasElementList.texts[0].text = buildingSettingUIData.text_enable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
                         
                         if(progressCanvasElementList.animators[0] != null)
                             progressCanvasElementList.animators[0].SetBool("IsStart", true);
                     }
                     else
                     {
-                        progressCanvasElementList.tests[0].text = buildingSettingUIData.text_disable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
+                        progressCanvasElementList.texts[0].text = buildingSettingUIData.text_disable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
                         
                         if(progressCanvasElementList.animators[0] != null)
                             progressCanvasElementList.animators[0].SetBool("IsStart", false);
@@ -287,8 +287,8 @@ namespace GDD
                 {
                     GameObject element = Instantiate(m_Prefab_Building_information[0], m_Information_content.transform);
                     Canvas_Element_List elementList = element.GetComponent<Canvas_Element_List>();
-                    elementList.tests[0].text = BSD_ui.title;
-                    elementList.tests[1].text = BSD_ui.text;
+                    elementList.texts[0].text = BSD_ui.title;
+                    elementList.texts[1].text = BSD_ui.text;
                     elementList.image[0].fillAmount = BSD_ui.value / BSD_ui.max_value;
                 }
             }
@@ -298,8 +298,8 @@ namespace GDD
                 {
                     GameObject element = Instantiate(m_Prefab_Building_information[1], m_Information_content.transform);
                     Canvas_Element_List elementList = element.GetComponent<Canvas_Element_List>();
-                    elementList.tests[0].text = BIF_ui.title;
-                    elementList.tests[1].text = BIF_ui.text;
+                    elementList.texts[0].text = BIF_ui.title;
+                    elementList.texts[1].text = BIF_ui.text;
                 }
             }
         }

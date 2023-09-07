@@ -17,7 +17,7 @@ namespace GDD
             get => m_buttons;
         }
 
-        public List<TextMeshProUGUI> tests
+        public List<TextMeshProUGUI> texts
         {
             get => m_texts;
         }

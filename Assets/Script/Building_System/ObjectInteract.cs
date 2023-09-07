@@ -80,7 +80,7 @@ namespace GDD
             GameObject menu_ui = Instantiate(m_MenuUI);
             menu_ui.GetComponent<Animator>().SetBool("IsStart", true);
             menu_ui.GetComponent<RectTransform>().sizeDelta = new Vector2(260, 0);
-            List<Menu_Data> menuDatas = objectHit.GetComponent<Building_System_Script>().GetInteractAction();
+            List<Quick_Menu_Data> menuDatas = objectHit.GetComponent<Building_System_Script>().GetInteractAction();
             foreach (var data in menuDatas)
             {
                 Instantiate(m_BG_Button_list, menu_ui.transform.GetChild(0).GetChild(0));

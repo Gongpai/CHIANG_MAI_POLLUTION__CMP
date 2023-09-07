@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 namespace GDD
@@ -114,20 +115,36 @@ namespace GDD
                 Bg_animator.SetBool("IsStart", false);
         }
 
-        public void OnCreateCanvas()
+        public void OnCreateCanvas(float planeDistance = 2.0f, bool useCameraOverlay = false, int index = 0)
         {
             int OrderLayer = _panelUIScript.CheckUI_StillOpen();
+            UI_CS.CheckPanel_StillOpen();
             UI_CS.PlayAnimPanel(0, false);
-            UI_CS.PlayAnimPanel(1, true);
             
             isCreateCanvas = true;
 
             CanvasSpawn = Instantiate(Canvas_to_create);
+            if (CanvasSpawn.GetComponent<BT_CS_Instance>() == null)
+            {
+                BT_CS_Instance _btCsInstance = CanvasSpawn.AddComponent<BT_CS_Instance>();
+                _btCsInstance.BT_CS = GetComponent<Button_Control_Script>();
+            }
+
             Canvas canvas = CanvasSpawn.GetComponent<Canvas>();
-            canvas.worldCamera = Camera.main;
+
+            if (useCameraOverlay)
+            {
+                canvas.worldCamera = Camera.main.GetUniversalAdditionalCameraData().cameraStack[index];
+            }
+            else
+            {
+                UI_CS.PlayAnimPanel(1, true);
+                canvas.worldCamera = Camera.main;
+            }
+
             canvas.sortingLayerName = "SortingLayerName";
             canvas.sortingOrder = OrderLayer;
-            Canvas_to_create.GetComponent<Canvas>().planeDistance = 2.0f;
+            Canvas_to_create.GetComponent<Canvas>().planeDistance = planeDistance;
         }
 
         public void OnDestroyCanvas(bool IsSetPanelActionMode = true)
@@ -143,6 +160,17 @@ namespace GDD
             
             Destroy(CanvasSpawn, CanvasSpawn.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
             CanvasSpawn = null;
+        }
+    }
+
+    public class BT_CS_Instance : MonoBehaviour
+    {
+        private Button_Control_Script bT_CS;
+
+        public Button_Control_Script BT_CS
+        {
+            get => bT_CS;
+            set => bT_CS = value;
         }
     }
 }

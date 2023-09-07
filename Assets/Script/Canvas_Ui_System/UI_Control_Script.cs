@@ -67,6 +67,15 @@ namespace GDD
             
         }
 
+        public void CheckPanel_StillOpen()
+        {
+            foreach (var panelUIScript in _panelUIScript)
+            {
+                if(panelUIScript != null)
+                    panelUIScript.CheckUI_StillOpen();
+            }
+        }
+
         public void PlayAnimPanel(int panelIndex, bool IsPlayStart = true)
         {
             if (_AnimPanal.Count <= 0)

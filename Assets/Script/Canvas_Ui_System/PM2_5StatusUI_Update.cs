@@ -65,7 +65,7 @@ namespace GDD
             }
 
             pm2_5_value = (int)pm2_5_delta;
-            m_canvasElementList.tests[0].text = pm2_5_value.ToString();
+            m_canvasElementList.texts[0].text = pm2_5_value.ToString();
             m_canvasElementList.animators[0].SetInteger("Value", pm2_5_value);
         }
     }

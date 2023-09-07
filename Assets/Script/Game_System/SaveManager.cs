@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 
 namespace GDD
 {
-    public class SaveManager : Singleton<SaveManager>
+    public class SaveManager : Singleton_With_DontDestroy<SaveManager>
     {
         public object LoadGamePreferencesData(string location, Type type)
         {

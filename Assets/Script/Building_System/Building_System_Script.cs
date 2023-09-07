@@ -114,12 +114,12 @@ namespace GDD
             get => _actions;
         }
 
-        public virtual List<Menu_Data> GetInteractAction()
+        public virtual List<Quick_Menu_Data> GetInteractAction()
         {
-            List<Menu_Data> menuDatas = new List<Menu_Data>();
-            menuDatas.Add(new Menu_Data("Interact", Resources.Load<Sprite>("Icon/build_"), Interact));
-            menuDatas.Add(new Menu_Data("Change Enable Building", Resources.Load<Sprite>("Icon/construction"), ChangeEnableBuilding));
-            menuDatas.Add(new Menu_Data("Remove", Resources.Load<Sprite>("Icon/account_tree"), RemoveBuilding));
+            List<Quick_Menu_Data> menuDatas = new List<Quick_Menu_Data>();
+            menuDatas.Add(new Quick_Menu_Data("Interact", Resources.Load<Sprite>("Icon/build_"), Interact));
+            menuDatas.Add(new Quick_Menu_Data("Change Enable Building", Resources.Load<Sprite>("Icon/construction"), ChangeEnableBuilding));
+            menuDatas.Add(new Quick_Menu_Data("Remove", Resources.Load<Sprite>("Icon/account_tree"), RemoveBuilding));
 
             return menuDatas;
         }

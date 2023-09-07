@@ -36,8 +36,8 @@ namespace GDD
             m_time_measurement_line_lists[1].GetComponent<RectTransform>().anchoredPosition = new Vector2(174, 0);
             SetDayText(m_time_measurement_line_lists[1]);
             
-            print("OnLoad : " + TM.To_TotalSecond(GI.getSaveGameDateTime));
-            if(TM.To_TotalSecond(GI.getSaveGameDateTime) > 0)
+            print("OnLoad : " + TM.To_TotalSecond(GI.getSaveGameDateTime()));
+            if(TM.To_TotalSecond(GI.getSaveGameDateTime()) > 0)
                 OnLoadSave();
         }
 
@@ -67,8 +67,10 @@ namespace GDD
 
         private void SetDayText(GameObject time_measurement_line)
         {
-            foreach (var text in time_measurement_line.GetComponent<Canvas_Element_List>().tests)
+            foreach (var text in time_measurement_line.GetComponent<Canvas_Element_List>().texts)
             {
+                Debug.LogWarning("DAYYYYYY IS : " + day);
+
                 text.text = day.ToString();
                 day++;
             }
@@ -79,7 +81,7 @@ namespace GDD
             if (GI.gameDateTime != null)
             {
                 float moved = (3.50000000f * (725.00000000f / 700.00000000f) / 2.00000000f);
-                float totalmoved = moved * (TM.To_TotalSecond(GI.getSaveGameDateTime) / 3600);
+                float totalmoved = moved * (TM.To_TotalSecond(GI.getSaveGameDateTime()) / 3600);
                 Debug.LogWarning("Toal Line Moved from time is : " + (totalmoved - Time.deltaTime));
                 Debug.LogWarning("This time : " + TM.To_TotalSecond(TM.get_DateTime) + " | Min : " + TM.get_DateTime.Minute + " | Sec : " + TM.get_DateTime.Second + " | MilliSec : " + TM.get_DateTime.Millisecond);
 

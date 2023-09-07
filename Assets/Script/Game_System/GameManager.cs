@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace GDD
 {
-    public class GameManager:Singleton<GameManager>
+    public class GameManager:Singleton_With_DontDestroy<GameManager>
     {
         private string Name = "";
         private int Level = 0;
