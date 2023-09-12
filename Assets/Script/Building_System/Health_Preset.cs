@@ -6,6 +6,10 @@ namespace GDD
         menuName = "GDD/Building/Health", order = 2)]
     public class Health_Preset : ScriptableObject
     {
-        
+        [Header("People Receiving Treatment")]
+        public float people = 10;
+
+        [Header("Resources Use")] 
+        public float power_use;
     }
 }

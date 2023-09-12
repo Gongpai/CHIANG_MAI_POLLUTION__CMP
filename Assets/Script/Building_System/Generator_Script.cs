@@ -12,33 +12,60 @@ namespace GDD
         [SerializeField] private Generator_Preset m_generatorPreset; 
         private Generator_SaveData _generatorSaveData = new Generator_SaveData();
 
+        public float power_produce
+        {
+            get
+            {
+                if (_buildingSaveData.Building_active)
+                {
+                    return m_generatorPreset.power * buildingSaveData.efficiency;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+        public override void Resource_usage()
+        {
+            RM.Set_Resources_Tree(-Mathf.CeilToInt(m_generatorPreset.wood_use * _buildingSaveData.efficiency));
+        }
+
         public void SetEnableOverDrive(object obj)
         {
             _generatorSaveData.IsOverdrive = !_generatorSaveData.IsOverdrive;
         }
-        
+
+        public override void OnEnableBuilding()
+        {
+            
+        }
+
+        public override void OnDisableBuilding()
+        {
+            
+        }
+
         public override void BeginStart()
         {
             add_action.Add(SetEnableOverDrive);
-            
-            List<Building_Information_Data> BI_datas = new List<Building_Information_Data>();
-            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[0].title, m_Preset.m_building_status[0].text, Building_Information_Type.ShowStatus));
-            _information_Datas.status = BI_datas;
+            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[0].title, m_Preset.m_building_status[0].text + " " + power_produce + "/" + m_generatorPreset.power + " kw", Building_Information_Type.ShowStatus));
         }
 
         public override void EndStart()
         {
-            
+            RM.generatorScripts.Add(this);
         }
 
         protected override void OnUpdateSettingValue()
         {
-            list_setting_value.Add(_generatorSaveData.IsOverdrive);
+            list_setting_values.Add(_generatorSaveData.IsOverdrive);
         }
 
         protected override void OnUpdateInformationValue()
         {
-            list_information_value.Add(new Tuple<object, object, string>(_generatorSaveData.current_power, m_generatorPreset.power, _generatorSaveData.current_power + "/" + m_generatorPreset.power + " kw"));
+            list_information_values.Add(new Tuple<object, object, string>(power_produce, m_generatorPreset.power, m_Preset.m_building_status[0].text + " " + power_produce + "/" + m_generatorPreset.power + " kw"));
         }
 
         public override void OnBeginPlace()
@@ -69,6 +96,12 @@ namespace GDD
         public override void OnEndRemove()
         {
             
+        }
+
+        public override void OnDestroyBuilding()
+        {
+            if(RM != null)
+                RM.generatorScripts.Remove(this);
         }
     }
 }

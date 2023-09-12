@@ -8,7 +8,12 @@ namespace GDD
     public class Tech_Script : Building_System_Script
     {
         private Tech_SaveData _techSaveData = new Tech_SaveData();
-        
+
+        public override void Resource_usage()
+        {
+            
+        }
+
         public override void BeginStart()
         {
             add_action.Add(RemoveAndAddPeople);
@@ -19,10 +24,20 @@ namespace GDD
         {
             
         }
+        
+        public override void OnEnableBuilding()
+        {
+            
+        }
+
+        public override void OnDisableBuilding()
+        {
+            
+        }
 
         protected override void OnUpdateSettingValue()
         {
-            list_setting_value.Add(new Tuple<float, float>(_buildingSaveData.people, m_Preset.max_people));
+            list_setting_values.Add(new Tuple<float, float>(_buildingSaveData.people, m_Preset.max_people));
         }
 
         protected override void OnUpdateInformationValue()
@@ -56,6 +71,11 @@ namespace GDD
         }
 
         public override void OnEndRemove()
+        {
+            
+        }
+
+        public override void OnDestroyBuilding()
         {
             
         }

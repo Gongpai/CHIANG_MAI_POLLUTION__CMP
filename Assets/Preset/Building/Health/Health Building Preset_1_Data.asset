@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5c994fda3ee5ed40b59b7e1094d9d3f, type: 3}
   m_Name: Health Building Preset_1_Data
   m_EditorClassIdentifier: 
+  people: 10
+  power_use: 1

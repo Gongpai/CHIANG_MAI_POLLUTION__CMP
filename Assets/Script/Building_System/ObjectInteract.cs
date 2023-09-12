@@ -22,13 +22,24 @@ namespace GDD
         private GameObject objectHit;
         private GameObject old_menu = null;
         private GameObject old_buiding_setting_ui = null;
+        private LayerMask L_Place_Object;
         private bool isOpenMenu = false;
+
+        private void Start()
+        {
+            L_Place_Object = LayerMask.NameToLayer("Place_Object");
+        }
 
         private void Update()
         {
             Physics.Raycast(RaycastFromMouse.GetRayFromMouse(), out var hit_objraycast);
 
             if(Input.GetMouseButtonUp(0) && !PointerOverUIElement.OnPointerOverUIElement())
+            {
+                DestroyUI(old_buiding_setting_ui);
+            }
+            
+            if (old_objecthit == null)
             {
                 DestroyUI(old_buiding_setting_ui);
             }
@@ -65,7 +76,9 @@ namespace GDD
 
                 if (objectHit != null)
                     OnOutlineObject(objectHit, old_objecthit);
-                old_objecthit = objectHit;
+                
+                if(objectHit.layer == L_Place_Object)
+                    old_objecthit = objectHit;
             }
             
             if(Input.GetMouseButtonUp(0))
@@ -80,7 +93,7 @@ namespace GDD
             GameObject menu_ui = Instantiate(m_MenuUI);
             menu_ui.GetComponent<Animator>().SetBool("IsStart", true);
             menu_ui.GetComponent<RectTransform>().sizeDelta = new Vector2(260, 0);
-            List<Quick_Menu_Data> menuDatas = objectHit.GetComponent<Building_System_Script>().GetInteractAction();
+            List<Button_Action_Data> menuDatas = objectHit.GetComponent<Building_System_Script>().GetInteractAction();
             foreach (var data in menuDatas)
             {
                 Instantiate(m_BG_Button_list, menu_ui.transform.GetChild(0).GetChild(0));
@@ -122,6 +135,7 @@ namespace GDD
             buildingSettingUIScript.buildingSettingUIDatas = new List<Building_Setting_UI_Data>();
             buildingSettingUIScript.buildingName_text = buildingSystemScript.name;
             buildingSettingUIScript.building_Icon = Resources.Load<Sprite>("Icon/construction");
+            buildingSettingUIScript.BuildingButtonActionDatas = buildingSystemScript.buildingButtonActionDatas;
 
             foreach (var actionbuilding in buildingSystemScript.actionsBuilding)
             {
@@ -157,13 +171,15 @@ namespace GDD
                 int i = 0;
                 foreach (var BI_data in buildingSystemScript.buildingInfoStruct.status)
                 {
+                    print("IIII : " + i);
                     buildingSettingUIScript.buildingStatusDatas.Add(new Building_Information_UI_Data(
                         BI_data.title,
-                        BI_data.text + buildingSystemScript.GetValueBuildingInformation(i).Item3,
+                        buildingSystemScript.GetValueBuildingInformation(i).Item3,
                         buildingSystemScript.GetValueBuildingInformation(i).Item1.ConvertTo<float>(),
                         buildingSystemScript.GetValueBuildingInformation(i).Item2.ConvertTo<float>(),
                         BI_data.buildingInformationType
                     ));
+                    
                     i++;
                 }
             }
@@ -228,13 +244,22 @@ namespace GDD
         {
             if (gameObject.transform.parent == m_GameObjectLayer.transform && CheckComponentDisable())
             {
-                Outliner outliner = gameObject.GetComponent<Outliner>();
-                outliner.enabled = true;
-                outliner.OutlineColor = Color.yellow;
+                Outliner outliner_parent = gameObject.GetComponent<Outliner>();
+                Outliner outliner_construction_progress = gameObject.GetComponent<Building_System_Script>().Construction_Progress_Object.GetComponent<Outliner>();
+                outliner_parent.enabled = true;
+                outliner_construction_progress.enabled = true;
+                outliner_parent.OutlineColor = Color.yellow;
+                outliner_construction_progress.OutlineColor = Color.yellow;
             }
 
             if (old_gameObject != null && old_objecthit != gameObject && old_gameObject.transform.parent == m_GameObjectLayer.transform)
+            {
+                old_gameObject.layer = L_Place_Object;
+                old_gameObject.GetComponent<Building_System_Script>().Construction_Progress_Object.layer = L_Place_Object;
+                
                 old_gameObject.GetComponent<Outliner>().enabled = false;
+                old_gameObject.GetComponent<Building_System_Script>().Construction_Progress_Object.GetComponent<Outliner>().enabled = false;
+            }
         }
     }
 }

@@ -7,13 +7,28 @@ namespace GDD
     public class Health_Script : Building_System_Script
     {
         private Health_SaveData _healthSaveData = new Health_SaveData();
-        
+
+        public override void Resource_usage()
+        {
+            
+        }
+
         public override void BeginStart()
         {
             
         }
 
         public override void EndStart()
+        {
+            
+        }
+        
+        public override void OnEnableBuilding()
+        {
+            
+        }
+
+        public override void OnDisableBuilding()
         {
             
         }
@@ -54,6 +69,11 @@ namespace GDD
         }
 
         public override void OnEndRemove()
+        {
+            
+        }
+
+        public override void OnDestroyBuilding()
         {
             
         }

@@ -665,7 +665,11 @@ MonoBehaviour:
   parent_UI: {fileID: 7027285488366090957}
   m_resume_button: {fileID: 8470405100906815993}
   m_savegame_button: {fileID: 8938858037744508071}
+  savegame_ui: {fileID: 7027285488366090957, guid: 835f1c4d01f28d14387f4a748c43bdf0,
+    type: 3}
   m_loadgame_button: {fileID: 8938858036057822517}
+  loadgame_ui: {fileID: 7027285488366090957, guid: 835f1c4d01f28d14387f4a748c43bdf0,
+    type: 3}
   m_setting_button: {fileID: 8938858035949086385}
   m_backtomainmenu_button: {fileID: 8938858035822167724}
   m_quit_button: {fileID: 8938858037799016871}

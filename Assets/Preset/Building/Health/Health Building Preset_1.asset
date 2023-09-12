@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb1f3faedee1b3478a5b40f1aad264b, type: 3}
   m_Name: Health Building Preset_1
   m_EditorClassIdentifier: 
-  name: Generator
+  name: Medical Post
   level: 1
-  max_people: 20
-  max_worker: 20
+  max_people: 5
+  max_worker: 5
+  wood_build: 20
+  rock_build: 20
+  time_construction: 3
+  produce: 0
+  air_filtration_ability: 100
   m_building_setting:
   - setting_name: 
     buildingSettingType: 0

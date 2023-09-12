@@ -122,5 +122,12 @@ namespace GDD
             TimeSpan diff = _dateTime - origin;
             return (float)diff.TotalDays;
         }
+        
+        public float To_TotalHour(DateTime _dateTime)
+        {
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            TimeSpan diff = _dateTime - origin;
+            return (float)diff.TotalHours;
+        }
     }
 }

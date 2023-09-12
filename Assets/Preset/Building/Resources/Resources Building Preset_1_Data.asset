@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1c76106069e8c943a11e1803376ca24, type: 3}
   m_Name: Resources Building Preset_1_Data
   m_EditorClassIdentifier: 
+  people: 10
+  power_use: 1

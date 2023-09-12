@@ -1,28 +1,24 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace GDD
 {
     public class SaveLoadUi : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI Save_Load_Text;
+        [SerializeField] private TextMeshProUGUI m_save_Load_Text;
+        [SerializeField] private Button m_button_new_savegame;
         [SerializeField] private GameObject m_Button_SaveLoad;
         [SerializeField] private GameObject m_Button_Delete;
         [SerializeField] private GameObject List_Content;
         [SerializeField] private GameObject InputUI;
         [SerializeField] private GameObject MessageBoxUI;
         [SerializeField] private Button BackButton;
+        [SerializeField] private Animator m_animator;
 
-        private bool IsOpenSaveUi = false;
+        private bool _isOpenSaveUi;
         private GameManager GM;
         private SaveManager SM;
         private Ui_Utilities uiUtilities;
@@ -35,32 +31,59 @@ namespace GDD
             read
         }
 
-        public void OnOpenUi(bool OpenSaveUi)
+        public bool IsOpenSaveUi
         {
-            IsOpenSaveUi = OpenSaveUi;
-            
+            get => _isOpenSaveUi;
+            set
+            {
+                print("Is Open : " + _isOpenSaveUi);
+                _isOpenSaveUi = value;
+            }
+        }
+
+        private void Start()
+        {
+            if (m_animator != null)
+            {
+                m_animator.SetBool("IsStart", true);
+            }
+
+            OnOpenUi();
+        }
+
+        public void OnOpenUi()
+        {
             GM = GameManager.Instance;
             SM = SaveManager.Instance;
 
+            
             if(GetComponent<Ui_Utilities>() == null)
                 gameObject.AddComponent<Ui_Utilities>();
             
             uiUtilities = GetComponent<Ui_Utilities>();
-            
-            BackButton.onClick.AddListener(() => { Destroy(gameObject); });
-            
-            if (OpenSaveUi)
+             /*
+            BackButton.onClick.AddListener(() =>
             {
-                Save_Load_Text.text = "Save Game";
                 
-                AddNewSaveGameSlot();
+                Destroy(gameObject);
+            });
+            */
+            
+             print("Is Open in game : " + _isOpenSaveUi);
+            if (_isOpenSaveUi)
+            {
+                m_save_Load_Text.text = "Save Game";
+                
+                m_button_new_savegame.onClick.AddListener(saveButton);
                 ListAllSaveGame(SelectModeSaveGame.overwrite);
+                print(m_save_Load_Text.text);
             }
             else
             {
-                Save_Load_Text.text = "Load Game";
+                m_button_new_savegame.transform.gameObject.SetActive(false);
+                m_save_Load_Text.text = "Load Game";
                 ListAllSaveGame(SelectModeSaveGame.read);
-                //print(OpenSaveUi);
+                print(m_save_Load_Text.text);
             }
         }
 
@@ -69,7 +92,11 @@ namespace GDD
             uiUtilities.UI_Elemant = m_Button_SaveLoad;
             uiUtilities.Add_Button_Element_To_List_View(List_Content, () =>
             {
-                uiUtilities.CreateInputUI(InputUI, arg0 =>
+                uiUtilities.canvasUI = InputUI;
+                uiUtilities.useCameraOverlay = true;
+                uiUtilities.planeDistance = 0.5f;
+                uiUtilities.order_in_layer = 12;
+                GameObject m_input_button = uiUtilities.CreateInputUI(arg0 =>
                     {
                         OnChangeSaveGameFile(arg0);
                     }, 
@@ -80,11 +107,19 @@ namespace GDD
                             Destroy(child.gameObject);
                         }
 
-                        AddNewSaveGameSlot();
+                        //AddNewSaveGameSlot();
                         SaveGame(NameSaveGame_File);
                         ListAllSaveGame(SelectModeSaveGame.overwrite);
-                    }, "Name your save file :", "Save Game", "Cancel");
-            }, "New Save Game", 0);
+                    }, (() => 
+                    {
+                        m_animator.SetBool("IsStart", true);
+                    }),"Name your save file :", "Save Game", "Cancel");
+                
+                m_animator.SetBool("IsEnd", false);
+                m_animator.SetBool("IsStart", false);
+                m_input_button.GetComponent<Animator>().SetBool("IsStart", true);
+                m_input_button.GetComponent<Back_UI_Button_Script>().UI_Back = transform.parent.gameObject;
+            }, "New Save Game");
         }
         private void ListAllSaveGame(SelectModeSaveGame savemode)
         {
@@ -100,28 +135,56 @@ namespace GDD
                     switch (savemode)
                     {
                         case SelectModeSaveGame.overwrite:
-                            uiUtilities.CreateMessageUI(MessageBoxUI,
+                            uiUtilities.canvasUI = MessageBoxUI;
+                            uiUtilities.useCameraOverlay = true;
+                            uiUtilities.planeDistance = 0.5f;
+                            uiUtilities.order_in_layer = 12;
+                            GameObject message_overwrite_ui = uiUtilities.CreateMessageUI(
                                 () =>
                                 { 
                                     SaveGame(textbutton);
-                                }, "Do you want to overwrite this game save file?", "Yes", "Cancel");
+                                }, (() =>
+                                {
+                                    m_animator.SetBool("IsStart", true);
+                                }),"Overwrite game save file?", "Do you want to overwrite this game save file?", "Yes", "Cancel");
+                            
+                            m_animator.SetBool("IsEnd", false);
+                            m_animator.SetBool("IsStart", false);
+                            message_overwrite_ui.GetComponent<Animator>().SetBool("IsStart", true);
+                            message_overwrite_ui.GetComponent<Back_UI_Button_Script>().UI_Back = transform.parent.gameObject;
                             break;
                         case SelectModeSaveGame.read:
-                            uiUtilities.CreateMessageUI(MessageBoxUI,
+                            uiUtilities.canvasUI = MessageBoxUI;
+                            uiUtilities.useCameraOverlay = true;
+                            uiUtilities.planeDistance = 0.5f;
+                            uiUtilities.order_in_layer = 12;
+                            GameObject message_read_ui = uiUtilities.CreateMessageUI(
                                 () =>
                                 { 
                                     LoadSave(textbutton);
-                                }, "Do you want to load a save game?", "Yes", "Cancel");
+                                }, (() =>
+                                {
+                                    m_animator.SetBool("IsStart", true);
+                                }), "Load this game save?","Do you want to load a save game?", "Yes", "Cancel");
+                            
+                            m_animator.SetBool("IsEnd", false);
+                            m_animator.SetBool("IsStart", false);
+                            message_read_ui.GetComponent<Animator>().SetBool("IsStart", true);
+                            message_read_ui.GetComponent<Back_UI_Button_Script>().UI_Back = transform.parent.gameObject;
                             break;
                         default:
                             break;
                     }
-                }, textbutton, 0);
+                }, textbutton);
                 
                 uiUtilities.UI_Elemant = m_Button_Delete;
                 uiUtilities.Add_Button_Element_To_List_View(m_button, () =>
                 {
-                    uiUtilities.CreateMessageUI(MessageBoxUI,
+                    uiUtilities.canvasUI = MessageBoxUI;
+                    uiUtilities.useCameraOverlay = true;
+                    uiUtilities.planeDistance = 0.5f;
+                    uiUtilities.order_in_layer = 12;
+                    GameObject message_del_ui = uiUtilities.CreateMessageUI(
                         () =>
                         { 
                             DeleteSaveGame(textbutton);
@@ -131,21 +194,60 @@ namespace GDD
                                 Destroy(child.gameObject);
                             }
                             
-                            if (IsOpenSaveUi)
+                            if (_isOpenSaveUi)
                             {
-                                Save_Load_Text.text = "Save Game";
+                                m_save_Load_Text.text = "Save Game";
                 
-                                AddNewSaveGameSlot();
+                                //AddNewSaveGameSlot();
                                 ListAllSaveGame(SelectModeSaveGame.overwrite);
                             }
                             else
                             {
-                                Save_Load_Text.text = "Load Game";
+                                m_save_Load_Text.text = "Load Game";
                                 ListAllSaveGame(SelectModeSaveGame.read);
                             }
-                        }, "Do you want to delete this game save file?", "Yes", "Cancel");
-                }, textbutton, 0);
+                        }, (() =>
+                        {
+                            
+                        }), "Delete game save file?", "Do you want to delete game save file?", "Yes", "Cancel");
+                    
+                    m_animator.SetBool("IsEnd", false);
+                    m_animator.SetBool("IsStart", false);
+                    message_del_ui.GetComponent<Animator>().SetBool("IsStart", true);
+                    message_del_ui.GetComponent<Back_UI_Button_Script>().UI_Back = transform.parent.gameObject;
+                }, textbutton);
             }
+        }
+
+        public void saveButton()
+        {
+            uiUtilities.canvasUI = InputUI;
+            uiUtilities.useCameraOverlay = true;
+            uiUtilities.planeDistance = 0.5f;
+            uiUtilities.order_in_layer = 12;
+            GameObject m_input_button = uiUtilities.CreateInputUI(arg0 =>
+                {
+                    OnChangeSaveGameFile(arg0);
+                }, 
+                () =>
+                {
+                    foreach (Transform child in List_Content.transform)
+                    {
+                        Destroy(child.gameObject);
+                    }
+
+                    //AddNewSaveGameSlot();
+                    SaveGame(NameSaveGame_File);
+                    ListAllSaveGame(SelectModeSaveGame.overwrite);
+                }, (() =>
+                {
+                    
+                }),"Name your save file :", "Save Game", "Cancel");
+            
+            m_animator.SetBool("IsEnd", false);
+            m_animator.SetBool("IsStart", false);
+            m_input_button.GetComponent<Animator>().SetBool("IsStart", true);
+            m_input_button.GetComponent<Back_UI_Button_Script>().UI_Back = transform.parent.gameObject;
         }
 
         public void LoadSave(string fileName)

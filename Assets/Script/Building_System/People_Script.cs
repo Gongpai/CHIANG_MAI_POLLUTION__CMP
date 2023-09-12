@@ -1,21 +1,40 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
+using UnityEngine;
 
 namespace GDD
 {
     public class People_Script : Building_System_Script
     {
+        [SerializeField] private People_Preset m_peoplePreset;
         private People_SaveData _peopleSaveData = new People_SaveData();
-        
-        public override void BeginStart()
+
+        public override void Resource_usage()
         {
             
+        }
+
+        public override void BeginStart()
+        {
+           
         }
 
         public override void EndStart()
         {
             
+        }
+        
+        public override void OnEnableBuilding()
+        {
+            print("ONNNNN");
+            RM.Set_Resources_Power_Use(m_peoplePreset.power_use);
+        }
+
+        public override void OnDisableBuilding()
+        {
+            print("OFFFFFF");
+            RM.Set_Resources_Power_Use(-m_peoplePreset.power_use);
         }
 
         protected override void OnUpdateSettingValue()
@@ -56,6 +75,11 @@ namespace GDD
         public override void OnEndRemove()
         {
            
+        }
+
+        public override void OnDestroyBuilding()
+        {
+            
         }
     }
 }

@@ -7,9 +7,10 @@ namespace GDD
 {
     public enum BuildingType : Byte
     {
-        Home_Small,
-        Home_Large,
-        Farm_Small,
-        Farm_Large
+        Generator,
+        Health,
+        People,
+        Resources,
+        Tech
     }
 }

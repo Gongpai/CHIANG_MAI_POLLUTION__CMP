@@ -5,9 +5,9 @@ namespace GDD
 {
     public interface IMenuInteractable
     {
-        public List<Quick_Menu_Data> GetInteractAction();
+        public List<Button_Action_Data> GetInteractAction();
         public void Interact();
         public void ChangeEnableBuilding();
-        public void RemoveBuilding();
+        public void OnRemoveBuilding(bool is_Cancel_Remove = false);
     }
 }

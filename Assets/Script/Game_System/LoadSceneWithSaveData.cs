@@ -67,22 +67,22 @@ namespace GDD
         {
             print("Runnnnnnnnnnnnnnnnnnnnnnnnnn");
             
-            for(int index = 0; index < GI.buildingSystemScript.Count; index++)
+            for(int index = 0; index < GI.buildingSaveDatas.Count; index++)
             {
                 spawnerObjectGrid.enabled = true;
-                GameObject buildingobject = Resources.Load(GI.buildingSystemScript[index].pathObject).GameObject();
+                GameObject buildingobject = Resources.Load(GI.buildingSaveDatas[index].pathObject).GameObject();
 
                 //print("Building OBJ : " + buildingobject.name + " | Spawner OBJ : " + (spawnerObjectGrid == null) + " | Building SS : " + GI.buildingSystemScript.Count);
-                spawnerObjectGrid.SpawnerWithLoadScene(GI.buildingSystemScript[index], buildingobject);
+                spawnerObjectGrid.SpawnerWithLoadScene(GI.buildingSaveDatas[index], buildingobject);
                 time += 1;
             }
             
-            for(int index = 0; index < GI.roadSystemScripts.Count; index++)
+            for(int index = 0; index < GI.RoadSaveDatas.Count; index++)
             {
                 spawnerRoadGrid.enabled = true;
-                GameObject roadobject = Resources.Load(GI.roadSystemScripts[index].path).GameObject();
-                print(roadobject.GetComponent<MeshFilter>().sharedMesh + " Index : " + index + " / count : " + (GI.roadSystemScripts.Count - 1));
-                spawnerRoadGrid.SpawnerWithLoadScene(GI.roadSystemScripts[index], roadobject);
+                GameObject roadobject = Resources.Load(GI.RoadSaveDatas[index].path).GameObject();
+                print(roadobject.GetComponent<MeshFilter>().sharedMesh + " Index : " + index + " / count : " + (GI.RoadSaveDatas.Count - 1));
+                spawnerRoadGrid.SpawnerWithLoadScene(GI.RoadSaveDatas[index], roadobject);
             }
             
             yield return 0;

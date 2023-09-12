@@ -15,6 +15,12 @@ namespace GDD
         public bool WorkOverTime;
         public int people;
         public int worker;
+        public float construction_In_Progress;
+        public float efficiency = 1;
+        public float re_userate_hour = 0;
+        public bool building_is_placed = false;
+        public bool construction_is_in_progress;
+        public bool building_is_remove;
         
         //For other child class
         public object saveDataObject;

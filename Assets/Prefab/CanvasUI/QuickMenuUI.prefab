@@ -105,7 +105,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24115b525636324428268e6c7a1000be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Size: {x: 0, y: 0}
+  m_Size: {x: 1, y: 1}
+  max_size: {x: 260, y: 100}
+  m_useSizeCanvasOtherElement: 0
+  m_CanvasOtherElement: {fileID: 0}
 --- !u!1 &3122731752811240043
 GameObject:
   m_ObjectHideFlags: 0

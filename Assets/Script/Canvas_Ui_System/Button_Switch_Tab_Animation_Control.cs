@@ -25,7 +25,7 @@ namespace GDD
 
         public void OnSwitchTab(int i_tab)
         {
-            if (m_button[i_tab].GetComponent<Canvas_Element_List>() != null && i_tab <= limit_tab_index)
+            if (m_button[i_tab].GetComponent<Canvas_Element_List>() != null)
                 m_button[i_tab].GetComponent<Canvas_Element_List>().animators[0].SetBool("Select_Button", true);
 
             for(int i = 0; i < m_button.Count; i++)

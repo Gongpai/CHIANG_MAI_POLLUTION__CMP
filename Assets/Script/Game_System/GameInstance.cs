@@ -6,8 +6,8 @@ namespace GDD
 {
     public class GameInstance
     {
-        public List<BuildingSaveData> buildingSystemScript = new List<BuildingSaveData>();
-        public List<RoadSaveData> roadSystemScripts = new List<RoadSaveData>();
+        public List<BuildingSaveData> buildingSaveDatas = new List<BuildingSaveData>();
+        public List<RoadSaveData> RoadSaveDatas = new List<RoadSaveData>();
         public Resources_Data resources = new Resources_Data(0, 0, 0, 0);
         
         public GameDateTime gameDateTime;
@@ -15,7 +15,7 @@ namespace GDD
         public bool IsObjectEmpty()
         {
             bool isEmpty = false;
-            isEmpty = buildingSystemScript.Count <= 0 && roadSystemScripts.Count <= 0;
+            isEmpty = buildingSaveDatas.Count <= 0 && RoadSaveDatas.Count <= 0;
             
             return isEmpty;
         }
@@ -50,12 +50,12 @@ namespace GDD
             return resources.food;
         }
         
-        public void set_power_resource(int resource)
+        public void set_power_resource(float resource)
         {
             resources.power = resource;
         }
         
-        public int get_power_resource()
+        public float get_power_resource()
         {
             return resources.power;
         }
@@ -101,7 +101,7 @@ namespace GDD
         public int rock = 0;
         public int tree = 0;
         public int food = 0;
-        public int power = 0;
+        public float power = 0;
 
         public Resources_Data(int _rock, int _tree, int _food, int _power)
         {

@@ -171,6 +171,7 @@ MonoBehaviour:
   m_buttons:
   - {fileID: 6605325785643553178}
   m_texts: []
+  m_tmp_inputfield: []
   m_images: []
   m_animators:
   - {fileID: 5012038020908879982}

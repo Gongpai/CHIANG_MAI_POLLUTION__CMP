@@ -51,13 +51,13 @@ namespace GDD
         public void SaveGame()
         {
             GameObject SLGUi = Instantiate(SaveLoadGameUi);
-            SLGUi.GetComponent<SaveLoadUi>().OnOpenUi(true);
+            SLGUi.GetComponent<SaveLoadUi>().IsOpenSaveUi = true;
         }
 
         public void LoadGame()
         {
             GameObject SLGUi = Instantiate(SaveLoadGameUi);
-            SLGUi.GetComponent<SaveLoadUi>().OnOpenUi(false);
+            SLGUi.GetComponent<SaveLoadUi>().IsOpenSaveUi = false;
         }
     }
 }

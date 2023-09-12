@@ -9,6 +9,7 @@ namespace GDD
 {
     public class Button_Control_Script : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        [SerializeField] private bool autoSetInstance; 
         private GameObject button_BG;
         private Button _button;
         private Animator _animator;
@@ -19,6 +20,7 @@ namespace GDD
         private GameObject CanvasSpawn = null;
         private Panel_UI_Script _panelUIScript;
         private bool isCreateCanvas;
+        private Ui_Utilities _uiUtilities;
 
         private bool Isp = false;
 
@@ -57,10 +59,28 @@ namespace GDD
             set { CanvasSpawn = value; }
         }
 
+        private void OnEnable()
+        {
+            if (autoSetInstance)
+            {
+                gameObject.AddComponent<BT_CS_Instance>();
+                GetComponent<BT_CS_Instance>().BT_CS = this;
+            }
+        }
+
         private void Start()
         {
             _button = GetComponent<Button>();
             _animator = GetComponent<Animator>();
+
+            if (GetComponent<Ui_Utilities>() == null)
+            {
+                _uiUtilities = gameObject.AddComponent<Ui_Utilities>();
+            }
+            else
+            {
+                _uiUtilities = GetComponent<Ui_Utilities>();
+            }
         }
 
         private void Update()
@@ -123,7 +143,11 @@ namespace GDD
             
             isCreateCanvas = true;
 
-            CanvasSpawn = Instantiate(Canvas_to_create);
+            _uiUtilities.canvasUI = Canvas_to_create;
+            _uiUtilities.order_in_layer = 0;
+            _uiUtilities.planeDistance = 0.5f;
+            CanvasSpawn = _uiUtilities.CreateUI();
+            
             if (CanvasSpawn.GetComponent<BT_CS_Instance>() == null)
             {
                 BT_CS_Instance _btCsInstance = CanvasSpawn.AddComponent<BT_CS_Instance>();
@@ -143,13 +167,15 @@ namespace GDD
             }
 
             canvas.sortingLayerName = "SortingLayerName";
-            canvas.sortingOrder = OrderLayer;
-            Canvas_to_create.GetComponent<Canvas>().planeDistance = planeDistance;
         }
 
-        public void OnDestroyCanvas(bool IsSetPanelActionMode = true)
+        public void OnDestroyCanvas(bool IsSetPanelActionMode = true, bool is_anim_other_param = false, string _name = null, bool is_start = false)
         {
             CanvasSpawn.GetComponent<Animator>().SetBool("IsStart", false);
+            
+            if(is_anim_other_param)
+                CanvasSpawn.GetComponent<Animator>().SetBool(_name, is_start);
+            
             isCreateCanvas = false;
             
             if(IsSetPanelActionMode)

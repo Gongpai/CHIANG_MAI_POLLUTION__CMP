@@ -9,6 +9,7 @@ namespace GDD
     {
         [SerializeField] private List<Button> m_buttons;
         [SerializeField] private List<TextMeshProUGUI> m_texts;
+        [SerializeField] private List<TMP_InputField> m_tmp_inputfield;
         [SerializeField] private List<Image> m_images;
         [SerializeField] private List<Animator> m_animators;
 
@@ -20,6 +21,11 @@ namespace GDD
         public List<TextMeshProUGUI> texts
         {
             get => m_texts;
+        }
+
+        public List<TMP_InputField> inputFields
+        {
+            get => m_tmp_inputfield;
         }
 
         public List<Image> image

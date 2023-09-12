@@ -385,6 +385,7 @@ MonoBehaviour:
   - {fileID: 302502016577883915}
   - {fileID: 1604262387756425327}
   - {fileID: 4988557672957623194}
+  limit_tab_index: -1
 --- !u!1 &4491808119444434386
 GameObject:
   m_ObjectHideFlags: 0

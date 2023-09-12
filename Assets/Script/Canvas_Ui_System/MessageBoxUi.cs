@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace GDD
 {
-    public class MessageBoxUi : MonoBehaviour
+    public class Message_BoxUi : MonoBehaviour
     {
         [SerializeField] private Button OKButton;
         [SerializeField] private Button CancelButton;

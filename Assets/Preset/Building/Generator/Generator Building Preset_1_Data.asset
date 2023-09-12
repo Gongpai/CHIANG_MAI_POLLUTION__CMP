@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ba40db15614b7c4d8414dbf1a19487b, type: 3}
   m_Name: Generator Building Preset_1_Data
   m_EditorClassIdentifier: 
-  power: 5
+  power: 15
+  wood_use: 0

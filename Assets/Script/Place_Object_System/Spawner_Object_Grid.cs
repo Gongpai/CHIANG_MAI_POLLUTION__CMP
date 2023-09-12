@@ -52,7 +52,7 @@ namespace GDD
                 IsSelectObject = true;
                 objectToSapwn = value;
                 Destroy(ObjectSpawn);
-                Snawner();
+                Spawner();
             }
         }
 
@@ -104,7 +104,7 @@ namespace GDD
             {
                 if (ObjectSpawn == null)
                 {
-                    Snawner();
+                    Spawner();
                 }
                 Object_Place_System(raycast_hit, hit_obj);
             }
@@ -119,27 +119,12 @@ namespace GDD
             
             if (hit_Obj && raycast_hit.Item2.collider.gameObject == Landscape)
             {
-                //print(" A : " + (raycast_hit.Item2.collider.gameObject == Landscape) + " | B : " + hit_Obj);
+                //pr'int(" A : " + (raycast_hit.Item2.collider.gameObject == Landscape) + " | B : " + hit_Obj);
                 //print("Place Mode");
                 _renderer.material.SetColor("_ColorHighLight", activate_Color);
                 if (Input.GetMouseButtonUp(0) && _renderer.material.GetColor("_ColorHighLight") == activate_Color)
                 {
-                    _renderer.material = _defaultMaterial;
-                    ObjectSpawn.GetComponent<Collider>().enabled = true;
-
-                    if (halfObjectSize.x > 0.5f)
-                    {
-                        GameObject Child_SpawnObject = new GameObject("Obstacle");
-                        Child_SpawnObject.transform.parent = ObjectSpawn.transform;
-                        Child_SpawnObject.transform.localPosition = Vector3.zero;
-                        Child_SpawnObject.layer = L_Obstacle;
-                        Child_SpawnObject.AddComponent<BoxCollider>();
-                        BoxCollider childboxCollider = Child_SpawnObject.GetComponent<BoxCollider>();
-                        childboxCollider.size = new Vector3(0.5f, 1, ((float)(Math.Floor(halfObjectSize.y) / 2) - halfObjectSize.x) * -1);
-                        print("H Size : " + halfObjectSize.x);
-                    }
-
-                    Snawner();
+                    Spawner();
                 }
             }
             else if (raycast_hit.Item2.collider != null &&
@@ -150,7 +135,7 @@ namespace GDD
                 if (Input.GetMouseButtonUp(1) && raycast_hit.Item2.collider.transform.parent == GameObjectLayer.transform)
                 {
                     //print("Remove");
-                    Destroy(raycast_hit.Item2.collider.gameObject);
+                    raycast_hit.Item2.collider.gameObject.GetComponent<Building_System_Script>().OnRemoveBuilding();
                 }
             }
 
@@ -294,40 +279,71 @@ namespace GDD
             return snapPos;
         }
 
-        public void Snawner()
+        public void Spawner()
         {
             GameObject Old_ObjectSpawn = ObjectSpawn;
+            bool can_place = true;
             
             if (Old_ObjectSpawn != null)
             {
-                Outliner old_outliner = Old_ObjectSpawn.AddComponent<Outliner>();
+                can_place = Old_ObjectSpawn.GetComponent<Building_System_Script>().OnPlaceBuilding();   
+            }
+
+            if (_renderer != null && can_place)
+            {
+                _renderer.material = _defaultMaterial;
+                Old_ObjectSpawn.GetComponent<Collider>().enabled = true;
+
+                Outliner old_outliner;
+
+                if (Old_ObjectSpawn.GetComponent<Outliner>() == null)
+                {
+                    old_outliner = Old_ObjectSpawn.AddComponent<Outliner>();
+                }
+                else
+                {
+                    old_outliner = Old_ObjectSpawn.GetComponent<Outliner>();
+                }
+
                 old_outliner.OutlineWidth = 1.05f;
                 old_outliner.enabled = false;
                 Old_ObjectSpawn.GetComponent<Building_System_Script>().name = objectData[0];
                 Old_ObjectSpawn.GetComponent<Building_System_Script>().path = objectData[1];
-                Old_ObjectSpawn.GetComponent<Building_System_Script>().OnPlaceBuilding();   
+                if (halfObjectSize.x > 0.5f )
+                {
+                    GameObject Child_SpawnObject = new GameObject("Obstacle");
+                    Child_SpawnObject.transform.parent = Old_ObjectSpawn.transform;
+                    Child_SpawnObject.transform.localPosition = Vector3.zero;
+                    Child_SpawnObject.layer = L_Obstacle;
+                    Child_SpawnObject.AddComponent<BoxCollider>();
+                    BoxCollider childboxCollider = Child_SpawnObject.GetComponent<BoxCollider>();
+                    childboxCollider.size = new Vector3(0.5f, 1, ((float)(Math.Floor(halfObjectSize.y) / 2) - halfObjectSize.x) * -1);
+                    print("H Size : " + halfObjectSize.x);
+                }
             }
             
-            ObjectSpawn = Instantiate(objectToSapwn, GameObjectLayer.transform);
-            //print(ObjectSpawn.name);
-            ObjectSpawn.GetComponent<Collider>().enabled = false;
-            ObjectSize = vector_one_decimal(ObjectSpawn.GetComponent<Renderer>().bounds.size);
-            print("Object Size : " + ObjectSize);
-            halfObjectSize = new Vector2(ObjectSize.x / 2, ObjectSize.z / 2);
-            _renderer = ObjectSpawn.GetComponent<Renderer>();
-            _defaultMaterial = _renderer.material;
-            _renderer.material = _highLightMaterial;
+            if (can_place)
+            {
+                ObjectSpawn = Instantiate(objectToSapwn, GameObjectLayer.transform);
+                //print(ObjectSpawn.name);
+                ObjectSpawn.GetComponent<Collider>().enabled = false;
+                ObjectSize = vector_one_decimal(ObjectSpawn.GetComponent<Renderer>().bounds.size);
+                print("Object Size : " + ObjectSize);
+                halfObjectSize = new Vector2(ObjectSize.x / 2, ObjectSize.z / 2);
+                _renderer = ObjectSpawn.GetComponent<Renderer>();
+                _defaultMaterial = _renderer.material;
+                _renderer.material = _highLightMaterial;
 
-            if (Old_ObjectSpawn == null || Old_ObjectSpawn.GetComponent<Building_System_Script>()._buildingType !=
-                ObjectToSapwn.GetComponent<Building_System_Script>()._buildingType)
-            {
-                ObjectRotation = 0;
+                if (Old_ObjectSpawn == null || Old_ObjectSpawn.GetComponent<Building_System_Script>()._buildingType !=
+                    ObjectToSapwn.GetComponent<Building_System_Script>()._buildingType)
+                {
+                    ObjectRotation = 0;
+                }
+                else
+                {
+                    ObjectSpawn.transform.rotation = Old_ObjectSpawn.transform.rotation;
+                }
             }
-            else
-            {
-                ObjectSpawn.transform.rotation = Old_ObjectSpawn.transform.rotation;
-            }
-                
         }
 
         public Vector3 vector_one_decimal(Vector3 vector_decimal)
@@ -351,7 +367,17 @@ namespace GDD
             }
             
             GameObject spawn = Instantiate(buildingObject, GameObjectLayer.transform);
-            Outliner old_outliner = spawn.AddComponent<Outliner>();
+            Outliner old_outliner;
+            
+            if (spawn.GetComponent<Outliner>() == null)
+            {
+                old_outliner = spawn.AddComponent<Outliner>();
+            }
+            else
+            {
+                old_outliner = spawn.GetComponent<Outliner>();
+            }
+            
             old_outliner.OutlineWidth = 1.05f;
             old_outliner.enabled = false;
             Building_System_Script buildingSystemScript = spawn.GetComponent<Building_System_Script>();

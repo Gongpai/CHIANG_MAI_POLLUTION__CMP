@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb1f3faedee1b3478a5b40f1aad264b, type: 3}
   m_Name: Generator Building Preset_1
   m_EditorClassIdentifier: 
-  name: Generator
+  name: Windmill
   level: 1
   max_people: 10
   max_worker: 10
+  wood_build: 50
+  rock_build: 50
+  time_construction: 6
+  resources_use_rate: 0
+  air_filtration_ability: 50
   m_building_setting:
   - setting_name: 
     buildingSettingType: 0

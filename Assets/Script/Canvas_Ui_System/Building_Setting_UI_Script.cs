@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -23,17 +24,25 @@ namespace GDD
         private List<Building_Setting_UI_Data> _buildingSettingUIDatas = new List<Building_Setting_UI_Data>();
         private List<Building_Information_UI_Data> _buildingStatusDatas = new List<Building_Information_UI_Data>();
         private List<Building_Information_UI_Data> _buildingInformationDatas = new List<Building_Information_UI_Data>();
+        private List<Button_Action_Data> _buttonActionDatas = new List<Button_Action_Data>();
         private string _buildingName_text;
         private Sprite _Building_Icon;
         private GameObject horizontal_group;
+        private Building_System_Script _buildingSystemScript;
         private Dictionary<GameObject, Building_Setting_UI_Data> List_Button_Centor_Panels = new();
+        private Dictionary<GameObject, Building_Information_UI_Data> list_status_elements = new();
+        private Dictionary<GameObject, Button_Action_Data> list_button_action_bottoms = new();
         private List<GameObject> List_Button_Bottom_Bars = new List<GameObject>();
         private Building_Information_Type buildingInformationType = Building_Information_Type.ShowStatus;
+        private Animator m_animator;
 
         public List<Building_Setting_UI_Data> buildingSettingUIDatas
         {
             get => _buildingSettingUIDatas;
-            set => _buildingSettingUIDatas = value;
+            set
+            {
+                _buildingSettingUIDatas = value;
+            }
         }
 
         public List<Building_Information_UI_Data> buildingStatusDatas
@@ -48,6 +57,12 @@ namespace GDD
             set => _buildingInformationDatas = value;
         }
 
+        public List<Button_Action_Data> BuildingButtonActionDatas
+        {
+            get => _buttonActionDatas;
+            set => _buttonActionDatas = value;
+        }
+        
         public string buildingName_text
         {
             get => _buildingName_text;
@@ -64,6 +79,8 @@ namespace GDD
         {
             m_BuildingNameText.text = _buildingName_text;
             m_BuildingIcon.sprite = _Building_Icon;
+            _buildingSystemScript = _buildingSettingUIDatas.ElementAt(0).buildingSystemScript;
+            m_animator = GetComponent<Animator>();
 
             m_Top_Bar_button_Panel.GetComponent<Button_Switch_Tab_Animation_Control>().OnSwitchTab(0);
             int i = 0;
@@ -74,12 +91,19 @@ namespace GDD
                 i++;
             }
 
+            CreateButtonBottomBar();
             Create_Building_Information();
         }
 
         private void Update()
         {
             Update_Button_Data();
+            UpdateInfomationData();
+
+            if (_buildingSystemScript == null)
+            {
+                m_animator.SetBool("IsStart", false);
+            }
         }
 
         private void Update_Button_Data()
@@ -89,6 +113,21 @@ namespace GDD
             {
                 Canvas_Element_List canvasElementList = button.Key.GetComponent<Canvas_Element_List>();
                 Building_System_Script buildingSystemScript = button.Value.buildingSystemScript;
+
+                if (buildingSystemScript.construction_in_progress)
+                {
+                    foreach (var sub_element_button in canvasElementList.buttons)
+                    {
+                        sub_element_button.interactable = false;
+                    }
+                }
+                else
+                {
+                    foreach (var sub_element_button in canvasElementList.buttons)
+                    {
+                        sub_element_button.interactable = true;
+                    }
+                }
                 
                 Tuple<float, float> building_value;
                 try
@@ -141,6 +180,44 @@ namespace GDD
                 }
 
                 i++;
+            }
+
+            int i_BAD = 0;
+            foreach (KeyValuePair<GameObject, Button_Action_Data> buttonActionData in list_button_action_bottoms)
+            {
+                Canvas_Element_List _element = buttonActionData.Key.GetComponent<Canvas_Element_List>();
+                _element.buttons[0].onClick.AddListener(_buildingSystemScript.GetUpdateButtonAction(i_BAD).unityAction);
+                _element.buttons[0].colors = _buildingSystemScript.GetUpdateButtonAction(i_BAD).colorBlock;
+                _element.image[0].sprite = _buildingSystemScript.GetUpdateButtonAction(i_BAD).sprite;
+
+                i_BAD++;
+            }
+        }
+
+        private void UpdateInfomationData()
+        {
+            int i = 0;
+            
+            foreach (var status in list_status_elements)
+            {
+                if (status.Value.buildingInformationType == Building_Information_Type.ShowStatus && status.Key != null)
+                {
+                    if (_buildingSystemScript.GetValueBuildingInformation(i).Item3 != null)
+                    {
+                        status.Key.SetActive(true);
+                        Canvas_Element_List elementList = status.Key.GetComponent<Canvas_Element_List>();
+                        elementList.texts[1].text = _buildingSystemScript.GetValueBuildingInformation(i).Item3;
+                        elementList.image[0].fillAmount =
+                            (float)_buildingSystemScript.GetValueBuildingInformation(i).Item1 /
+                            (float)_buildingSystemScript.GetValueBuildingInformation(i).Item2;
+                    }
+                    else
+                    {
+                        status.Key.SetActive(false);
+                    }
+
+                    i++;
+                }
             }
         }
 
@@ -267,6 +344,19 @@ namespace GDD
                     break;
             }
         }
+        
+        private void CreateButtonBottomBar()
+        {
+            foreach (Button_Action_Data buttonActionData in _buttonActionDatas)
+            {
+                GameObject button = Instantiate(m_Prefab_Button[2], m_Button_Bottom_Bar_List.transform);
+                list_button_action_bottoms.Add(button, buttonActionData);
+                Canvas_Element_List _element = button.GetComponent<Canvas_Element_List>();
+                _element.buttons[0].onClick.AddListener(buttonActionData.unityAction);
+                _element.buttons[0].colors = buttonActionData.colorBlock;
+                _element.image[0].sprite = buttonActionData.sprite;
+            }
+        }
 
         public void OnSwitchPageBuildingInformation(int InformationType)
         {
@@ -283,13 +373,19 @@ namespace GDD
             
             if (buildingInformationType == Building_Information_Type.ShowStatus)
             {
+                list_status_elements = new();
+                
                 foreach (var BSD_ui in _buildingStatusDatas)
                 {
                     GameObject element = Instantiate(m_Prefab_Building_information[0], m_Information_content.transform);
                     Canvas_Element_List elementList = element.GetComponent<Canvas_Element_List>();
+                    list_status_elements.Add(element, BSD_ui);
                     elementList.texts[0].text = BSD_ui.title;
                     elementList.texts[1].text = BSD_ui.text;
                     elementList.image[0].fillAmount = BSD_ui.value / BSD_ui.max_value;
+                    
+                    
+                    print("CSSSDS : " + element.name);
                 }
             }
             else
@@ -300,6 +396,8 @@ namespace GDD
                     Canvas_Element_List elementList = element.GetComponent<Canvas_Element_List>();
                     elementList.texts[0].text = BIF_ui.title;
                     elementList.texts[1].text = BIF_ui.text;
+                    
+                    print("aaassaasS : " + element.name);
                 }
             }
         }

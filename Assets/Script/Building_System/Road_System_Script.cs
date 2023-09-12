@@ -64,11 +64,18 @@ namespace GDD
             _roadSaveData.Start_Position = new Vector2D(StartPos.x, StartPos.y);
             _roadSaveData.End_Position = new Vector2D(EndPos.x, EndPos.y);
             OnEndPlace();
-            GM.gameInstance.roadSystemScripts.Add(_roadSaveData);
+            GM.gameInstance.RoadSaveDatas.Add(_roadSaveData);
         }
+
+        public abstract void Resource_usage();
+        public abstract void Power_usage();
 
         public abstract void BeginStart();
         public abstract void EndStart();
+
+        public abstract void OnEnableBuilding();
+        public abstract void OnDisableBuilding();
+
         public abstract void OnBeginPlace();
         public abstract void OnEndPlace();
         public abstract void OnBeginRemove();
@@ -76,7 +83,11 @@ namespace GDD
 
         private void OnDestroy()
         {
-            GM.gameInstance.roadSystemScripts.Remove(roadSaveData);
+            OnDestroyBuilding();
+            
+            GM.gameInstance.RoadSaveDatas.Remove(roadSaveData);
         }
+
+        public abstract void OnDestroyBuilding();
     }
 }

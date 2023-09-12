@@ -16,6 +16,11 @@ MonoBehaviour:
   level: 1
   max_people: 10
   max_worker: 10
+  wood_build: 80
+  rock_build: 120
+  time_construction: 12
+  resources_use_rate: 1
+  air_filtration_ability: 100
   m_building_setting:
   - setting_name: 
     buildingSettingType: 0

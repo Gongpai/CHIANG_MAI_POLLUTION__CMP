@@ -14,6 +14,8 @@ namespace GDD
         [SerializeField] private int index = 0;
 
         private Button_Control_Script BC_Script;
+        
+        
         private void Awake()
         {
             BC_Script = gameObject.AddComponent<Button_Control_Script>();

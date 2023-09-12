@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GDD
@@ -24,7 +25,7 @@ namespace GDD
             rock.texts[0].text = GI.resources.rock.ToString();
             tree.texts[0].text = GI.resources.tree.ToString();
             food.texts[0].text = GI.resources.food.ToString();
-            power.texts[0].text = GI.resources.power.ToString();
+            power.texts[0].text = Mathf.FloorToInt(GI.resources.power).ToString();
         }
     }
 }

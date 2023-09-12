@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb1f3faedee1b3478a5b40f1aad264b, type: 3}
   m_Name: People Building Preset_1
   m_EditorClassIdentifier: 
-  name: Generator
+  name: Tent
   level: 1
-  max_people: 5
-  max_worker: 5
+  max_people: 0
+  max_worker: 0
+  wood_build: 20
+  rock_build: 10
+  time_construction: 2
+  produce: 0
+  air_filtration_ability: 50
   m_building_setting:
   - setting_name: 
     buildingSettingType: 0
@@ -31,30 +36,6 @@ MonoBehaviour:
     text_disable: Speed Down
     icon_enable: {fileID: 21300000, guid: fa1114fafdcaa2448857d1b39097438f, type: 3}
     icon_disable: {fileID: 21300000, guid: fa1114fafdcaa2448857d1b39097438f, type: 3}
-    light_Color: {r: 1, g: 1, b: 1, a: 0}
-    dark_Color: {r: 1, g: 1, b: 1, a: 0}
-  - setting_name: 
-    buildingSettingType: 0
-    text_enable: Work Time 12h
-    text_disable: Work Time 8h
-    icon_enable: {fileID: 21300000, guid: 1dc95b3b016aa9847921464bc759a39e, type: 3}
-    icon_disable: {fileID: 21300000, guid: 1dc95b3b016aa9847921464bc759a39e, type: 3}
-    light_Color: {r: 1, g: 1, b: 1, a: 0}
-    dark_Color: {r: 1, g: 1, b: 1, a: 0}
-  - setting_name: 
-    buildingSettingType: 1
-    text_enable: People
-    text_disable: People
-    icon_enable: {fileID: 21300000, guid: 1dc95b3b016aa9847921464bc759a39e, type: 3}
-    icon_disable: {fileID: 21300000, guid: 1dc95b3b016aa9847921464bc759a39e, type: 3}
-    light_Color: {r: 1, g: 1, b: 1, a: 0}
-    dark_Color: {r: 1, g: 1, b: 1, a: 0}
-  - setting_name: 
-    buildingSettingType: 1
-    text_enable: Worker
-    text_disable: Worker
-    icon_enable: {fileID: 21300000, guid: 1dc95b3b016aa9847921464bc759a39e, type: 3}
-    icon_disable: {fileID: 21300000, guid: 1dc95b3b016aa9847921464bc759a39e, type: 3}
     light_Color: {r: 1, g: 1, b: 1, a: 0}
     dark_Color: {r: 1, g: 1, b: 1, a: 0}
   m_building_status: []
