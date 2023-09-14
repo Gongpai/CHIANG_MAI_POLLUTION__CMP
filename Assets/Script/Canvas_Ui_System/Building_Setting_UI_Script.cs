@@ -14,6 +14,7 @@ namespace GDD
         [SerializeField] private TextMeshProUGUI m_BuildingNameText;
         [SerializeField] private Image m_BuildingIcon;
         [SerializeField] private GameObject m_Button_Centor_Panel_List;
+        [SerializeField] private GameObject m_button_group_setting;
         [SerializeField] private GameObject m_Content_Bottom_Panel;
         [SerializeField] private GameObject m_Top_Bar_button_Panel;
         [SerializeField] private GameObject m_Button_Bottom_Bar_List;
@@ -36,6 +37,12 @@ namespace GDD
         private Building_Information_Type buildingInformationType = Building_Information_Type.ShowStatus;
         private Animator m_animator;
 
+        public Building_System_Script buildingSystemScript
+        {
+            get => _buildingSystemScript;
+            set => _buildingSystemScript = value;
+        }
+        
         public List<Building_Setting_UI_Data> buildingSettingUIDatas
         {
             get => _buildingSettingUIDatas;
@@ -62,6 +69,57 @@ namespace GDD
             get => _buttonActionDatas;
             set => _buttonActionDatas = value;
         }
+
+        public TextMeshProUGUI buildingNameText
+        {
+            set => m_BuildingNameText = value;
+        }
+
+        public Image buildingIcon
+        {
+            set => m_BuildingIcon = value;
+        }
+
+        public GameObject button_Centor_Panel_List
+        {
+            set => m_Button_Centor_Panel_List = value;
+        }
+
+        public GameObject button_group_setting
+        {
+            set => m_button_group_setting = value;
+        }
+        public GameObject content_Bottom_Panel
+        {
+            set => m_Content_Bottom_Panel = value;
+        }
+
+        public GameObject top_Bar_button_Panel
+        {
+            set => m_Top_Bar_button_Panel = value;
+        }
+
+        public GameObject button_Bottom_Bar_List
+        {
+            set => m_Button_Bottom_Bar_List = value;
+        }
+
+        public GameObject information_content
+        {
+            set => m_Information_content = value;
+        }
+
+        public List<GameObject> prefab_Button
+        {
+            get => m_Prefab_Button;
+            set => m_Prefab_Button = value;
+        }
+
+        public List<GameObject> prefab_Building_information
+        {
+            get => m_Prefab_Building_information;
+            set => m_Prefab_Building_information = value;
+        }
         
         public string buildingName_text
         {
@@ -79,7 +137,7 @@ namespace GDD
         {
             m_BuildingNameText.text = _buildingName_text;
             m_BuildingIcon.sprite = _Building_Icon;
-            _buildingSystemScript = _buildingSettingUIDatas.ElementAt(0).buildingSystemScript;
+
             m_animator = GetComponent<Animator>();
 
             m_Top_Bar_button_Panel.GetComponent<Button_Switch_Tab_Animation_Control>().OnSwitchTab(0);
@@ -108,115 +166,134 @@ namespace GDD
 
         private void Update_Button_Data()
         {
-            int i = 0;
-            foreach (var button in List_Button_Centor_Panels)
+            if (List_Button_Centor_Panels.Count > 0)
             {
-                Canvas_Element_List canvasElementList = button.Key.GetComponent<Canvas_Element_List>();
-                Building_System_Script buildingSystemScript = button.Value.buildingSystemScript;
+                int i = 0;
+                foreach (var button in List_Button_Centor_Panels)
+                {
+                    Canvas_Element_List canvasElementList = button.Key.GetComponent<Canvas_Element_List>();
+                    Building_System_Script buildingSystemScript = button.Value.buildingSystemScript;
 
-                if (buildingSystemScript.construction_in_progress)
-                {
-                    foreach (var sub_element_button in canvasElementList.buttons)
+                    if (buildingSystemScript.construction_in_progress)
                     {
-                        sub_element_button.interactable = false;
-                    }
-                }
-                else
-                {
-                    foreach (var sub_element_button in canvasElementList.buttons)
-                    {
-                        sub_element_button.interactable = true;
-                    }
-                }
-                
-                Tuple<float, float> building_value;
-                try
-                {
-                    building_value = buildingSystemScript.GetValueBuilingSetting(i).ConvertTo<Tuple<float, float>>();
-                }
-                catch (Exception e)
-                {
-                    building_value = new Tuple<float, float>(0, 0);
-                }
-                
-                if (button.Value.buildingSettingType == Building_Setting_Type.Centor_Button_with_progress)
-                {
-                    if (buildingSystemScript.active)
-                    {
-                        canvasElementList.texts[0].text = button.Value.text_enable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
-                        
-                        if(canvasElementList.animators[0] != null)
-                            canvasElementList.animators[0].SetBool("IsStart", true);
+                        foreach (var sub_element_button in canvasElementList.buttons)
+                        {
+                            sub_element_button.interactable = false;
+                        }
                     }
                     else
                     {
-                        canvasElementList.texts[0].text = button.Value.text_disable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
-                        
-                        if(canvasElementList.animators[0] != null)
-                            canvasElementList.animators[0].SetBool("IsStart", false);
+                        foreach (var sub_element_button in canvasElementList.buttons)
+                        {
+                            sub_element_button.interactable = true;
+                        }
                     }
-                    
-                    //print("Amount : " + ((float)buildingSystemScript.people / (float)buildingSystemScript.people_Max));
-                    canvasElementList.image[2].fillAmount = building_value.Item1 / building_value.Item2;
-                }
-                else if (button.Value.buildingSettingType == Building_Setting_Type.Centor_Button_only)
-                {
-                    if (buildingSystemScript.GetValueBuilingSetting(i).ConvertTo<bool>() && buildingSystemScript.active)
-                    {
-                        canvasElementList.texts[0].text = button.Value.text_enable;
-                        canvasElementList.image[0].sprite = button.Value.icon_enable;
-                        
-                        if(canvasElementList.animators[0] != null)
-                            canvasElementList.animators[0].SetBool("IsStart", true);
-                    }
-                    else
-                    {
-                        canvasElementList.texts[0].text = button.Value.text_disable;
-                        canvasElementList.image[0].sprite = button.Value.icon_disable;
-                        
-                        if(canvasElementList.animators[0] != null)
-                            canvasElementList.animators[0].SetBool("IsStart", false);
-                    }
-                }
 
-                i++;
+                    Tuple<float, float> building_value;
+                    try
+                    {
+                        building_value = buildingSystemScript.GetValueBuilingSetting(i)
+                            .ConvertTo<Tuple<float, float>>();
+                    }
+                    catch (Exception e)
+                    {
+                        building_value = new Tuple<float, float>(0, 0);
+                    }
+
+                    if (button.Value.buildingSettingType == Building_Setting_Type.Centor_Button_with_progress)
+                    {
+                        if (buildingSystemScript.active)
+                        {
+                            canvasElementList.texts[0].text = button.Value.text_enable + Environment.NewLine +
+                                                              building_value.Item1 + "/" + building_value.Item2;
+
+                            if (canvasElementList.animators[0] != null)
+                                canvasElementList.animators[0].SetBool("IsStart", true);
+                        }
+                        else
+                        {
+                            canvasElementList.texts[0].text = button.Value.text_disable + Environment.NewLine +
+                                                              building_value.Item1 + "/" + building_value.Item2;
+
+                            if (canvasElementList.animators[0] != null)
+                                canvasElementList.animators[0].SetBool("IsStart", false);
+                        }
+
+                        //print("Amount : " + ((float)buildingSystemScript.people / (float)buildingSystemScript.people_Max));
+                        canvasElementList.image[2].fillAmount = building_value.Item1 / building_value.Item2;
+                    }
+                    else if (button.Value.buildingSettingType == Building_Setting_Type.Centor_Button_only)
+                    {
+                        if (buildingSystemScript.GetValueBuilingSetting(i).ConvertTo<bool>() &&
+                            buildingSystemScript.active)
+                        {
+                            canvasElementList.texts[0].text = button.Value.text_enable;
+                            canvasElementList.image[0].sprite = button.Value.icon_enable;
+
+                            if (canvasElementList.animators[0] != null)
+                                canvasElementList.animators[0].SetBool("IsStart", true);
+                        }
+                        else
+                        {
+                            canvasElementList.texts[0].text = button.Value.text_disable;
+                            canvasElementList.image[0].sprite = button.Value.icon_disable;
+
+                            if (canvasElementList.animators[0] != null)
+                                canvasElementList.animators[0].SetBool("IsStart", false);
+                        }
+                    }
+
+                    i++;
+                }
+            }
+            else
+            {
+                m_button_group_setting.SetActive(false);
             }
 
-            int i_BAD = 0;
-            foreach (KeyValuePair<GameObject, Button_Action_Data> buttonActionData in list_button_action_bottoms)
+            if (list_button_action_bottoms.Count > 0)
             {
-                Canvas_Element_List _element = buttonActionData.Key.GetComponent<Canvas_Element_List>();
-                _element.buttons[0].onClick.AddListener(_buildingSystemScript.GetUpdateButtonAction(i_BAD).unityAction);
-                _element.buttons[0].colors = _buildingSystemScript.GetUpdateButtonAction(i_BAD).colorBlock;
-                _element.image[0].sprite = _buildingSystemScript.GetUpdateButtonAction(i_BAD).sprite;
+                int i_BAD = 0;
+                foreach (KeyValuePair<GameObject, Button_Action_Data> buttonActionData in list_button_action_bottoms)
+                {
+                    Canvas_Element_List _element = buttonActionData.Key.GetComponent<Canvas_Element_List>();
+                    _element.buttons[0].onClick
+                        .AddListener(_buildingSystemScript.GetUpdateButtonAction(i_BAD).unityAction);
+                    _element.buttons[0].colors = _buildingSystemScript.GetUpdateButtonAction(i_BAD).colorBlock;
+                    _element.image[0].sprite = _buildingSystemScript.GetUpdateButtonAction(i_BAD).sprite;
 
-                i_BAD++;
+                    i_BAD++;
+                }
             }
         }
 
         private void UpdateInfomationData()
         {
             int i = 0;
-            
-            foreach (var status in list_status_elements)
-            {
-                if (status.Value.buildingInformationType == Building_Information_Type.ShowStatus && status.Key != null)
-                {
-                    if (_buildingSystemScript.GetValueBuildingInformation(i).Item3 != null)
-                    {
-                        status.Key.SetActive(true);
-                        Canvas_Element_List elementList = status.Key.GetComponent<Canvas_Element_List>();
-                        elementList.texts[1].text = _buildingSystemScript.GetValueBuildingInformation(i).Item3;
-                        elementList.image[0].fillAmount =
-                            (float)_buildingSystemScript.GetValueBuildingInformation(i).Item1 /
-                            (float)_buildingSystemScript.GetValueBuildingInformation(i).Item2;
-                    }
-                    else
-                    {
-                        status.Key.SetActive(false);
-                    }
 
-                    i++;
+            if (list_status_elements.Count > 0 && _buildingSystemScript != null)
+            {
+                foreach (var status in list_status_elements)
+                {
+                    if (status.Value.buildingInformationType == Building_Information_Type.ShowStatus &&
+                        status.Key != null)
+                    {
+                        if (_buildingSystemScript.GetValueBuildingInformation(i).Item3 != null)
+                        {
+                            status.Key.SetActive(true);
+                            Canvas_Element_List elementList = status.Key.GetComponent<Canvas_Element_List>();
+                            elementList.texts[1].text = _buildingSystemScript.GetValueBuildingInformation(i).Item3;
+                            elementList.image[0].fillAmount =
+                                (float)_buildingSystemScript.GetValueBuildingInformation(i).Item1 /
+                                (float)_buildingSystemScript.GetValueBuildingInformation(i).Item2;
+                        }
+                        else
+                        {
+                            status.Key.SetActive(false);
+                        }
+
+                        i++;
+                    }
                 }
             }
         }

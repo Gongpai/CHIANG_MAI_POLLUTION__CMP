@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GDD
 {
@@ -8,6 +9,7 @@ namespace GDD
     {
         public List<BuildingSaveData> buildingSaveDatas = new List<BuildingSaveData>();
         public List<RoadSaveData> RoadSaveDatas = new List<RoadSaveData>();
+        public List<Static_Resource_SaveData> staticResourceSaveDatas = new List<Static_Resource_SaveData>();
         public Resources_Data resources = new Resources_Data(0, 0, 0, 0);
         
         public GameDateTime gameDateTime;
@@ -18,6 +20,30 @@ namespace GDD
             isEmpty = buildingSaveDatas.Count <= 0 && RoadSaveDatas.Count <= 0;
             
             return isEmpty;
+        }
+
+        public bool check_id_ResourceSaveData(int id)
+        {
+            bool is_check_id = false;
+            Parallel.ForEach(staticResourceSaveDatas, resourceSaveData =>
+            {
+                if(resourceSaveData.id == id)
+                    is_check_id = true;
+            });
+
+            return is_check_id;
+        }
+
+        public Static_Resource_SaveData Get_Static_Resource_SaveData(int id)
+        {
+            int i = 0;
+            Parallel.ForEach(staticResourceSaveDatas, (resourceSaveData, state, index) =>
+            {
+                if (resourceSaveData.id == id)
+                    i = (int)index;
+            });
+
+            return staticResourceSaveDatas[i];
         }
 
         public void set_rock_resource(int resource)

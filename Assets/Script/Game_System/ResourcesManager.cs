@@ -58,6 +58,18 @@ namespace GDD
                 return true;
             }
         }
+        
+        public bool Can_Set_Resources_Tree(int tree)
+        {
+            if (GI.get_tree_resource() + tree <= 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
         public int Get_Resources_Tree()
         {
@@ -100,15 +112,17 @@ namespace GDD
             return GI.get_food_resource();
         }
 
-        public void Set_Resources_Power_Use(float power_use)
+        public bool Set_Resources_Power_Use(float power_use)
         {
             if (sum_power_use + power_use > 0)
             {
                 sum_power_use += power_use;
+                return true;
             }
             else
             {
                 sum_power_use = 0;
+                return false;
             }
         }
         

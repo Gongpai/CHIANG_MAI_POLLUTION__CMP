@@ -61,8 +61,8 @@ namespace GDD
         
         private void OnGUI()
         {
-            string s = "Building count : " + gameInstance.buildingSaveDatas.Count + " | Road count : " + gameInstance.RoadSaveDatas.Count;
-            GUI.Label(new Rect(new Vector2(5, 40), new Vector2(350, 30)), "Save Data : " + s);
+            string s = "Building count : " + gameInstance.buildingSaveDatas.Count + " | Road count : " + gameInstance.RoadSaveDatas.Count + " | Resource count : " + gameInstance.staticResourceSaveDatas.Count;
+            GUI.Label(new Rect(new Vector2(5, 40), new Vector2(450, 30)), "Save Data : " + s);
         }
         
         public void OnGameLoad()

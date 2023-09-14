@@ -19,7 +19,7 @@ namespace GDD
         protected TimeManager TM;
         protected ResourcesManager RM;
         protected Dictionary<UnityAction<object>, Building_Setting_Data> _actions;
-        protected List<UnityAction<object>> add_action;
+        protected List<UnityAction<object>> add_action = new List<UnityAction<object>>();
         protected List<Button_Action_Data> _buttonActionDatas = new List<Button_Action_Data>();
         protected Building_info_struct _information_Datas = new Building_info_struct();
         protected List<object> list_setting_values = new List<object>();
@@ -27,6 +27,7 @@ namespace GDD
         protected List<Building_Information_Data> BI_datas = new List<Building_Information_Data>();
         protected GameObject construction_zone_pivot;
         protected bool is_addSettingother = true;
+        protected bool is_cant_use_resource;
         
         private bool is_set_enable = false;
         private bool is_set_disable = false;
@@ -200,30 +201,57 @@ namespace GDD
         {
             GM = GameManager.Instance;
             TM = TimeManager.Instance;
-            RM = ResourcesManager.Instance;
+            RM = ResourcesManager.Instance; 
             
+            Create_button_action_data_for_building();
+        }
+
+        protected virtual void Update()
+        {
+            //print("Is Active : " + _buildingSaveData.Building_active);
+            
+            OnProgress();
+
+            buildingSaveData.efficiency = ((float)buildingSaveData.people + (float)buildingSaveData.worker) / ((float)m_Preset.max_people + (float)m_Preset.max_worker);
+
+            ResourceUsageRate();
+
+            Building_active();
+        }
+
+        private void Create_button_action_data_for_building()
+        {
             //Building info
             BI_datas = new List<Building_Information_Data>();
-            
+
             foreach (var BI in m_Preset.m_building_information)
             {
-                BI_datas.Add(new Building_Information_Data(BI.title, BI.text, Building_Information_Type.ShowInformation));
+                BI_datas.Add(
+                    new Building_Information_Data(BI.title, BI.text, Building_Information_Type.ShowInformation));
             }
+
             _information_Datas.informations = BI_datas;
-               
+
             //Building setting
             add_action = new List<UnityAction<object>>();
             add_action.Add(SetActiveBuilding);
-            
+
+
+
             //Building Status
             BI_datas = new List<Building_Information_Data>();
-            BI_datas.Add(new Building_Information_Data("สิ่งก่อสร้างไม่พร้อมใช้งาน", "กำลังก่อสร้างเสร็จสิ้นแล้ว 0%", Building_Information_Type.ShowStatus));
-            
+            BI_datas.Add(new Building_Information_Data("สิ่งก่อสร้างไม่พร้อมใช้งาน", "กำลังก่อสร้างเสร็จสิ้นแล้ว 0%",
+                Building_Information_Type.ShowStatus));
+
+
             //Building_setting_danger
             _buttonActionDatas = new List<Button_Action_Data>();
-            _buttonActionDatas.Add(new Button_Action_Data("remove", Resources.Load<Sprite>("Icon/remove_home"), () => { OnRemoveBuilding();}));
-            _buttonActionDatas.Add(new Button_Action_Data("null", Resources.Load<Sprite>("Icon/24H"), () => { print("24HHHHHH");}));
-            
+            _buttonActionDatas.Add(new Button_Action_Data("remove", Resources.Load<Sprite>("Icon/remove_home"),
+                () => { OnRemoveBuilding(); }));
+            _buttonActionDatas.Add(new Button_Action_Data("null", Resources.Load<Sprite>("Icon/24H"),
+                () => { print("24HHHHHH"); }));
+
+
             BeginStart();
             _information_Datas.status = BI_datas;
 
@@ -238,25 +266,13 @@ namespace GDD
             EndStart();
 
             _actions = new();
-            print( "Is NoooottttNuuuuulllllllllll : " + m_Preset.m_building_setting != null);
+            print("Is NoooottttNuuuuulllllllllll : " + m_Preset.m_building_setting != null);
             int i = 0;
             foreach (var buildingSetting in m_Preset.m_building_setting)
             {
                 _actions.Add(add_action[i], buildingSetting);
                 i++;
             }
-             
-        }
-
-        protected virtual void Update()
-        {
-            OnProgress();
-
-            buildingSaveData.efficiency = ((float)buildingSaveData.people + (float)buildingSaveData.worker) / ((float)m_Preset.max_people + (float)m_Preset.max_worker);
-
-            ResourceUsageRate();
-
-            Building_active();
         }
 
         private void Building_active()
@@ -412,11 +428,13 @@ namespace GDD
             _colorBlock.fadeDuration = 0.1f;
             if (!is_remove_building)
             {
-                _buttonActionDatas.Add(new Button_Action_Data("remove", Resources.Load<Sprite>("Icon/remove_home"), () => { OnRemoveBuilding(); }, _colorBlock));
+                _buttonActionDatas.Add(new Button_Action_Data("remove", Resources.Load<Sprite>("Icon/remove_home"),
+                    () => { OnRemoveBuilding(); }, _colorBlock));
             }
             else
             {
-                _buttonActionDatas.Add(new Button_Action_Data("cancel_remove", Resources.Load<Sprite>("Icon/construction"), () => { OnRemoveBuilding(true); }, _colorBlock));
+                _buttonActionDatas.Add(new Button_Action_Data("cancel_remove",
+                    Resources.Load<Sprite>("Icon/construction"), () => { OnRemoveBuilding(true); }, _colorBlock));
             }
 
             //Over Time 24H
@@ -425,15 +443,17 @@ namespace GDD
             _colorBlock.pressedColor = new Color(255, 255, 0, 175);
             _colorBlock.selectedColor = new Color(175, 175, 0, 240);
             _colorBlock.disabledColor = new Color(0, 0, 0, 0);
-            _buttonActionDatas.Add(new Button_Action_Data("null", Resources.Load<Sprite>("Icon/24H"), () => { print("24HHHHHH"); }, _colorBlock));
-            
+            _buttonActionDatas.Add(new Button_Action_Data("null", Resources.Load<Sprite>("Icon/24H"),
+                () => { print("24HHHHHH"); }, _colorBlock));
+
             return _buttonActionDatas[index];
         }
-        
+
         public object GetValueBuilingSetting(int index)
         {
             list_setting_values = new List<object>();
             list_setting_values.Add(active);
+
             OnUpdateSettingValue();
 
             if (is_addSettingother)
@@ -481,11 +501,11 @@ namespace GDD
             {
                 m_construction_progress.SetActive(false);
                 is_construction_in_progress = false;
-                
-                if(construction_zone_pivot != null && construction_zone_pivot.activeSelf)
+
+                if (construction_zone_pivot != null && construction_zone_pivot.activeSelf)
                     switch_mesh_construction_progress(false);
-                
-                if(is_remove_building)
+
+                if (is_remove_building)
                     OnRemoveBuilding();
             }
         }
@@ -499,14 +519,18 @@ namespace GDD
                 string construction_in_progress_text;
                 if (!is_remove_building)
                 {
-                    construction_in_progress_text = "กำลังก่อสร้างเสร็จสิ้นแล้ว " + (int)(construction_progess_percent * 100) + "%";
+                    construction_in_progress_text = "กำลังก่อสร้างเสร็จสิ้นแล้ว " +
+                                                    (int)(construction_progess_percent * 100) + "%";
                 }
                 else
                 {
-                    construction_in_progress_text = "กำลังรื้อถอนเสร็จสิ้นแล้ว " + (int)(100 - (construction_progess_percent * 100)) + "%";
+                    construction_in_progress_text = "กำลังรื้อถอนเสร็จสิ้นแล้ว " +
+                                                    (int)(100 - (construction_progess_percent * 100)) + "%";
                 }
-                
-                list_information_values.Add(new Tuple<object, object, string>((buildingSaveData.construction_In_Progress / 3600), m_Preset.time_construction, construction_in_progress_text));
+
+                list_information_values.Add(new Tuple<object, object, string>(
+                    (buildingSaveData.construction_In_Progress / 3600), m_Preset.time_construction,
+                    construction_in_progress_text));
             }
             else
             {
@@ -516,6 +540,7 @@ namespace GDD
             OnUpdateInformationValue();
             //print("List Info Value : " + list_information_values[index]);
             return list_information_values[index];
+
         }
 
         protected abstract void OnUpdateSettingValue();
@@ -598,7 +623,7 @@ namespace GDD
             }
             else
             {
-                if(is_set_building_active)
+                if(is_set_building_active && construction_progess_percent > 0.5)
                     buildingSaveData.Building_active = true;
                 
                 GetComponent<MeshRenderer>().enabled = true;

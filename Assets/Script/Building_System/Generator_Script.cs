@@ -27,9 +27,24 @@ namespace GDD
             }
         }
 
+        protected override void ResourceUsageRate()
+        {
+            base.ResourceUsageRate();
+            
+            if (RM.Can_Set_Resources_Tree(-Mathf.CeilToInt(m_generatorPreset.wood_use * _buildingSaveData.efficiency)) && is_cant_use_resource)
+            {
+                _buildingSaveData.Building_active = true;
+                is_cant_use_resource = false;
+            }
+        }
+
         public override void Resource_usage()
         {
-            RM.Set_Resources_Tree(-Mathf.CeilToInt(m_generatorPreset.wood_use * _buildingSaveData.efficiency));
+            if (!RM.Set_Resources_Tree(-Mathf.CeilToInt(m_generatorPreset.wood_use * _buildingSaveData.efficiency)) && _buildingSaveData.Building_active)
+            {
+                _buildingSaveData.Building_active = false;
+                is_cant_use_resource = true;
+            }
         }
 
         public void SetEnableOverDrive(object obj)
