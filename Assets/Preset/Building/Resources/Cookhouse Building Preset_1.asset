@@ -16,12 +16,21 @@ MonoBehaviour:
   level: 1
   max_people: 10
   max_worker: 10
-  wood_build: 0
-  rock_build: 0
-  time_construction: 0
-  resources_use_rate: 0
-  air_filtration_ability: 0
+  wood_build: 20
+  rock_build: 30
+  time_construction: 4
+  power_use: 1
+  resources_use_rate: 1
+  air_filtration_ability: 100
   m_building_setting:
+  - setting_name: 
+    buildingSettingType: 0
+    text_enable: On
+    text_disable: Off
+    icon_enable: {fileID: 21300000, guid: 7f2becb7afcf7ab478181cc6e3744691, type: 3}
+    icon_disable: {fileID: 21300000, guid: 17361db32389f5a44987e0f128cbc1bf, type: 3}
+    light_Color: {r: 1, g: 1, b: 1, a: 0}
+    dark_Color: {r: 1, g: 1, b: 1, a: 0}
   - setting_name: 
     buildingSettingType: 0
     text_enable: Work Time 12h
@@ -47,8 +56,10 @@ MonoBehaviour:
     light_Color: {r: 1, g: 1, b: 1, a: 0}
     dark_Color: {r: 1, g: 1, b: 1, a: 0}
   m_building_status:
-  - title: "\u0E17\u0E23\u0E31\u0E1E\u0E22\u0E32\u0E01\u0E23 - \u0E44\u0E21\u0E49"
-    text: "\u0E17\u0E23\u0E31\u0E1E\u0E22\u0E32\u0E01\u0E23\u0E17\u0E35\u0E48\u0E40\u0E2B\u0E25\u0E37\u0E2D\u0E43\u0E19\u0E02\u0E13\u0E30\u0E19\u0E35\u0E49
+  - title: "\u0E2A\u0E34\u0E48\u0E07\u0E01\u0E48\u0E2D\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E44\u0E21\u0E48\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19"
+    text: "\u0E44\u0E21\u0E48\u0E2A\u0E32\u0E21\u0E32\u0E23\u0E16\u0E40\u0E1B\u0E34\u0E14\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E44\u0E14\u0E49\u0E40\u0E19\u0E37\u0E48\u0E2D\u0E07\u0E08\u0E32\u0E01\u0E44\u0E1F\u0E1F\u0E49\u0E32\u0E44\u0E21\u0E48\u0E40\u0E1E\u0E35\u0E22\u0E07\u0E1E\u0E2D\u0E15\u0E48\u0E2D\u0E01\u0E32\u0E23\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19"
+  - title: "\u0E1B\u0E23\u0E30\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E20\u0E32\u0E1E"
+    text: "\u0E1B\u0E23\u0E30\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E20\u0E32\u0E1E\u0E01\u0E32\u0E23\u0E1C\u0E25\u0E34\u0E14\u0E2D\u0E32\u0E2B\u0E32\u0E23\u0E43\u0E19\u0E02\u0E13\u0E30\u0E19\u0E35\u0E49
       : "
   m_building_information:
   - title: Resources Building 1

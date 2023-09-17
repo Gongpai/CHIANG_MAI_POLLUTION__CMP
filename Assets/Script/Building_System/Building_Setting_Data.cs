@@ -59,12 +59,14 @@ namespace GDD
         public string title;
         public string text;
         public Building_Information_Type buildingInformationType;
+        public Building_Show_mode buildingShowMode;
         
-        public Building_Information_Data(string _title, string _text, Building_Information_Type _buildingInformationType)
+        public Building_Information_Data(string _title, string _text, Building_Information_Type _buildingInformationType, Building_Show_mode _buildingShowMode)
         {
             title = _title;
             text = _text;
             buildingInformationType = _buildingInformationType;
+            buildingShowMode = _buildingShowMode;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace GDD
         {
             get
             {
-                if (_buildingSaveData.Building_active)
+                if (building_is_active)
                 {
                     return m_generatorPreset.power * buildingSaveData.efficiency;
                 }
@@ -31,20 +31,30 @@ namespace GDD
         {
             base.ResourceUsageRate();
             
-            if (RM.Can_Set_Resources_Tree(-Mathf.CeilToInt(m_generatorPreset.wood_use * _buildingSaveData.efficiency)) && is_cant_use_resource)
+            if (Check_Resource() && is_cant_use_resource)
             {
-                _buildingSaveData.Building_active = true;
+                disable = false;
                 is_cant_use_resource = false;
             }
         }
 
         public override void Resource_usage()
         {
-            if (!RM.Set_Resources_Tree(-Mathf.CeilToInt(m_generatorPreset.wood_use * _buildingSaveData.efficiency)) && _buildingSaveData.Building_active)
+            if (!Check_Resource() && building_is_active)
             {
-                _buildingSaveData.Building_active = false;
+                disable = true;
                 is_cant_use_resource = true;
             }
+            else
+            {
+                RM.Set_Resources_Tree(-Mathf.CeilToInt(m_generatorPreset.wood_use * _buildingSaveData.efficiency));
+            }
+        }
+
+        protected override bool Check_Resource()
+        {
+            //print("Is Enable : " + disable + " Can Tree : " + RM.Can_Set_Resources_Tree(-Mathf.CeilToInt(m_generatorPreset.wood_use * _buildingSaveData.efficiency)) + " TREE CURRENT : " + GM.gameInstance.get_tree_resource());
+            return RM.Can_Set_Resources_Tree(-Mathf.CeilToInt(m_generatorPreset.wood_use * _buildingSaveData.efficiency));
         }
 
         public void SetEnableOverDrive(object obj)
@@ -65,7 +75,9 @@ namespace GDD
         public override void BeginStart()
         {
             add_action.Add(SetEnableOverDrive);
-            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[0].title, m_Preset.m_building_status[0].text + " " + power_produce + "/" + m_generatorPreset.power + " kw", Building_Information_Type.ShowStatus));
+            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[0].title, m_Preset.m_building_status[0].text, Building_Information_Type.ShowStatus, Building_Show_mode.TextOnly));
+            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[1].title, m_Preset.m_building_status[1].text + " " + power_produce + "/" + m_generatorPreset.power + " kw", Building_Information_Type.ShowStatus, Building_Show_mode.TextWith_ProgressBar));
+            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[2].title, m_Preset.m_building_status[2].text + " " + _buildingSaveData.efficiency, Building_Information_Type.ShowStatus, Building_Show_mode.TextWith_ProgressBar));
         }
 
         public override void EndStart()
@@ -80,7 +92,9 @@ namespace GDD
 
         protected override void OnUpdateInformationValue()
         {
-            list_information_values.Add(new Tuple<object, object, string>(power_produce, m_generatorPreset.power, m_Preset.m_building_status[0].text + " " + power_produce + "/" + m_generatorPreset.power + " kw"));
+            list_information_values.Add(new Tuple<object, object, string>(active && is_cant_use_resource, null, m_Preset.m_building_status[0].text));
+            list_information_values.Add(new Tuple<object, object, string>(power_produce, m_generatorPreset.power, m_Preset.m_building_status[1].text + " " + power_produce + "/" + m_generatorPreset.power + " kw"));
+            list_information_values.Add(new Tuple<object, object, string>(buildingSaveData.efficiency, 1.0f, m_Preset.m_building_status[2].text+ " " + (_buildingSaveData.efficiency * 100) + "%"));
         }
 
         public override void OnBeginPlace()

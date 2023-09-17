@@ -1,11 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
+using UnityEngine;
 
 namespace GDD
 {
     public class Health_Script : Building_System_Script
     {
+        [SerializeField] private Health_Preset m_healthPreset;
         private Health_SaveData _healthSaveData = new Health_SaveData();
 
         public override void Resource_usage()
@@ -13,9 +16,14 @@ namespace GDD
             
         }
 
+        protected override bool Check_Resource()
+        {
+            return false;
+        }
+        
         public override void BeginStart()
         {
-            
+            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[0].title, m_Preset.m_building_status[0].text, Building_Information_Type.ShowStatus, Building_Show_mode.TextOnly));
         }
 
         public override void EndStart()
@@ -25,7 +33,7 @@ namespace GDD
         
         public override void OnEnableBuilding()
         {
-            
+            print("ONNNNN");
         }
 
         public override void OnDisableBuilding()
@@ -40,7 +48,7 @@ namespace GDD
 
         protected override void OnUpdateInformationValue()
         {
-            
+            list_information_values.Add(new Tuple<object, object, string>(active && !is_cant_use_power, null, m_Preset.m_building_status[0].text));
         }
 
         public override void OnBeginPlace()

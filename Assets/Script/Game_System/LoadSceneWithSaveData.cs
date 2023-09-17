@@ -81,7 +81,8 @@ namespace GDD
             {
                 spawnerRoadGrid.enabled = true;
                 GameObject roadobject = Resources.Load(GI.RoadSaveDatas[index].path).GameObject();
-                print(roadobject.GetComponent<MeshFilter>().sharedMesh + " Index : " + index + " / count : " + (GI.RoadSaveDatas.Count - 1));
+                
+                //print(roadobject.GetComponent<MeshFilter>().sharedMesh + " Index : " + index + " / count : " + (GI.RoadSaveDatas.Count - 1));
                 spawnerRoadGrid.SpawnerWithLoadScene(GI.RoadSaveDatas[index], roadobject);
             }
             

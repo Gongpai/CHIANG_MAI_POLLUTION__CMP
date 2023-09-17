@@ -19,8 +19,9 @@ MonoBehaviour:
   wood_build: 50
   rock_build: 80
   time_construction: 4
-  produce: 0
-  air_filtration_ability: 150
+  power_use: 3
+  resources_use_rate: 0
+  air_filtration_ability: 300
   m_building_setting:
   - setting_name: 
     buildingSettingType: 0
@@ -38,7 +39,9 @@ MonoBehaviour:
     icon_disable: {fileID: 21300000, guid: 1dc95b3b016aa9847921464bc759a39e, type: 3}
     light_Color: {r: 1, g: 1, b: 1, a: 0}
     dark_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_building_status: []
+  m_building_status:
+  - title: "\u0E2A\u0E34\u0E48\u0E07\u0E01\u0E48\u0E2D\u0E2A\u0E23\u0E49\u0E32\u0E07\u0E44\u0E21\u0E48\u0E1E\u0E23\u0E49\u0E2D\u0E21\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19"
+    text: "\u0E44\u0E21\u0E48\u0E2A\u0E32\u0E21\u0E32\u0E23\u0E16\u0E40\u0E1B\u0E34\u0E14\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E44\u0E14\u0E49\u0E40\u0E19\u0E37\u0E48\u0E2D\u0E07\u0E08\u0E32\u0E01\u0E44\u0E1F\u0E1F\u0E49\u0E32\u0E44\u0E21\u0E48\u0E40\u0E1E\u0E35\u0E22\u0E07\u0E1E\u0E2D\u0E15\u0E48\u0E2D\u0E01\u0E32\u0E23\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19"
   m_building_information:
   - title: Tech Building
     text: '- test

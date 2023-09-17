@@ -21,6 +21,7 @@ namespace GDD
         [SerializeField] private GameObject Start_Y;
         private GameObject start_point;
         private GameObject end_point;
+        private GameObject m_road_prefab;
         private Mesh m_roadMesh;
         private RoadLineMesh _roadLineMesh;
         private bool IsNewRoad = false;
@@ -60,6 +61,26 @@ namespace GDD
         {
             get { return _roadLineMesh; }
             set { _roadLineMesh = value; }
+        }
+
+        public GameObject road_prefab
+        {
+            get => m_road_prefab;
+            set
+            {
+                m_roadMesh = value.GetComponent<MeshFilter>().sharedMesh;
+                m_road_prefab = value;
+            }
+        }
+
+        public GameObject start_Point_Object
+        {
+            get => start_point;
+        }
+
+        public GameObject end_Point_Object
+        {
+            get => end_point;
         }
         
         public bool isSelectObject
@@ -125,6 +146,7 @@ namespace GDD
             hitdata.Add(new RaycastHit());
             hitdata.Add(new RaycastHit());
             hitdata.Add(new RaycastHit());
+            hitdata.Add(new RaycastHit());
         }
 
         private void Update()
@@ -152,11 +174,11 @@ namespace GDD
             Endlocation = mousePosGrid;
             landscapePos = _setPositionShowGirdUseMouse.gameObject.transform.position.y;
             end_point.transform.position = (new Vector3(Endlocation.x, landscapePos, Endlocation.y));
-            
+            /*
             foreach (var hit in hitdata)
             {
                 Debug.DrawLine(hit.normal, hit.point, Color.yellow);
-            }
+            }*/
             
             if (!PointerOverUIElement.OnPointerOverUIElement())
             {
@@ -279,8 +301,13 @@ namespace GDD
             
             L_Road = LayerMask.NameToLayer("Road_Object");
             GameObject spawn = _roadLineMesh.GenerateRoad(roadMesh, L_Road,  StartPos, EndPos);
-            spawn.GetComponent<Renderer>().sharedMaterial = _roadLineMesh.defaultMaterial;
             Road_System_Script roadSystemScript = spawn.GetComponent<Road_System_Script>();
+            Road_System_Script _roadSystemScript_prefab_obj = roadObject.GetComponent<Road_System_Script>();
+            roadSystemScript.road_Preset = _roadSystemScript_prefab_obj.road_Preset;
+            roadSystemScript.road_material = _roadSystemScript_prefab_obj.road_material;
+            roadSystemScript.construction_Road_material = _roadSystemScript_prefab_obj.construction_Road_material;
+            roadSystemScript.construction_Progress_Material = _roadSystemScript_prefab_obj.construction_Progress_Material;
+            roadSystemScript.remove_progress_material = _roadSystemScript_prefab_obj.remove_progress_material;
             
             //print(buildingSaveData.Position.X + " | " + buildingSaveData.Position.Y + " | " + buildingSaveData.Position.Z);
             roadSystemScript.roadSaveData = roadSaveData;
@@ -419,7 +446,8 @@ namespace GDD
                 if (isDestroyDistanceZero && roadSystemScript.transform.gameObject != null || isDestroySeparated)
                 {
                     print("Fucking Deadddddddddddddddddddd");
-                    Destroy(roadSystemScript.transform.parent.gameObject);
+                    //roadSystemScript.transform.position += new Vector3(0, 1, 0);
+                    roadSystemScript.OnRemoveRoad();
                 }
             }
 
@@ -448,7 +476,8 @@ namespace GDD
                 if (isDestroyDistanceZero && roadSystemScript.transform.gameObject != null || isDestroySeparated)
                 {
                     print("Fucking Deadddddddddddddddddddd");
-                    Destroy(roadSystemScript.transform.parent.gameObject);
+                    //roadSystemScript.transform.position += new Vector3(0, 1, 0);
+                    roadSystemScript.OnRemoveRoad();
                 }
             }
         }
@@ -531,7 +560,15 @@ namespace GDD
             GameObject spawn = _roadLineMesh.GenerateRoad(roadMesh, L_Road,  start, end);
             spawn.GetComponent<Renderer>().sharedMaterial = _roadLineMesh.defaultMaterial;
             //spawn.AddComponent(road_component.GetType());
-            spawn.GetComponent<Road_System_Script>().OnPlaceRoad(new Vector2(start.x, start.z), new Vector2(end.x, end.z));
+            Road_System_Script _roadSystemScript = spawn.GetComponent<Road_System_Script>();
+            _roadSystemScript.roadSaveData.Start_Position = new Vector2D(start.x, start.z);
+            _roadSystemScript.roadSaveData.End_Position = new Vector2D(end.x, end.z);
+            _roadSystemScript.road_Preset = roadSystemScript.road_Preset;
+            _roadSystemScript.road_material = roadSystemScript.road_material;
+            _roadSystemScript.construction_Road_material = roadSystemScript.construction_Road_material;
+            _roadSystemScript.construction_Progress_Material = roadSystemScript.construction_Progress_Material;
+            _roadSystemScript.remove_progress_material = roadSystemScript.remove_progress_material;
+            _roadSystemScript.OnPlaceRoad();
         }
 
         private void Sort_Least_to_Greatest_Vector2(Vector2 a, Vector2 b, out Vector2 out_a, out Vector2 out_b, bool isAxit_x)
@@ -628,11 +665,19 @@ namespace GDD
                 Start_Y.transform.position = StartPosY;
                 Start_Y.transform.LookAt(EndPosY, Vector3.up);
                 Vector3 PointY_offset = Start_Y.transform.position + Start_Y.transform.forward * offset_direction;
-
+                
                 //Hit End
                 var raycastHit_Y = Physics.Raycast(PointY_offset, Start_Y.transform.forward, out var hit_Y, y_distance + (offset_direction * -1), layerMask);
                 hitdata[1] = hit_Y;
-
+                
+                /*
+                //Hit Left
+                Vector3 Point_Left_offse = (Start_Y.transform.position - Start_Y.transform.right * offset_direction) - new Vector3(0, 0.1f, 0);
+                var raycastHit_Left = Physics.Raycast(Point_Left_offse, 
+                    -Start_Y.transform.right, out var hit_Left, 1, layerMask);
+                hitdata[3] = hit_Left;
+                */
+                
                 if (raycastHit_X || raycastHit_Y)
                 {
                     _roadLineMesh.UpdateColorMaterial(deactivate);
@@ -648,7 +693,7 @@ namespace GDD
                 m_road_line_2.End = EndPosX;
                 
                 Debug.DrawLine(point_hit_before, hitdata[2].point, Color.blue);
-                Debug.DrawLine(PointX_offset, EndPosX, Color.red);
+                //Debug.DrawLine(Point_Left_offse, hitdata[3].point, Color.black);
                 Debug.DrawLine(PointY_offset, EndPosY, Color.green);
 
                 canCreateNewRoad = !(raycastHit_X || raycastHit_Y);
@@ -671,7 +716,7 @@ namespace GDD
                 float y_distance = Mathf.Abs(Vector3.Distance(StartPosY, EndPosY));
                 Start_Y.transform.position = StartPosY;
                 Start_Y.transform.LookAt(EndPosY, Vector3.up);
-                Vector3 PointY_offset = Start_Y.transform.position + Start_Y.transform.forward * offset_direction;
+                Vector3 PointY_offset = (Start_Y.transform.position + Start_Y.transform.forward * offset_direction)  - new Vector3(0, 0.1f, 0);
                 
                 //point
                 start_point.transform.position = new Vector3(Start_Y.transform.position.x, landscapePos, Start_Y.transform.position.z);
@@ -702,6 +747,13 @@ namespace GDD
                 //Hit End
                 var raycastHit_X = Physics.Raycast(PointX_offset, Start_X.transform.forward, out var hit_X, x_distance + (offset_direction * -1), layerMask);
                 hitdata[1] = hit_X;
+                /*
+                //Hit Left
+                Vector3 Point_Left_offse = Start_X.transform.position - Start_X.transform.right * offset_direction;
+                var raycastHit_Left = Physics.Raycast(Point_Left_offse, 
+                    -Start_Y.transform.right, out var hit_Left, 1, layerMask);
+                hitdata[3] = hit_Left;
+                */
                 
                 if (raycastHit_X || raycastHit_Y)
                 {
@@ -718,6 +770,7 @@ namespace GDD
                 m_road_line_2.End = EndPosX;
                 
                 Debug.DrawLine(point_hit_before, hitdata[2].point, Color.blue);
+                //Debug.DrawLine(Point_Left_offse, hitdata[3].point, Color.magenta);
                 Debug.DrawLine(PointY_offset, EndPosY, Color.red);
                 Debug.DrawLine(PointX_offset, EndPosX, Color.green);
                 

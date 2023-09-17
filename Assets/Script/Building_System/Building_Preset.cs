@@ -20,6 +20,9 @@ namespace GDD
         public int rock_build;
         public float time_construction = 12;
         
+        [Header("Building Power Use")] 
+        public float power_use;
+        
         [Header("Resources Use Rate / Hour")] 
         public int resources_use_rate;
         

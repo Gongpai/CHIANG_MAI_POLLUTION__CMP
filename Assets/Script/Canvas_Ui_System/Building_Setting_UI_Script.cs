@@ -202,7 +202,7 @@ namespace GDD
 
                     if (button.Value.buildingSettingType == Building_Setting_Type.Centor_Button_with_progress)
                     {
-                        if (buildingSystemScript.active)
+                        if (buildingSystemScript.building_is_active)
                         {
                             canvasElementList.texts[0].text = button.Value.text_enable + Environment.NewLine +
                                                               building_value.Item1 + "/" + building_value.Item2;
@@ -225,7 +225,7 @@ namespace GDD
                     else if (button.Value.buildingSettingType == Building_Setting_Type.Centor_Button_only)
                     {
                         if (buildingSystemScript.GetValueBuilingSetting(i).ConvertTo<bool>() &&
-                            buildingSystemScript.active)
+                            buildingSystemScript.building_is_active)
                         {
                             canvasElementList.texts[0].text = button.Value.text_enable;
                             canvasElementList.image[0].sprite = button.Value.icon_enable;
@@ -278,18 +278,34 @@ namespace GDD
                     if (status.Value.buildingInformationType == Building_Information_Type.ShowStatus &&
                         status.Key != null)
                     {
-                        if (_buildingSystemScript.GetValueBuildingInformation(i).Item3 != null)
+                        if (status.Value.buildingShowMode == Building_Show_mode.TextOnly)
                         {
-                            status.Key.SetActive(true);
-                            Canvas_Element_List elementList = status.Key.GetComponent<Canvas_Element_List>();
-                            elementList.texts[1].text = _buildingSystemScript.GetValueBuildingInformation(i).Item3;
-                            elementList.image[0].fillAmount =
-                                (float)_buildingSystemScript.GetValueBuildingInformation(i).Item1 /
-                                (float)_buildingSystemScript.GetValueBuildingInformation(i).Item2;
+                            if ((bool)_buildingSystemScript.GetValueBuildingInformation(i).Item1)
+                            {
+                                status.Key.SetActive(true);
+                                Canvas_Element_List elementList = status.Key.GetComponent<Canvas_Element_List>();
+                                elementList.texts[1].text = _buildingSystemScript.GetValueBuildingInformation(i).Item3;
+                            }
+                            else
+                            {
+                                status.Key.SetActive(false);
+                            }
                         }
                         else
                         {
-                            status.Key.SetActive(false);
+                            if (_buildingSystemScript.GetValueBuildingInformation(i).Item3 != null)
+                            {
+                                status.Key.SetActive(true);
+                                Canvas_Element_List elementList = status.Key.GetComponent<Canvas_Element_List>();
+                                elementList.texts[1].text = _buildingSystemScript.GetValueBuildingInformation(i).Item3;
+                                elementList.image[0].fillAmount =
+                                    (float)_buildingSystemScript.GetValueBuildingInformation(i).Item1 /
+                                    (float)_buildingSystemScript.GetValueBuildingInformation(i).Item2;
+                            }
+                            else
+                            {
+                                status.Key.SetActive(false);
+                            }
                         }
 
                         i++;
@@ -334,7 +350,7 @@ namespace GDD
                     button_element.transform.parent = horizontal_group.transform;
                     canvasElementList.buttons[0].onClick.AddListener(buildingSettingUIData.actions[0]);
 
-                    if (building_object.ConvertTo<bool>() && buildingSystemScript.active)
+                    if (building_object.ConvertTo<bool>() && buildingSystemScript.building_is_active)
                     {
                         canvasElementList.image[0].sprite = buildingSettingUIData.icon_enable;
                         canvasElementList.texts[0].text = buildingSettingUIData.text_enable;
@@ -362,7 +378,7 @@ namespace GDD
                     progressCanvasElementList.buttons[0].onClick.AddListener(buildingSettingUIData.actions[0]);
                     progressCanvasElementList.buttons[1].onClick.AddListener(buildingSettingUIData.actions[1]);
                     
-                    if (buildingSystemScript.active)
+                    if (buildingSystemScript.building_is_active)
                     {
                         progressCanvasElementList.texts[0].text = buildingSettingUIData.text_enable + Environment.NewLine + building_value.Item1 + "/" + building_value.Item2;
                         
@@ -454,15 +470,28 @@ namespace GDD
                 
                 foreach (var BSD_ui in _buildingStatusDatas)
                 {
-                    GameObject element = Instantiate(m_Prefab_Building_information[0], m_Information_content.transform);
-                    Canvas_Element_List elementList = element.GetComponent<Canvas_Element_List>();
-                    list_status_elements.Add(element, BSD_ui);
-                    elementList.texts[0].text = BSD_ui.title;
-                    elementList.texts[1].text = BSD_ui.text;
-                    elementList.image[0].fillAmount = BSD_ui.value / BSD_ui.max_value;
-                    
-                    
-                    print("CSSSDS : " + element.name);
+                    if (BSD_ui.buildingShowMode == Building_Show_mode.TextOnly)
+                    {
+                        GameObject element = Instantiate(m_Prefab_Building_information[0], m_Information_content.transform);
+                        Canvas_Element_List elementList = element.GetComponent<Canvas_Element_List>();
+                        list_status_elements.Add(element, BSD_ui);
+                        elementList.texts[0].text = BSD_ui.title;
+                        elementList.texts[1].text = BSD_ui.text;
+                        elementList.canvas_gameObjects[0].SetActive(false);
+
+                        print("CSSSDS : " + element.name);
+                    }
+                    else
+                    {
+                        GameObject element = Instantiate(m_Prefab_Building_information[0], m_Information_content.transform);
+                        Canvas_Element_List elementList = element.GetComponent<Canvas_Element_List>();
+                        list_status_elements.Add(element, BSD_ui);
+                        elementList.texts[0].text = BSD_ui.title;
+                        elementList.texts[1].text = BSD_ui.text;
+                        elementList.image[0].fillAmount = BSD_ui.value / BSD_ui.max_value;
+                        
+                        print("CSSSDS : " + element.name);
+                    }
                 }
             }
             else

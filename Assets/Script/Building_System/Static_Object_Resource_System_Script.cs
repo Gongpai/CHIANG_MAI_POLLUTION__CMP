@@ -97,6 +97,7 @@ namespace GDD
             if (!GM.gameInstance.check_id_ResourceSaveData(m_id_Resource))
             {
                 print("Non Save");
+                _staticResourceSaveData.id = m_id_Resource;
                 GM.gameInstance.staticResourceSaveDatas.Add(_staticResourceSaveData);
             }
             else
@@ -115,7 +116,7 @@ namespace GDD
         {
             _staticResourceSaveData.efficiency = ((float)_staticResourceSaveData.people + (float)_staticResourceSaveData.worker) / ((float)m_Resource_Preset.max_people + (float)m_Resource_Preset.max_worker);
 
-            ResourceProduceRate();
+            ResourceProductRate();
         }
 
         private void Create_button_action_data_for_building()
@@ -165,7 +166,7 @@ namespace GDD
         public abstract void OnEnableBuilding();
         public abstract void OnDisableBuilding();
 
-        protected virtual void ResourceProduceRate()
+        protected virtual void ResourceProductRate()
         {
             if (m_Resource_Preset.product_output_use_rate > 0)
             {
@@ -174,12 +175,17 @@ namespace GDD
                     //print("Re Use Rate/Hour : " + buildingSaveData.re_userate_hour + " Hour Now : " + TM.To_TotalHour(TM.get_DateTime));
                     _staticResourceSaveData.re_userate_hour = TM.To_TotalHour(TM.get_DateTime) + m_Resource_Preset.product_output_use_rate;
                     //print("----Resources :::::::::: " + buildingSaveData.re_userate_hour);
-                    Resource_usage();
+                    Resource_product();
                 }
             }
         }
 
-        public abstract void Resource_usage();
+        public abstract void Resource_product();
+
+        public void Resource_usage()
+        {
+            
+        }
 
         public virtual void Interact()
         {
@@ -224,6 +230,8 @@ namespace GDD
             _colorBlock.pressedColor = new Color(255, 255, 0, 175);
             _colorBlock.selectedColor = new Color(175, 175, 0, 240);
             _colorBlock.disabledColor = new Color(0, 0, 0, 0);
+            _colorBlock.colorMultiplier = 1;
+            _colorBlock.fadeDuration = 0.1f;
             _buttonActionDatas.Add(new Button_Action_Data("null", Resources.Load<Sprite>("Icon/24H"),
                 () => { print("24HHHHHH"); }, _colorBlock));
 
@@ -268,6 +276,11 @@ namespace GDD
 
             OnBeginPlace();
             OnBeginPlace();
+        }
+        
+        public virtual void Check_Surround_Road()
+        {
+            
         }
 
         public abstract void OnBeginPlace();

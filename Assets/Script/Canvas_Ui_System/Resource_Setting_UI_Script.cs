@@ -211,7 +211,7 @@ namespace GDD
 
                         if (canvasElementList.animators[0] != null)
                         {
-                            print("IOOUOUO : " + i);
+                            //print("IOOUOUO : " + i);
                             if (resourceSystemScript.GetValueBuilingSetting(i).ConvertTo<bool>())
                             {
                                 canvasElementList.animators[0].SetBool("IsStart", true);

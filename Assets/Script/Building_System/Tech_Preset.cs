@@ -8,8 +8,5 @@ namespace GDD
     {
         [Header("Research Speed %/h")]
         public float speed = 10;
-        
-        [Header("Resources Use")] 
-        public float power_use;
     }
 }

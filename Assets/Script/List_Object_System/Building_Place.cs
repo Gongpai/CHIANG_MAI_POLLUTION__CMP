@@ -36,7 +36,7 @@ public class Building_place : MonoBehaviour
         if (assetPath != null)
         {
             var asset = Resources.Load(assetPath);
-            S_Road_place.RoadMesh = asset.GameObject().GetComponent<MeshFilter>().sharedMesh;
+            S_Road_place.road_prefab = asset.GameObject();
             S_Road_place.roadMode = RoadMode.Place;
             int indexNameObject = assetPath.Split("/").Length;
             S_Road_place.objectData.Add(assetPath.Split("/")[indexNameObject - 1]);
@@ -77,7 +77,7 @@ public class Building_place : MonoBehaviour
 
     public void OnDisabledRoad_Place()
     {
-        if (S_Road_place)
+        if (S_Road_place != null)
             S_Road_place.enabled = false;
     }
 

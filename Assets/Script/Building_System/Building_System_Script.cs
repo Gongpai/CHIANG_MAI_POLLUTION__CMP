@@ -28,9 +28,22 @@ namespace GDD
         protected GameObject construction_zone_pivot;
         protected bool is_addSettingother = true;
         protected bool is_cant_use_resource;
+        protected bool is_cant_use_power;
+        private LayerMask L_Road;
+        private LayerMask L_Default;
+        private LayerMask L_Building;
+        private LayerMask L_Obstacle;
         
         private bool is_set_enable = false;
         private bool is_set_disable = false;
+        
+        //New System
+        protected Tuple<Vector3, Vector3, float> raycast_data;
+
+        public Building_Preset building_preset
+        {
+            get => m_Preset;
+        }
         
         public BuildingType _buildingType
         {
@@ -42,6 +55,29 @@ namespace GDD
         {
             get => _buildingSaveData.Building_active;
             set => _buildingSaveData.Building_active = value;
+        }
+
+        public bool building_is_active
+        {
+            get => active && !disable;
+        }
+
+        protected bool auto_disable
+        {
+            get => _buildingSaveData.is_auto_disable;
+            set => _buildingSaveData.is_auto_disable = value;
+        }
+        
+        protected bool disable
+        {
+            get => _buildingSaveData.Building_Disable;
+            set => _buildingSaveData.Building_Disable = value;
+        }
+
+        public bool cant_use_power
+        {
+            get => is_cant_use_power;
+            set => is_cant_use_power = value;
         }
 
         protected bool is_placed
@@ -65,12 +101,6 @@ namespace GDD
         public bool construction_in_progress
         {
             get => is_construction_in_progress;
-        }
-
-        public bool is_Remove_Building
-        {
-            get => is_remove_building;
-            set => is_remove_building = value;
         }
 
         public int people
@@ -197,19 +227,38 @@ namespace GDD
             return menuDatas;
         }
 
-        private void Start()
+        private void Awake()
         {
             GM = GameManager.Instance;
             TM = TimeManager.Instance;
             RM = ResourcesManager.Instance; 
             
+            if(enum_buildingType != BuildingType.Generator)
+                RM.Set_Resources_Power_Use(this);
+        }
+
+        private void Start()
+        {
+            L_Road = LayerMask.NameToLayer("Road_Object");
+            L_Default = LayerMask.NameToLayer("Default");
+            L_Building = LayerMask.NameToLayer("Place_Object");
+            L_Obstacle = LayerMask.NameToLayer("Obstacle_Ojbect");
+
             Create_button_action_data_for_building();
         }
 
         protected virtual void Update()
         {
             //print("Is Active : " + _buildingSaveData.Building_active);
-            
+            if (raycast_data != null)
+            {
+                Single_Raycast_Check_Surround_Road();
+            }
+            else
+            {
+                Check_Surround_Road();
+            }
+
             OnProgress();
 
             buildingSaveData.efficiency = ((float)buildingSaveData.people + (float)buildingSaveData.worker) / ((float)m_Preset.max_people + (float)m_Preset.max_worker);
@@ -217,6 +266,8 @@ namespace GDD
             ResourceUsageRate();
 
             Building_active();
+
+            Check_power_resource();
         }
 
         private void Create_button_action_data_for_building()
@@ -226,8 +277,7 @@ namespace GDD
 
             foreach (var BI in m_Preset.m_building_information)
             {
-                BI_datas.Add(
-                    new Building_Information_Data(BI.title, BI.text, Building_Information_Type.ShowInformation));
+                BI_datas.Add(new Building_Information_Data(BI.title, BI.text, Building_Information_Type.ShowInformation, Building_Show_mode.TextOnly));
             }
 
             _information_Datas.informations = BI_datas;
@@ -236,14 +286,10 @@ namespace GDD
             add_action = new List<UnityAction<object>>();
             add_action.Add(SetActiveBuilding);
 
-
-
             //Building Status
             BI_datas = new List<Building_Information_Data>();
-            BI_datas.Add(new Building_Information_Data("สิ่งก่อสร้างไม่พร้อมใช้งาน", "กำลังก่อสร้างเสร็จสิ้นแล้ว 0%",
-                Building_Information_Type.ShowStatus));
-
-
+            BI_datas.Add(new Building_Information_Data("สิ่งก่อสร้างไม่พร้อมใช้งาน", "กำลังก่อสร้างเสร็จสิ้นแล้ว 0%", Building_Information_Type.ShowStatus, Building_Show_mode.TextWith_ProgressBar));
+            
             //Building_setting_danger
             _buttonActionDatas = new List<Button_Action_Data>();
             _buttonActionDatas.Add(new Button_Action_Data("remove", Resources.Load<Sprite>("Icon/remove_home"),
@@ -266,7 +312,7 @@ namespace GDD
             EndStart();
 
             _actions = new();
-            print("Is NoooottttNuuuuulllllllllll : " + m_Preset.m_building_setting != null);
+            //print("Is NoooottttNuuuuulllllllllll : " + m_Preset.m_building_setting != null);
             int i = 0;
             foreach (var buildingSetting in m_Preset.m_building_setting)
             {
@@ -275,11 +321,28 @@ namespace GDD
             }
         }
 
+        private void Check_power_resource()
+        {
+            if (enum_buildingType != BuildingType.Generator)
+            {
+                if (!is_cant_use_power)
+                {
+                    is_cant_use_power = true;
+                    disable = false;
+                }
+                else if(m_Preset.power_use > 0)
+                {
+                    is_cant_use_power = false;
+                    disable = true;
+                }
+            }
+        }
+
         private void Building_active()
         {
             if (construction_zone_pivot != null && !construction_zone_pivot.activeSelf)
             {
-                if (_buildingSaveData.Building_active)
+                if (building_is_active)
                 {
                     if (!is_set_enable)
                     {
@@ -300,7 +363,7 @@ namespace GDD
             }
             else
             {
-                if (!is_set_disable && is_remove_building && !_buildingSaveData.Building_active)
+                if (!is_set_disable && is_remove_building && !building_is_active)
                 {
                     is_set_disable = true;
                     is_set_enable = false;
@@ -314,7 +377,7 @@ namespace GDD
 
         protected virtual void ResourceUsageRate()
         {
-            if (m_Preset.resources_use_rate > 0 && _buildingSaveData.Building_active)
+            if (m_Preset.resources_use_rate > 0 && building_is_active && !disable)
             {
                 if (buildingSaveData.re_userate_hour <= TM.To_TotalHour(TM.get_DateTime))
                 {
@@ -328,19 +391,25 @@ namespace GDD
 
         public abstract void Resource_usage();
 
+        public void Resource_product()
+        {
+            
+        }
+
         public virtual void Interact()
         {
-            print("Innnnteerrraaacccttt : " + name);
+            //print("Innnnteerrraaacccttt : " + name);
         }
 
         public virtual void ChangeEnableBuilding()
         {
-            print("OnChangeEnableBuilding : " + name);
+            //print("OnChangeEnableBuilding : " + name);
         }
 
         public void SetActiveBuilding(object obj)
         {
             active = !active;
+            auto_disable = active;
         }
 
         public void SetAirPurifierSpeedUp(object obj)
@@ -355,7 +424,7 @@ namespace GDD
         
         public void RemoveAndAddPeople(object number)
         {
-            print("Busssssssssssssssssssssssssssssssssss : " + (int)number);
+            //print("Busssssssssssssssssssssssssssssssssss : " + (int)number);
             
             if((people + (int)number) <= people_Max && (people + (int)number) >= 0)
                 people += (int)number;
@@ -363,7 +432,7 @@ namespace GDD
         
         public void RemoveAndAddWorker(object number)
         {
-            print("Busssssssssssssssssssssssssssssssssss : " + (int)number);
+            //print("Busssssssssssssssssssssssssssssssssss : " + (int)number);
             
             if((worker + (int)number) <= worker_Max && (worker + (int)number) >= 0)
                 worker += (int)number;
@@ -452,7 +521,7 @@ namespace GDD
         public object GetValueBuilingSetting(int index)
         {
             list_setting_values = new List<object>();
-            list_setting_values.Add(active);
+            list_setting_values.Add((active));
 
             OnUpdateSettingValue();
 
@@ -513,7 +582,7 @@ namespace GDD
         public Tuple<object, object, string> GetValueBuildingInformation(int index)
         {
             list_information_values = new List<Tuple<object, object, string>>();
-
+            
             if (is_construction_in_progress)
             {
                 string construction_in_progress_text;
@@ -551,7 +620,8 @@ namespace GDD
 
         public void OnGameLoad()
         {
-            GM = FindObjectOfType<GameManager>();
+            GM = GameManager.Instance;
+            RM = ResourcesManager.Instance;
             
             switch_mesh_construction_progress(true, false);
             if (!is_placed || construction_progess_percent < 1)
@@ -562,7 +632,7 @@ namespace GDD
             TM = TimeManager.Instance;
             if(_buildingSaveData.re_userate_hour <= 0)
                 buildingSaveData.re_userate_hour = TM.To_TotalHour(TM.get_DateTime) + m_Preset.resources_use_rate;
-
+            
             OnBeginPlace();
             transform.position = new Vector3(_buildingSaveData.Position.X, _buildingSaveData.Position.Y, _buildingSaveData.Position.Z);
             transform.eulerAngles = new Vector3(_buildingSaveData.Rotation.X, _buildingSaveData.Rotation.Y,_buildingSaveData.Rotation.Z);
@@ -571,13 +641,15 @@ namespace GDD
 
         public bool OnPlaceBuilding()
         {
-            if (!RM.Set_Resources_Tree(-m_Preset.wood_build) || !RM.Set_Resources_Rock(-m_Preset.rock_build))
+            if (!RM.Can_Set_Resources_Tree(-m_Preset.wood_build) || !RM.Can_Set_Resources_Rock(-m_Preset.rock_build))
             {
                 print("Cont Place ");
                 return false;
             }
             else
             {
+                RM.Set_Resources_Rock(-m_Preset.rock_build);
+                RM.Set_Resources_Tree(-m_Preset.wood_build);
                 print("OnPlaceeeee ");
                 is_placed = true;
                 is_remove_building = false;
@@ -615,19 +687,157 @@ namespace GDD
                     construction_zone_pivot.GetComponent<MeshFilter>().sharedMesh = m_construction_zone.GetComponent<MeshFilter>().sharedMesh;
                 }
 
-                if(is_set_building_active)
-                    buildingSaveData.Building_active = false;
+                if (is_set_building_active)
+                {
+                    active = false;
+                }
                 
                 GetComponent<MeshRenderer>().enabled = false;
                 construction_zone_pivot.SetActive(true);
             }
             else
             {
-                if(is_set_building_active && construction_progess_percent > 0.5)
-                    buildingSaveData.Building_active = true;
+                if (is_set_building_active && construction_progess_percent > 0.5 && ((is_cant_use_power && enum_buildingType != BuildingType.Generator) || Check_Resource()))
+                {
+                    //print("Is Enable : " + disable + " Can Tree : " + Check_Resource() + " TREE CURRENT : " + GM.gameInstance.get_tree_resource());
+                    active = true;
+                } else if ((!is_cant_use_power && enum_buildingType != BuildingType.Generator) || !Check_Resource())
+                {
+                    //print("Is Disable : " + disable + " Can Tree : " + is_cant_use_resource);
+                    active = true;
+                    Resource_usage();
+                    disable = true;
+                }
                 
                 GetComponent<MeshRenderer>().enabled = true;
                 construction_zone_pivot.SetActive(false);
+            }
+        }
+
+        protected abstract bool Check_Resource();
+
+        public virtual void Check_Surround_Road()
+        {
+            List<RaycastHit> hit_floorraycasthits = new List<RaycastHit>(4);
+
+            List<Vector3> directions = new List<Vector3>();
+            directions.Add(transform.forward);
+            directions.Add(-transform.forward);
+            directions.Add(transform.right);
+            directions.Add(-transform.right);
+
+            //TopLeft
+            directions.Add(transform.forward);
+            directions.Add(-transform.right);
+            //TopRight
+            directions.Add(transform.forward);
+            directions.Add(transform.right);
+            //BottomLeft
+            directions.Add(-transform.forward);
+            directions.Add(-transform.right);
+            //BottomRight
+            directions.Add(-transform.forward);
+            directions.Add(transform.right);
+
+            float object_size = GetComponent<Renderer>().bounds.size.z / 2;
+            bool is_found_road = false;
+
+            List<Vector3> start_point = new List<Vector3>();
+            start_point.Add(new Vector3(-object_size, -0.25f, object_size));
+            start_point.Add(new Vector3(object_size, -0.25f, object_size));
+            start_point.Add(new Vector3(-object_size, -0.25f, -object_size));
+            start_point.Add(new Vector3(object_size, -0.25f, -object_size));
+
+            for (int i = 0; i < 4; i++)
+            {
+                bool is_hit = Physics.Raycast(new Ray(transform.position - new Vector3(0, 0.25f, 0), directions[i]), out RaycastHit raycasthit, object_size + 0.25f, 1 << L_Road | 0 << L_Default | 0 << L_Building | 0 << L_Obstacle);
+                hit_floorraycasthits.Add(raycasthit);
+
+                if (is_hit && raycasthit.transform.gameObject.layer == L_Road)
+                {
+                    raycast_data = new Tuple<Vector3, Vector3, float>(-new Vector3(0, 0.25f, 0), directions[i],
+                        object_size + 0.25f);
+
+                    print("Inside Raod Detected !!!!");
+                    is_found_road = true;
+                    break;
+                }
+
+                Debug.DrawLine(transform.position - new Vector3(0, 0.25f, 0), raycasthit.point, Color.red);
+            }
+
+            if (!is_found_road)
+            {
+                int origin_index = 0;
+                for (int i = 4; i < directions.Count; i++)
+                {
+                    if (i % 2 == 0 && i != 4 && origin_index < 4)
+                    {
+                        origin_index++;
+                    }
+
+                    bool is_hit =
+                        Physics.Raycast(new Ray(transform.position + start_point[origin_index], directions[i]),
+                            out RaycastHit raycasthit, object_size + 0.25f,
+                            1 << L_Road | 0 << L_Default | 0 << L_Building | 0 << L_Obstacle);
+                    hit_floorraycasthits.Add(raycasthit);
+
+                    //print("Origin : " + origin_index + " i : " + i);
+
+                    Debug.DrawLine(start_point[origin_index], raycasthit.point, Color.red);
+
+                    if (is_hit && raycasthit.transform.gameObject.layer == L_Road)
+                    {
+                        raycast_data = new Tuple<Vector3, Vector3, float>(start_point[origin_index], directions[i],
+                            object_size + 0.25f);
+
+                        print("Outside Raod Detected !!!!");
+
+                        break;
+                    }
+
+                    /*
+                    switch (i % 3)
+                    {
+                        case 0:
+                            Debug.DrawLine(start_point[origin_index], start_point[origin_index] + directions[i], Color.white);
+                            break;
+                        case 1:
+                            Debug.DrawLine(start_point[origin_index], start_point[origin_index] + directions[i], Color.green);
+                            break;
+                        case 2:
+                            Debug.DrawLine(start_point[origin_index], start_point[origin_index] + directions[i], Color.yellow);
+                            break;
+                        default:
+                            break;
+                    }
+                    */
+                }
+
+                /*
+                Debug.DrawLine(transform.position + new Vector3(0, 0.25f, 0), transform.position + transform.forward, Color.blue);
+                Debug.DrawLine(transform.position + new Vector3(0, 0.25f, 0), transform.position - transform.forward, Color.blue);
+                Debug.DrawLine(transform.position + new Vector3(0, 0.25f, 0), transform.position + transform.right, Color.blue);
+                Debug.DrawLine(transform.position + new Vector3(0, 0.25f, 0), transform.position - transform.right, Color.blue);
+            */
+            }
+        }
+
+        public virtual void Single_Raycast_Check_Surround_Road()
+        {
+            Physics.Raycast(new Ray(transform.position + raycast_data.Item1, raycast_data.Item2), out RaycastHit raycasthit, raycast_data.Item3, 1<<L_Road|0<<L_Default|0<<L_Building|0<<L_Obstacle);
+            //hit_floorraycasthits.Add(raycasthit);
+            
+            print("Enable!! Single Raycast Check Surround Road");
+            
+            if (raycasthit.transform == null)
+            {
+                print("Raod Not Found !!!!");
+                raycast_data = null;
+            }
+            else
+            {
+                Debug.DrawLine(transform.position + raycast_data.Item1, raycasthit.point, Color.red);
             }
         }
 
@@ -643,6 +853,9 @@ namespace GDD
             
             if(GM != null && _buildingSaveData != null)
                 GM.gameInstance.buildingSaveDatas.Remove(_buildingSaveData);
+            
+            if(enum_buildingType != BuildingType.Generator)
+                RM.Set_Resources_Power_Use(this, true);
         }
 
         public abstract void OnDestroyBuilding();

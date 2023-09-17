@@ -299,14 +299,30 @@ namespace GDD
                 int i = 0;
                 foreach (var BI_data in buildingSystemScript.buildingInfoStruct.status)
                 {
-                    print("IIII Status : " + i);
-                    buildingSettingUIScript.buildingStatusDatas.Add(new Building_Information_UI_Data(
-                        BI_data.title,
-                        buildingSystemScript.GetValueBuildingInformation(i).Item3,
-                        buildingSystemScript.GetValueBuildingInformation(i).Item1.ConvertTo<float>(),
-                        buildingSystemScript.GetValueBuildingInformation(i).Item2.ConvertTo<float>(),
-                        BI_data.buildingInformationType
-                    ));
+                    if (BI_data.buildingShowMode == Building_Show_mode.TextOnly)
+                    {
+                        print("IIII Status : " + i);
+                        buildingSettingUIScript.buildingStatusDatas.Add(new Building_Information_UI_Data(
+                            BI_data.title,
+                            buildingSystemScript.GetValueBuildingInformation(i).Item3,
+                            0,
+                            0,
+                            BI_data.buildingInformationType,
+                            BI_data.buildingShowMode
+                        ));
+                    }
+                    else
+                    {
+                        print("IIII Status : " + i);
+                        buildingSettingUIScript.buildingStatusDatas.Add(new Building_Information_UI_Data(
+                            BI_data.title,
+                            buildingSystemScript.GetValueBuildingInformation(i).Item3,
+                            buildingSystemScript.GetValueBuildingInformation(i).Item1.ConvertTo<float>(),
+                            buildingSystemScript.GetValueBuildingInformation(i).Item2.ConvertTo<float>(),
+                            BI_data.buildingInformationType,
+                            BI_data.buildingShowMode
+                        ));
+                    }
                     
                     i++;
                 }
@@ -322,7 +338,8 @@ namespace GDD
                         BI_data.text,
                         0,
                         0,
-                        BI_data.buildingInformationType
+                        BI_data.buildingInformationType,
+                        BI_data.buildingShowMode
                     ));
                     i++;
                 }

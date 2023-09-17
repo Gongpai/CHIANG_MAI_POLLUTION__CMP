@@ -103,6 +103,7 @@ MonoBehaviour:
   m_construction_zone: {fileID: 919132149155446097, guid: 296e2b0956415e343a6976e2b2cd4fcb,
     type: 3}
   m_construction_progress: {fileID: 8858027584794005292}
+  m_healthPreset: {fileID: 11400000, guid: 08fe8d9dc2c13914388a3c55e5596894, type: 2}
 --- !u!65 &8971885286307506451
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -29,4 +29,11 @@ namespace GDD
         ShowStatus,
         ShowInformation
     }
+
+    [Serializable]
+    public enum Building_Show_mode
+    {
+        TextOnly,
+        TextWith_ProgressBar
+    }
 }

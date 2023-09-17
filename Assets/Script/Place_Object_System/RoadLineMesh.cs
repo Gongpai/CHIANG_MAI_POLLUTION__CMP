@@ -9,6 +9,7 @@ namespace GDD
     {
         [SerializeField] private Mesh _mesh;
         [SerializeField] private Material _material;
+        [SerializeField] private Material m_construction_road_material;
         [SerializeField] private GameObject m_road_Layer;
         [SerializeField] private List<Vector3> positions = new List<Vector3>();
 
@@ -129,9 +130,13 @@ namespace GDD
             road_element.AddComponent<Non_asphalt_Road_Script>();
             BoxCollider boxCollider = road_element.GetComponent<BoxCollider>();
             boxCollider.size = new Vector3(boxCollider.size.x, 1, boxCollider.size.z);
-            
-            if(isOnPlace)
-                road_element.GetComponent<Road_System_Script>().OnPlaceRoad(new Vector2(_element.Start.x,_element.Start.z), new Vector2(_element.End.x, _element.End.z));
+
+            if (isOnPlace)
+            {
+                Road_System_Script _roadSystemScript = road_element.GetComponent<Road_System_Script>();
+                _roadSystemScript.roadSaveData.Start_Position = new Vector2D(_element.Start.x, _element.Start.z);
+                _roadSystemScript.roadSaveData.End_Position = new Vector2D(_element.End.x, _element.End.z);
+            }
 
             return road_element;
         }
@@ -143,11 +148,21 @@ namespace GDD
                 for (int i = 0; i < roads.Count; i++)
                 {
                     Road_System_Script roadSystemScript = roads[i].GetComponent<Road_System_Script>();
+                    Road_System_Script _roadSystemScript_prefab_obj = _spawnerRoadGrid.road_prefab.GetComponent<Road_System_Script>();
+                    roadSystemScript.road_Preset = _roadSystemScript_prefab_obj.road_Preset;
+                    roadSystemScript.road_material = _roadSystemScript_prefab_obj.road_material;
+                    roadSystemScript.construction_Road_material = _roadSystemScript_prefab_obj.construction_Road_material;
+                    roadSystemScript.construction_Progress_Material = _roadSystemScript_prefab_obj.construction_Progress_Material;
+                    roadSystemScript.remove_progress_material = _roadSystemScript_prefab_obj.remove_progress_material;
+                    
+                    roads[i].GetComponent<Renderer>().sharedMaterial = _material;
+                    print("Start : " + _element[i].Start);
+                    print("End : " + _element[i].End);
                     roadSystemScript.roadSaveData.Start_Position = new Vector2D(_element[i].Start.x, _element[i].Start.z);
                     roadSystemScript.roadSaveData.End_Position = new Vector2D(_element[i].End.x, _element[i].End.z);
+                    roadSystemScript.OnPlaceRoad();
                     roadSystemScript.roadSaveData.name = _spawnerRoadGrid.objectData[0];
                     roadSystemScript.roadSaveData.path = _spawnerRoadGrid.objectData[1];
-                    roads[i].GetComponent<Renderer>().sharedMaterial = _material;
                 }
             }
 

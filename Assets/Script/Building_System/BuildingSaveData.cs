@@ -21,6 +21,8 @@ namespace GDD
         public bool building_is_placed = false;
         public bool construction_is_in_progress;
         public bool building_is_remove;
+        public bool is_auto_disable;
+        public bool Building_Disable;
         
         //For other child class
         public object saveDataObject;

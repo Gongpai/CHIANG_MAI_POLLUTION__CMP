@@ -8,8 +8,5 @@ namespace GDD
     {
         [Header("People Receiving Treatment")]
         public float people = 10;
-
-        [Header("Resources Use")] 
-        public float power_use;
     }
 }

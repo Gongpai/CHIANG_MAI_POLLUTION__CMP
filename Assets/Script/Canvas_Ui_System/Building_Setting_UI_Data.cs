@@ -37,14 +37,16 @@ namespace GDD
         public float value;
         public float max_value;
         public Building_Information_Type buildingInformationType;
+        public Building_Show_mode buildingShowMode;
 
-        public Building_Information_UI_Data(string _title, string _text, float _value, float _max_value, Building_Information_Type _buildingInformationType)
+        public Building_Information_UI_Data(string _title, string _text, float _value, float _max_value, Building_Information_Type _buildingInformationType, Building_Show_mode _buildingShowMode)
         {
             title = _title;
             text = _text;
             value = _value;
             max_value = _max_value;
             buildingInformationType = _buildingInformationType;
+            buildingShowMode = _buildingShowMode;
         }
     }
 }

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Cookhouse Building Preset_1_Data
   m_EditorClassIdentifier: 
   people: 0
-  power_use: 0
+  power_use: 1

@@ -14,9 +14,15 @@ namespace GDD
        //Resource usage
        public void Resource_usage();
        
+       //Resource product
+       public void Resource_product();
+       
         //Place
        public void OnBeginPlace();
        public void OnEndPlace();
+       
+       //Check surrounding roads
+       public void Check_Surround_Road();
        
        //End
        public void OnBeginRemove();
