@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,11 +15,13 @@ namespace GDD
         [SerializeField] protected Building_Preset m_Preset;
         [SerializeField] protected GameObject m_construction_zone;
         [SerializeField] protected GameObject m_construction_progress;
+        [SerializeField] protected GameObject m_warning_noti;
         
         protected BuildingSaveData _buildingSaveData = new BuildingSaveData();
         protected GameManager GM;
         protected TimeManager TM;
         protected ResourcesManager RM;
+        protected HumanResourceManager HRM;
         protected Dictionary<UnityAction<object>, Building_Setting_Data> _actions;
         protected List<UnityAction<object>> add_action = new List<UnityAction<object>>();
         protected List<Button_Action_Data> _buttonActionDatas = new List<Button_Action_Data>();
@@ -25,10 +29,13 @@ namespace GDD
         protected List<object> list_setting_values = new List<object>();
         protected List<Tuple<object, object, string>> list_information_values = new List<Tuple<object, object, string>>();
         protected List<Building_Information_Data> BI_datas = new List<Building_Information_Data>();
+        protected List<Tuple<Villager_System_Script, PeopleJob>> villagers = new();
+        protected List<Tuple<Worker_System_Script, PeopleJob>> workers = new();
         protected GameObject construction_zone_pivot;
         protected bool is_addSettingother = true;
-        protected bool is_cant_use_resource;
+        protected bool is_cant_use_resource = false;
         protected bool is_cant_use_power;
+        protected bool is_road_found;
         private LayerMask L_Road;
         private LayerMask L_Default;
         private LayerMask L_Building;
@@ -59,7 +66,7 @@ namespace GDD
 
         public bool building_is_active
         {
-            get => active && !disable;
+            get => active && !disable && is_road_found;
         }
 
         protected bool auto_disable
@@ -103,16 +110,24 @@ namespace GDD
             get => is_construction_in_progress;
         }
 
-        public int people
+        public int villager_count
         {
-            get => _buildingSaveData.people;
-            set => _buildingSaveData.people = value;
+            get => villagers.Count;
         }
 
-        public int worker
+        public int villager_data_count
         {
-            get => _buildingSaveData.worker;
-            set => _buildingSaveData.worker = value;
+            get => _buildingSaveData.villagers.Count;
+        }
+
+        public int worker_count
+        {
+            get => workers.Count;
+        }
+
+        public int worker_data_count
+        {
+            get => _buildingSaveData.workers.Count;
         }
 
         public int people_Max
@@ -129,12 +144,34 @@ namespace GDD
         {
             get => (buildingSaveData.construction_In_Progress / 3600) / m_Preset.time_construction;
         }
-        
+
+        protected float efficiency
+        {
+            get => (Get_Villager_Efficiency() + Get_Worker_Efficiency()) / 2;
+        }
 
         public BuildingSaveData buildingSaveData
         {
             get => _buildingSaveData;
             set => _buildingSaveData = value;
+        }
+
+        public List<Tuple<Villager_System_Script, PeopleJob>> building_villagers
+        {
+            get => villagers;
+            set => villagers = value;
+        }
+
+        public List<Tuple<Worker_System_Script, PeopleJob>> building_workers
+        {
+            get => workers;
+            set => workers = value;
+        }
+
+        public PeopleJob job
+        {
+            get => m_Preset.job;
+            private set => m_Preset.job = value;
         }
 
         public string name
@@ -231,7 +268,8 @@ namespace GDD
         {
             GM = GameManager.Instance;
             TM = TimeManager.Instance;
-            RM = ResourcesManager.Instance; 
+            RM = ResourcesManager.Instance;
+            HRM = HumanResourceManager.Instance;
             
             if(enum_buildingType != BuildingType.Generator)
                 RM.Set_Resources_Power_Use(this);
@@ -245,6 +283,13 @@ namespace GDD
             L_Obstacle = LayerMask.NameToLayer("Obstacle_Ojbect");
 
             Create_button_action_data_for_building();
+            
+            /*
+            villagers.Add(new Tuple<Villager_System_Script, PeopleJob>(FindObjectOfType<Villager_System_Script>(), PeopleJob.Mechanic));
+            workers.Add(new Tuple<Worker_System_Script, PeopleJob>(FindObjectOfType<Worker_System_Script>(), PeopleJob.Mechanic));
+            print("EFF VILL : " + Get_Villager_Efficiency());
+            print("EFF WORK : " + Get_Worker_Efficiency());
+            */
         }
 
         protected virtual void Update()
@@ -261,13 +306,15 @@ namespace GDD
 
             OnProgress();
 
-            buildingSaveData.efficiency = ((float)buildingSaveData.people + (float)buildingSaveData.worker) / ((float)m_Preset.max_people + (float)m_Preset.max_worker);
-
             ResourceUsageRate();
 
             Building_active();
 
             Check_power_resource();
+
+            GetValueBuildingInformation(0);
+            
+            //print("Active : " + active);
         }
 
         private void Create_button_action_data_for_building()
@@ -289,6 +336,7 @@ namespace GDD
             //Building Status
             BI_datas = new List<Building_Information_Data>();
             BI_datas.Add(new Building_Information_Data("สิ่งก่อสร้างไม่พร้อมใช้งาน", "กำลังก่อสร้างเสร็จสิ้นแล้ว 0%", Building_Information_Type.ShowStatus, Building_Show_mode.TextWith_ProgressBar));
+            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[0].title, m_Preset.m_building_status[0].text, Building_Information_Type.ShowStatus, Building_Show_mode.TextOnly));
             
             //Building_setting_danger
             _buttonActionDatas = new List<Button_Action_Data>();
@@ -298,6 +346,14 @@ namespace GDD
                 () => { print("24HHHHHH"); }));
 
 
+            RectTransform _rectTransform_warning = m_warning_noti.GetComponent<RectTransform>();
+            _rectTransform_warning.sizeDelta = Vector2.zero;
+            _rectTransform_warning.anchoredPosition = Vector2.zero;
+            Canvas _warningCanvas = m_warning_noti.GetComponent<Canvas>();
+            _warningCanvas.sortingOrder = 0;
+            _warningCanvas.planeDistance = 1f;
+            _warningCanvas.worldCamera = Camera.main;
+            
             BeginStart();
             _information_Datas.status = BI_datas;
 
@@ -319,6 +375,28 @@ namespace GDD
                 _actions.Add(add_action[i], buildingSetting);
                 i++;
             }
+        }
+
+        protected float Get_Villager_Efficiency()
+        {
+            float average_efficiency = 0;
+            Parallel.ForEach(villagers, vill_g =>
+            {
+                average_efficiency += vill_g.Item1.efficiency;
+            });
+
+            return average_efficiency / m_Preset.max_people;
+        }
+
+        protected float Get_Worker_Efficiency()
+        {
+            float average_efficiency = 0;
+            Parallel.ForEach(workers, wor_ker =>
+            {
+                average_efficiency += wor_ker.Item1.efficiency;
+            });
+
+            return average_efficiency / m_Preset.max_worker;
         }
 
         private void Check_power_resource()
@@ -424,18 +502,58 @@ namespace GDD
         
         public void RemoveAndAddPeople(object number)
         {
-            //print("Busssssssssssssssssssssssssssssssssss : " + (int)number);
-            
-            if((people + (int)number) <= people_Max && (people + (int)number) >= 0)
-                people += (int)number;
+            print("Busssssssssssssssssssssssssssssssssss : " + (int)number);
+
+            if ((villager_count + (int)number) <= people_Max && (villager_count + (int)number) >= 0)
+            {
+                print("Villager Add");
+                if ((int)number > 0 && HRM.CanGetVillager())
+                {
+                    Tuple<Villager_System_Script, PeopleJob> villager = HRM.GetVillager();
+                    villager.Item1.saveData.job = (byte)job; 
+                    HRM.VillagerGotoWorkBuilding(villager, this);
+
+                    _buildingSaveData.villagers.Add(villager.Item1.saveData);
+                }
+                if ((int)number < 0 && villagers.Count > 0)
+                {
+                    HRM.VillagerNotWorking(
+                        new Tuple<Villager_System_Script, PeopleJob>(
+                            villagers[0].Item1, 
+                            PeopleJob.Unemployed));
+                    
+                    _buildingSaveData.villagers.Remove(villagers[0].Item1.saveData);
+                    villagers.Remove(villagers[0]);
+                }
+            }
         }
         
         public void RemoveAndAddWorker(object number)
         {
-            //print("Busssssssssssssssssssssssssssssssssss : " + (int)number);
+            print("Busssssssssssssssssssssssssssssssssss : " + (int)number);
             
-            if((worker + (int)number) <= worker_Max && (worker + (int)number) >= 0)
-                worker += (int)number;
+            if((worker_count + (int)number) <= worker_Max && (worker_count + (int)number) >= 0)
+            {
+                print("Worker Add");
+                if ((int)number > 0 && HRM.CanGetWorker())
+                {
+                    Tuple<Worker_System_Script, PeopleJob> worker = HRM.GetWorker();
+                    worker.Item1.saveData.job = (byte)job;
+                    HRM.WorkerGotoWorkBuilding(worker, this);
+                    
+                    _buildingSaveData.workers.Add(worker.Item1.saveData);
+                }
+                if ((int)number < 0 && workers.Count > 0)
+                {
+                    HRM.WorkerNotWorking(
+                        new Tuple<Worker_System_Script, PeopleJob>(
+                            workers[0].Item1, 
+                            PeopleJob.Unemployed));
+                    
+                    _buildingSaveData.workers.Remove(workers[0].Item1.saveData);
+                    workers.Remove(workers[0]);
+                }
+            }
         }
 
         public virtual void OnRemoveBuilding(bool is_Cancel_Remove = false)
@@ -529,8 +647,8 @@ namespace GDD
             {
                 list_setting_values.Add(_buildingSaveData.Air_purifier_Speed_Up);
                 list_setting_values.Add(_buildingSaveData.WorkOverTime);
-                list_setting_values.Add(new Tuple<float, float>(_buildingSaveData.people, m_Preset.max_people));
-                list_setting_values.Add(new Tuple<float, float>(_buildingSaveData.worker, m_Preset.max_worker));
+                list_setting_values.Add(new Tuple<float, float>(villager_count, m_Preset.max_people));
+                list_setting_values.Add(new Tuple<float, float>(worker_count, m_Preset.max_worker));
             }
 
             return list_setting_values[index];
@@ -545,6 +663,9 @@ namespace GDD
                 is_construction_in_progress = true;
                 if (is_remove_building)
                 {
+                    m_warning_noti.SetActive(true);
+                    m_warning_noti.GetComponent<Canvas_Element_List>().canvas_gameObjects[0].SetActive(false);
+                    m_warning_noti.GetComponent<Canvas_Element_List>().canvas_gameObjects[1].SetActive(true);
                     buildingSaveData.construction_In_Progress += TM.deltaTime * -1;
                 }
                 else
@@ -572,7 +693,9 @@ namespace GDD
                 is_construction_in_progress = false;
 
                 if (construction_zone_pivot != null && construction_zone_pivot.activeSelf)
+                {
                     switch_mesh_construction_progress(false);
+                }
 
                 if (is_remove_building)
                     OnRemoveBuilding();
@@ -581,6 +704,7 @@ namespace GDD
 
         public Tuple<object, object, string> GetValueBuildingInformation(int index)
         {
+            bool is_problem = false;
             list_information_values = new List<Tuple<object, object, string>>();
             
             if (is_construction_in_progress)
@@ -606,14 +730,37 @@ namespace GDD
                 list_information_values.Add(new Tuple<object, object, string>(0, 0, null));
             }
 
-            OnUpdateInformationValue();
+            list_information_values.Add(new Tuple<object, object, string>(active && !is_road_found, null, m_Preset.m_building_status[0].text));
+            is_problem = OnUpdateInformationValue() || active && !is_road_found;
+
+            if (is_problem)
+            {
+                m_warning_noti.SetActive(true);
+                
+                if (is_remove_building)
+                {
+                    m_warning_noti.GetComponent<Canvas_Element_List>().canvas_gameObjects[0].SetActive(false);
+                    m_warning_noti.GetComponent<Canvas_Element_List>().canvas_gameObjects[1].SetActive(true);
+                }
+                else
+                {
+                    m_warning_noti.GetComponent<Canvas_Element_List>().canvas_gameObjects[1].SetActive(false);
+                    m_warning_noti.GetComponent<Canvas_Element_List>().canvas_gameObjects[0].SetActive(true);
+                }
+            }
+            else if (!is_remove_building)
+            {
+                m_warning_noti.SetActive(false);
+                m_warning_noti.GetComponent<Canvas_Element_List>().canvas_gameObjects[0].SetActive(false);
+            }
+            
             //print("List Info Value : " + list_information_values[index]);
             return list_information_values[index];
 
         }
 
         protected abstract void OnUpdateSettingValue();
-        protected abstract void OnUpdateInformationValue();
+        protected abstract bool OnUpdateInformationValue();
         
         public abstract void BeginStart();
         public abstract void EndStart();
@@ -637,6 +784,8 @@ namespace GDD
             transform.position = new Vector3(_buildingSaveData.Position.X, _buildingSaveData.Position.Y, _buildingSaveData.Position.Z);
             transform.eulerAngles = new Vector3(_buildingSaveData.Rotation.X, _buildingSaveData.Rotation.Y,_buildingSaveData.Rotation.Z);
             OnBeginPlace();
+            
+            SetPeopleDatasOnGaneLoad();
         }
 
         public bool OnPlaceBuilding()
@@ -662,10 +811,35 @@ namespace GDD
                 _buildingSaveData.Rotation = new Vector3D(transform.rotation.eulerAngles.x,
                     transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
                 _buildingSaveData.b_buildingtype = (byte)enum_buildingType;
-                GM.gameInstance.buildingSaveDatas.Add(_buildingSaveData);
+                GI_AddBuildingSavaData();
                 OnEndPlace();
 
                 return true;
+            }
+        }
+
+        public void GI_AddBuildingSavaData()
+        {
+            GM.gameInstance.buildingSaveDatas.Add(_buildingSaveData);
+        }
+
+        public void SetPeopleDatasOnGaneLoad()
+        {
+            Villager_Object_Pool_Script _villagerObjectPool = FindObjectOfType<Villager_Object_Pool_Script>();
+            Worker_Object_Pool_Script _workerObjectPool = FindObjectOfType<Worker_Object_Pool_Script>();
+            
+            foreach (var villager in _buildingSaveData.villagers)
+            {
+                People_System_Script _peopleSystemScript = _villagerObjectPool.Spawn(villager);
+                villagers.Add(new Tuple<Villager_System_Script, PeopleJob>((Villager_System_Script)_peopleSystemScript, job));
+                GM.gameInstance.villagerSaveDatas.Add(villager);
+            }
+
+            foreach (var worker in _buildingSaveData.workers)
+            {
+                People_System_Script _peopleSystemScript = _workerObjectPool.Spawn(worker);
+                workers.Add(new Tuple<Worker_System_Script, PeopleJob>((Worker_System_Script)_peopleSystemScript, job));
+                GM.gameInstance.workerSaveDatas.Add(worker);
             }
         }
 
@@ -827,13 +1001,16 @@ namespace GDD
         {
             Physics.Raycast(new Ray(transform.position + raycast_data.Item1, raycast_data.Item2), out RaycastHit raycasthit, raycast_data.Item3, 1<<L_Road|0<<L_Default|0<<L_Building|0<<L_Obstacle);
             //hit_floorraycasthits.Add(raycasthit);
+
+            is_road_found = true;
             
-            print("Enable!! Single Raycast Check Surround Road");
+            //print("Enable!! Single Raycast Check Surround Road");
             
             if (raycasthit.transform == null)
             {
-                print("Raod Not Found !!!!");
+                //print("Raod Not Found !!!!");
                 raycast_data = null;
+                is_road_found = false;
             }
             else
             {
@@ -856,6 +1033,15 @@ namespace GDD
             
             if(enum_buildingType != BuildingType.Generator)
                 RM.Set_Resources_Power_Use(this, true);
+        }
+
+        public virtual void OnRemovePeople<T>(People_System_Script _peopleSystemScript, PeopleJob _job)
+        {
+            if (typeof(T) == typeof(Villager_System_Script))
+                villagers.Remove(new Tuple<Villager_System_Script, PeopleJob>((Villager_System_Script)_peopleSystemScript, _job));
+                
+            if(typeof(T) == typeof(Worker_System_Script))
+                workers.Remove(new Tuple<Worker_System_Script, PeopleJob>((Worker_System_Script)_peopleSystemScript, _job));
         }
 
         public abstract void OnDestroyBuilding();

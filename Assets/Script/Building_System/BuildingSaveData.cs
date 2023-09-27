@@ -13,11 +13,10 @@ namespace GDD
         public bool Building_active;
         public bool Air_purifier_Speed_Up;
         public bool WorkOverTime;
-        public int people;
-        public int worker;
         public float construction_In_Progress;
-        public float efficiency = 1;
         public float re_userate_hour = 0;
+        public List<PeopleSystemSaveData> villagers = new List<PeopleSystemSaveData>();
+        public List<PeopleSystemSaveData> workers = new List<PeopleSystemSaveData>();
         public bool building_is_placed = false;
         public bool construction_is_in_progress;
         public bool building_is_remove;

@@ -213,6 +213,7 @@ namespace GDD
             if (construction_progess_percent <= 0 && is_remove_road)
             {
                 Destroy(gameObject);
+                Destroy(gameObject.transform.parent.gameObject);
             }
         }
 
@@ -278,6 +279,11 @@ namespace GDD
             OnDestroyBuilding();
             
             GM.gameInstance.RoadSaveDatas.Remove(roadSaveData);
+        }
+
+        public void OnRemovePeople<T>(People_System_Script _peopleSystemScript, PeopleJob job)
+        {
+            
         }
 
         public abstract void OnDestroyBuilding();

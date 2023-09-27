@@ -10,10 +10,9 @@ namespace GDD
 {
     public class GameManager:Singleton_With_DontDestroy<GameManager>
     {
-        private string Name = "";
-        private int Level = 0;
-        private int EXP = 0;
-        private int Score = 0;
+        [SerializeField]private int villagers_count = 12;
+        [SerializeField]private int workers_count = 12;
+        
         private GameInstance _gameInstance = new GameInstance();
 
         public GameInstance gameInstance
@@ -36,38 +35,69 @@ namespace GDD
             }
         }
 
-        public string GetName
+        public int PM_25
         {
-            get { return Name; } 
-            set { Name = value; } 
+            get => gameInstance.pm_25;
+            set => gameInstance.pm_25 = value;
         }
-        public int GetLevel
+
+        public int villagers_start
         {
-            get { return Level; } 
-            set { Level = value; } 
-        }
-        
-        public int GetEXP
-        {
-            get { return EXP; } 
-            set { EXP = value; } 
+            get => villagers_count;
+            set => villagers_count = value;
         }
         
-        public int GetScore
+        public int workers_start
         {
-            get { return Score; } 
-            set { Score = value; } 
+            get => workers_count;
+            set => workers_count = value;
         }
         
         private void OnGUI()
         {
             string s = "Building count : " + gameInstance.buildingSaveDatas.Count + " | Road count : " + gameInstance.RoadSaveDatas.Count + " | Resource count : " + gameInstance.staticResourceSaveDatas.Count;
             GUI.Label(new Rect(new Vector2(5, 40), new Vector2(450, 30)), "Save Data : " + s);
+            
+            string p = "Villager count : " + gameInstance.villagerSaveDatas.Count + " | Worker count : " + gameInstance.workerSaveDatas.Count;
+            GUI.Label(new Rect(new Vector2(5, 80), new Vector2(450, 30)), "Save Data : " + p);
+            /*
+            GUILayout.BeginArea(new Rect(10, 75, 500, 1080));
+            
+            //Villager Data
+            foreach (var peopleSystemSave in gameInstance.villagerSaveDatas)
+            {
+                GUILayout.BeginHorizontal("box");
+                GUILayout.Label("Villager\n");
+                GUILayout.Label("Health : " + (peopleSystemSave.health * 100) + "%\n");
+                GUILayout.Label("Hunger : " + (peopleSystemSave.hunger * 100) + "%\n");
+                GUILayout.Label("Content : " + (peopleSystemSave.content * 100) + "%\n");
+                GUILayout.Label("Current Job : " + (PeopleJob)peopleSystemSave.job + "\n");
+                GUILayout.Label("DailyLife : " + (PeopleDailyLife)peopleSystemSave.dailyLife + "\n");
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.EndArea();
+            
+            
+            GUILayout.BeginArea(new Rect(510, 75, 500, 1080));
+            //Worker Data
+            foreach (var peopleSystemSave in gameInstance.workerSaveDatas)
+            {
+                GUILayout.BeginHorizontal("box");
+                GUILayout.Label("Worker\n");
+                GUILayout.Label("Health : " + (peopleSystemSave.health * 100) + "%\n");
+                GUILayout.Label("Hunger : " + (peopleSystemSave.hunger * 100) + "%\n");
+                GUILayout.Label("Content : " + (peopleSystemSave.content * 100) + "%\n");
+                GUILayout.Label("Current Job : " + (PeopleJob)peopleSystemSave.job + "\n");
+                GUILayout.Label("DailyLife : " + (PeopleDailyLife)peopleSystemSave.dailyLife + "\n");
+                GUILayout.EndHorizontal();
+            }
+        
+            GUILayout.EndArea();
+            */
         }
         
         public void OnGameLoad()
         {
-            LoadSceneWithSaveData loadSceneWithSaveData;
             if (!FindObjectOfType<LoadSceneWithSaveData>())
             {
                 GameObject loadObject = new GameObject("Load Scene With Save Data");
@@ -75,6 +105,6 @@ namespace GDD
                 loadObject.GetComponent<LoadSceneWithSaveData>().enabled = false;
                 DontDestroyOnLoad(loadObject);
             }
-        } 
+        }
     }
 }

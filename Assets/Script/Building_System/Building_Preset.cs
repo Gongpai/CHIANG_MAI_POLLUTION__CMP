@@ -10,6 +10,9 @@ namespace GDD
     {
         public string name = "Generator";
         public int level = 1;
+
+        [Header("Jab Type")] 
+        public PeopleJob job;
         
         [Header("Building Requirement")] 
         public int max_people = 10;

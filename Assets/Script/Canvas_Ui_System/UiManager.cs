@@ -26,28 +26,8 @@ namespace GDD
 
         private void Update()
         {
-            NameText.text = "Name : " + GM.GetName;
-            LevelText.text = "Level : " + GM.GetLevel.ToString();
-            EXPText.text = "EXP : " + GM.GetEXP.ToString();
-            ScoreText.text = "Score : " + GM.GetScore.ToString();
-        }
-
-        public void SetName(string name)
-        {
             
-            GM.GetName = name;
         }
-
-        public void AddEXP()
-        {
-            GM.GetEXP += 100;
-        }
-
-        public void AddScore()
-        {
-            GM.GetScore += 999;
-        }
-
         public void SaveGame()
         {
             GameObject SLGUi = Instantiate(SaveLoadGameUi);

@@ -18,12 +18,10 @@ namespace GDD
             if (nextSceneIndex == (4))
             {
                 SceneManager.LoadScene(0);
-                GM.GetLevel = 0;
             }
             else
             {
                 SceneManager.LoadScene(nextSceneIndex);
-                GM.GetLevel = SceneManager.GetActiveScene().buildIndex + 1;
             }
         }
     }

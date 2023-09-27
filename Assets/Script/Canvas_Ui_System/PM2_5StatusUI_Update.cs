@@ -10,14 +10,20 @@ namespace GDD
     {
         [SerializeField]private Canvas_Element_List m_canvasElementList;
         [SerializeField] private List<Color> m_color = new List<Color>();
+        private GameManager GM;
         
-        private int pm2_5_value = 1;
         private float pm2_5_delta = 1;
         private bool is_add_value = false;
+
+        public int pm2_5_value
+        {
+            get => GM.PM_25;
+            set => GM.PM_25 = 300;
+        }
         
         private void Start()
         {
-            
+            GM = GameManager.Instance;
         }
 
         private void Update()

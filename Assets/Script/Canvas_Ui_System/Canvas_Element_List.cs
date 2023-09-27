@@ -12,6 +12,7 @@ namespace GDD
         [SerializeField] private List<TMP_InputField> m_tmp_inputfield;
         [SerializeField] private List<Image> m_images;
         [SerializeField] private List<Animator> m_animators;
+        [SerializeField] private List<AudioSource> m_audioSources;
         [SerializeField] private List<GameObject> m_canvas_gameObject;
 
         public List<Button> buttons
@@ -37,6 +38,11 @@ namespace GDD
         public List<Animator> animators
         {
             get => m_animators;
+        }
+
+        public List<AudioSource> audioSources
+        {
+            get => m_audioSources;
         }
 
         public List<GameObject> canvas_gameObjects

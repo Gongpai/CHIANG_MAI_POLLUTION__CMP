@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -16,6 +17,7 @@ namespace GDD
         protected GameManager GM;
         protected TimeManager TM;
         protected ResourcesManager RM;
+        protected HumanResourceManager HRM;
         protected Dictionary<UnityAction<object>, Static_Resource_Setting_Data> _actions = new ();
         protected List<UnityAction<object>> add_action = new List<UnityAction<object>>();
         protected List<Button_Action_Data> _buttonActionDatas = new List<Button_Action_Data>();
@@ -23,17 +25,27 @@ namespace GDD
         protected List<object> list_setting_values = new List<object>();
         protected List<Tuple<object, object, string>> list_information_values = new List<Tuple<object, object, string>>();
         protected List<Static_Resource_Information_Data> BI_datas = new();
+        protected List<Tuple<Villager_System_Script, PeopleJob>> villagers = new();
+        protected List<Tuple<Worker_System_Script, PeopleJob>> workers = new();
 
-        public int people
+        public int villager_count
         {
-            get => _staticResourceSaveData.people;
-            set => _staticResourceSaveData.people = value;
+            get => villagers.Count;
         }
 
-        public int worker
+        public int worker_count
         {
-            get => _staticResourceSaveData.worker;
-            set => _staticResourceSaveData.worker = value;
+            get => workers.Count;
+        }
+        
+        public int villager_data_count
+        {
+            get => _staticResourceSaveData.villagers.Count;
+        }
+
+        public int worker_data_count
+        {
+            get => _staticResourceSaveData.workers.Count;
         }
 
         public int people_Max
@@ -54,6 +66,12 @@ namespace GDD
             }
         }
 
+        public PeopleJob job
+        {
+            get => m_Resource_Preset.job;
+            private set => m_Resource_Preset.job = value;
+        }
+        
         public Static_Resource_info_struct buildingInfoStruct
         {
             get
@@ -77,6 +95,23 @@ namespace GDD
         {
             get => _actions;
         }
+        
+        public List<Tuple<Villager_System_Script, PeopleJob>> building_villagers
+        {
+            get => villagers;
+            set => villagers = value;
+        }
+
+        public List<Tuple<Worker_System_Script, PeopleJob>> building_workers
+        {
+            get => workers;
+            set => workers = value;
+        }
+        
+        protected float efficiency
+        {
+            get => (Get_Villager_Efficiency() + Get_Worker_Efficiency()) / 2;
+        }
 
         public virtual List<Button_Action_Data> GetInteractAction()
         {
@@ -93,17 +128,15 @@ namespace GDD
             GM = GameManager.Instance;
             TM = TimeManager.Instance;
             RM = ResourcesManager.Instance;
-
+            HRM = HumanResourceManager.Instance;
+            
             if (!GM.gameInstance.check_id_ResourceSaveData(m_id_Resource))
             {
                 print("Non Save");
                 _staticResourceSaveData.id = m_id_Resource;
+                _staticResourceSaveData.villagers = new List<PeopleSystemSaveData>();
+                _staticResourceSaveData.workers = new List<PeopleSystemSaveData>();
                 GM.gameInstance.staticResourceSaveDatas.Add(_staticResourceSaveData);
-            }
-            else
-            {
-                print("Load Save");
-                _staticResourceSaveData = GM.gameInstance.Get_Static_Resource_SaveData(m_id_Resource);
             }
         }
 
@@ -114,8 +147,6 @@ namespace GDD
 
         protected virtual void Update()
         {
-            _staticResourceSaveData.efficiency = ((float)_staticResourceSaveData.people + (float)_staticResourceSaveData.worker) / ((float)m_Resource_Preset.max_people + (float)m_Resource_Preset.max_worker);
-
             ResourceProductRate();
         }
 
@@ -179,6 +210,28 @@ namespace GDD
                 }
             }
         }
+        
+        protected float Get_Villager_Efficiency()
+        {
+            float average_efficiency = 0;
+            Parallel.ForEach(villagers, vill_g =>
+            {
+                average_efficiency += vill_g.Item1.efficiency;
+            });
+
+            return average_efficiency / m_Resource_Preset.max_people;
+        }
+
+        protected float Get_Worker_Efficiency()
+        {
+            float average_efficiency = 0;
+            Parallel.ForEach(workers, wor_ker =>
+            {
+                average_efficiency += wor_ker.Item1.efficiency;
+            });
+
+            return average_efficiency / m_Resource_Preset.max_worker;
+        }
 
         public abstract void Resource_product();
 
@@ -209,14 +262,76 @@ namespace GDD
         
         public void RemoveAndAddPeople(object number)
         {
-            if((people + (int)number) <= people_Max && (people + (int)number) >= 0)
-                people += (int)number;
+            //print("Busssssssssssssssssssssssssssssssssss : " + (int)number);
+
+            if ((villager_count + (int)number) <= people_Max && (villager_count + (int)number) >= 0)
+            {
+                if ((int)number > 0 && HRM.CanGetVillager())
+                {
+                    Tuple<Villager_System_Script, PeopleJob> villager = HRM.GetVillager();
+                    villager.Item1.saveData.job = (byte)m_Resource_Preset.job; 
+                    HRM.VillagerGotoWorkResource(villager, this);
+                    
+                    _staticResourceSaveData.villagers.Add(villager.Item1.saveData);
+                }
+                if ((int)number < 0 && villagers.Count > 0)
+                {
+                    HRM.VillagerNotWorking(
+                        new Tuple<Villager_System_Script, PeopleJob>(
+                            villagers[0].Item1, 
+                            PeopleJob.Unemployed));
+                    
+                    _staticResourceSaveData.villagers.Remove(villagers[0].Item1.saveData);
+                    villagers.Remove(villagers[0]);
+                }
+            }
         }
         
         public void RemoveAndAddWorker(object number)
         {
-            if((worker + (int)number) <= worker_Max && (worker + (int)number) >= 0)
-                worker += (int)number;
+            //print("Busssssssssssssssssssssssssssssssssss : " + (int)number);
+            
+            if((worker_count + (int)number) <= worker_Max && (worker_count + (int)number) >= 0)
+            {
+                if ((int)number > 0 && HRM.CanGetWorker())
+                {
+                    Tuple<Worker_System_Script, PeopleJob> worker = HRM.GetWorker();
+                    worker.Item1.saveData.job = (byte)m_Resource_Preset.job;
+                    HRM.WorkerGotoWorkResource(worker, this);
+                    
+                    _staticResourceSaveData.workers.Add(worker.Item1.saveData);
+                }
+                if ((int)number < 0 && workers.Count > 0)
+                {
+                    HRM.WorkerNotWorking(
+                        new Tuple<Worker_System_Script, PeopleJob>(
+                            workers[0].Item1, 
+                            PeopleJob.Unemployed));
+                    
+                    _staticResourceSaveData.workers.Remove(workers[0].Item1.saveData);
+                    workers.Remove(workers[0]);
+                }
+            }
+        }
+        
+        public void SetPeopleDatasOnGaneLoad()
+        {
+            Villager_Object_Pool_Script _villagerObjectPool = FindObjectOfType<Villager_Object_Pool_Script>();
+            Worker_Object_Pool_Script _workerObjectPool = FindObjectOfType<Worker_Object_Pool_Script>();
+            
+            foreach (var villager in _staticResourceSaveData.villagers)
+            {
+                People_System_Script _peopleSystemScript = _villagerObjectPool.Spawn(villager);
+                villagers.Add(new Tuple<Villager_System_Script, PeopleJob>((Villager_System_Script)_peopleSystemScript, job));
+                GM.gameInstance.villagerSaveDatas.Add(villager);
+            }
+
+            foreach (var worker in _staticResourceSaveData.workers)
+            {
+                People_System_Script _peopleSystemScript = _workerObjectPool.Spawn(worker);
+                workers.Add(new Tuple<Worker_System_Script, PeopleJob>((Worker_System_Script)_peopleSystemScript, job));
+                GM.gameInstance.workerSaveDatas.Add(worker);
+            }
         }
 
         public Button_Action_Data GetUpdateButtonAction(int index)
@@ -241,8 +356,8 @@ namespace GDD
         public object GetValueBuilingSetting(int index)
         {
             list_setting_values = new List<object>();
-            list_setting_values.Add(new Tuple<float, float>(_staticResourceSaveData.people, m_Resource_Preset.max_people));
-            list_setting_values.Add(new Tuple<float, float>(_staticResourceSaveData.worker, m_Resource_Preset.max_worker));
+            list_setting_values.Add(new Tuple<float, float>(villager_count, m_Resource_Preset.max_people));
+            list_setting_values.Add(new Tuple<float, float>(worker_count, m_Resource_Preset.max_worker));
             list_setting_values.Add(_staticResourceSaveData.WorkOverTime);
             OnUpdateSettingValue();
             
@@ -268,14 +383,19 @@ namespace GDD
 
         public void OnGameLoad()
         {
-            GM = FindObjectOfType<GameManager>();
-
-            TM = TimeManager.Instance;
+            if (GM.gameInstance.check_id_ResourceSaveData(m_id_Resource))
+            {
+                print("Load Save");
+                _staticResourceSaveData = GM.gameInstance.Get_Static_Resource_SaveData(m_id_Resource);
+            }
+            
             if(_staticResourceSaveData.re_userate_hour <= 0)
                 _staticResourceSaveData.re_userate_hour = TM.To_TotalHour(TM.get_DateTime) + m_Resource_Preset.product_output_use_rate;
 
             OnBeginPlace();
             OnBeginPlace();
+            
+            SetPeopleDatasOnGaneLoad();
         }
         
         public virtual void Check_Surround_Road()
@@ -295,6 +415,15 @@ namespace GDD
             
             if(GM != null && _staticResourceSaveData != null)
                 GM.gameInstance.staticResourceSaveDatas.Remove(_staticResourceSaveData);
+        }
+        
+        public virtual void OnRemovePeople<T>(People_System_Script _peopleSystemScript, PeopleJob _job)
+        {
+            if (typeof(T) == typeof(Villager_System_Script))
+                villagers.Remove(new Tuple<Villager_System_Script, PeopleJob>((Villager_System_Script)_peopleSystemScript, _job));
+                
+            if(typeof(T) == typeof(Worker_System_Script))
+                workers.Remove(new Tuple<Worker_System_Script, PeopleJob>((Worker_System_Script)_peopleSystemScript, _job));
         }
 
         public abstract void OnDestroyBuilding();

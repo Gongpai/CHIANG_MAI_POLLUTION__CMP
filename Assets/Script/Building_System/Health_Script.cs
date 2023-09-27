@@ -23,7 +23,7 @@ namespace GDD
         
         public override void BeginStart()
         {
-            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[0].title, m_Preset.m_building_status[0].text, Building_Information_Type.ShowStatus, Building_Show_mode.TextOnly));
+            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[1].title, m_Preset.m_building_status[1].text, Building_Information_Type.ShowStatus, Building_Show_mode.TextOnly));
         }
 
         public override void EndStart()
@@ -46,9 +46,10 @@ namespace GDD
             
         }
 
-        protected override void OnUpdateInformationValue()
+        protected override bool OnUpdateInformationValue()
         {
-            list_information_values.Add(new Tuple<object, object, string>(active && !is_cant_use_power, null, m_Preset.m_building_status[0].text));
+            list_information_values.Add(new Tuple<object, object, string>(active && !is_cant_use_power, null, m_Preset.m_building_status[1].text));
+            return active && !is_cant_use_power;
         }
 
         public override void OnBeginPlace()

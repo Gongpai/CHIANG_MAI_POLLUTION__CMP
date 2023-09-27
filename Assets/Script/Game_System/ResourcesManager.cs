@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace GDD
 {
     public class ResourcesManager : Sinagleton_CanDestroy<ResourcesManager>
     {
+        [SerializeField] private int foooddd = 0;
+        [SerializeField] private bool is_Set = false;
         private GameManager GM;
         private GameInstance GI;
         private List<Generator_Script> _generatorScripts = new List<Generator_Script>();
@@ -25,6 +28,11 @@ namespace GDD
 
         private void Update()
         {
+            if (is_Set)
+            {
+                GI.set_food_resource(foooddd);
+            }
+
             Get_Sum_Resources_Power();
         }
         
@@ -66,7 +74,8 @@ namespace GDD
 
         public void Set_Resources_Tree(int tree)
         {
-            GI.set_tree_resource(GI.get_tree_resource() + tree);
+            if(GI.get_tree_resource() + tree >= 0) 
+                GI.set_tree_resource(GI.get_tree_resource() + tree);
         }
         
         public bool Can_Set_Resources_Tree(int tree)
@@ -88,7 +97,8 @@ namespace GDD
         
         public void Set_Resources_Rock(int rock)
         {
-            GI.set_rock_resource(GI.get_rock_resource() + rock);
+            if(GI.get_rock_resource() + rock >= 0) 
+                GI.set_rock_resource(GI.get_rock_resource() + rock);
         }
 
         public bool Can_Set_Resources_Rock(int rock)
@@ -110,7 +120,8 @@ namespace GDD
         
         public void Set_Resources_Food(int food)
         {
-            GI.set_food_resource(GI.get_food_resource() + food);
+            if(GI.get_food_resource() + food >= 0) 
+                GI.set_food_resource(GI.get_food_resource() + food);
         }
         
         public bool Can_Set_Resources_Food(int food)

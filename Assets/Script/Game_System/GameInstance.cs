@@ -10,7 +10,10 @@ namespace GDD
         public List<BuildingSaveData> buildingSaveDatas = new List<BuildingSaveData>();
         public List<RoadSaveData> RoadSaveDatas = new List<RoadSaveData>();
         public List<Static_Resource_SaveData> staticResourceSaveDatas = new List<Static_Resource_SaveData>();
+        public List<PeopleSystemSaveData> villagerSaveDatas = new List<PeopleSystemSaveData>();
+        public List<PeopleSystemSaveData> workerSaveDatas = new List<PeopleSystemSaveData>();
         public Resources_Data resources = new Resources_Data(250, 250, 0, 0);
+        public int pm_25;
         
         public GameDateTime gameDateTime;
 

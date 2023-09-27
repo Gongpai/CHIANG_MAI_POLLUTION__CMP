@@ -7,12 +7,12 @@ namespace GDD
     {
         public override void Resource_product()
         {
-            RM.Set_Resources_Tree(Mathf.CeilToInt(m_Resource_Preset.product_output_resource * _staticResourceSaveData.efficiency));
+            RM.Set_Resources_Tree(Mathf.CeilToInt(m_Resource_Preset.product_output_resource * efficiency));
         }
 
         public override void BeginStart()
         {
-            BI_datas.Add(new (m_Resource_Preset.m_static_resource_status[0].title, m_Resource_Preset.m_static_resource_status[0].text + " " + _staticResourceSaveData.efficiency, Building_Information_Type.ShowStatus));
+            BI_datas.Add(new (m_Resource_Preset.m_static_resource_status[0].title, m_Resource_Preset.m_static_resource_status[0].text + " " + efficiency, Building_Information_Type.ShowStatus));
         }
 
         public override void EndStart()
@@ -37,7 +37,7 @@ namespace GDD
 
         protected override void OnUpdateInformationValue()
         {
-            list_information_values.Add(new Tuple<object, object, string>(_staticResourceSaveData.efficiency, 1.0f, m_Resource_Preset.m_static_resource_status[0].text+ " " + (_staticResourceSaveData.efficiency * 100) + "%"));
+            list_information_values.Add(new Tuple<object, object, string>(efficiency, 1.0f, m_Resource_Preset.m_static_resource_status[0].text+ " " + (efficiency * 100) + "%"));
         }
 
         public override void OnBeginPlace()

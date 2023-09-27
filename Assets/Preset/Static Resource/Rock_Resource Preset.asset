@@ -15,6 +15,7 @@ MonoBehaviour:
   name: "\u0E17\u0E23\u0E31\u0E1E\u0E22\u0E32\u0E01\u0E23\u0E2B\u0E34\u0E19"
   max_people: 10
   max_worker: 10
+  job: 5
   product_output_resource: 100
   product_output_use_rate: 1
   m_static_resource_setting:

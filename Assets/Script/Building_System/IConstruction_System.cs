@@ -2,7 +2,7 @@
 
 namespace GDD
 {
-    interface  IConstruction_System
+    public interface  IConstruction_System
     {
         //OnGameLoad
        public void OnGameLoad();
@@ -30,6 +30,9 @@ namespace GDD
        
        //Destroy
        public void OnDestroyBuilding();
+       
+       //Remove People
+       public void OnRemovePeople<T>(People_System_Script _peopleSystemScript, PeopleJob job);
        
        //onEnable and onDisable
        public void OnEnableBuilding();

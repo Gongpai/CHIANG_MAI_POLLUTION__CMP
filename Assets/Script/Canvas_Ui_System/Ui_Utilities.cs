@@ -194,11 +194,11 @@ namespace GDD
             return ui;
         }
         
-        public void RemoveUI()
+        public void RemoveUI(float offset_time = 0)
         {
             _canvasUI.GetComponent<Animator>().SetBool("IsStart", false);
             
-            Destroy(_canvasUI, _canvasUI.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+            Destroy(_canvasUI, _canvasUI.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length + offset_time);
             _canvasUI = null;
         }
     }

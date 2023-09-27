@@ -13,6 +13,9 @@ namespace GDD
         [Header("Building Requirement")] public int max_people = 10;
         public int max_worker = 10;
 
+        [Header("Jab Type")] 
+        public PeopleJob job;
+        
         [Header("Resources Product Output Rate / Hour")]
         public int product_output_resource;
         public int product_output_use_rate;
