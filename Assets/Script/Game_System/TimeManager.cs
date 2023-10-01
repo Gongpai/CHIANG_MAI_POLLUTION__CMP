@@ -73,7 +73,7 @@ namespace GDD
 
         private void gameTimeSystem()
         {
-            _deltaTime = Time.deltaTime * Mathf.Pow(100, _timescale);
+            _deltaTime = Time.deltaTime * Mathf.Pow(1000, _timescale);
             date_Time = date_Time.AddSeconds(_deltaTime);
 
             if ((date_Time.DayOfYear == 365 && !DateTime.IsLeapYear(date_Time.Year)) || date_Time.DayOfYear == 366)

@@ -109,7 +109,7 @@ namespace GDD
                 //print("Re Use Rate/Hour : " + buildingSaveData.re_userate_hour + " Hour Now : " + TM.To_TotalHour(TM.get_DateTime));
                 _peopleSaveData.current_hour_update = TM.To_TotalHour(TM.get_DateTime) + 1;
                 //print("----Resources :::::::::: " + buildingSaveData.re_userate_hour);
-                print("------------------------------------");
+                //print("------------------------------------");
                 
                 Hunger_Status_Controll();
                 health_Status_Controll();
@@ -118,11 +118,21 @@ namespace GDD
                 
                 Content_Status_Controll();
                 ChangeState_System();
+
+                CheckHeathPeople();
                 
                 print("Efficiency : " + efficiency);
             }
         }
 
+        private void CheckHeathPeople()
+        {
+            if (health <= 0.000000f)
+            {
+                ReturnToPool();
+            }
+        }
+        
         private void Hunger_Status_Controll()
         {
             if (hunger - 0.1f >= 0)
@@ -140,14 +150,14 @@ namespace GDD
                 hunger = 1;
             }
             
-            print("Hunger : " + hunger);
+            //print("Hunger : " + hunger);
         }
         
         private void Content_Status_Controll()
         {
             content = (hunger + health) / 2;
             
-            print("Content : " + content);
+            //print("Content : " + content);
         }
 
         private void health_Status_Controll()
@@ -162,18 +172,20 @@ namespace GDD
                 Debug.LogError("People Dead");
             }
 
-            if (dust_pm_25 >= 150 && health - (((float)dust_pm_25 - 150.000000f) / 300.000000f) >= 0)
+            if (dust_pm_25 >= 150)
             {
-                health -= ((float)(dust_pm_25 - 150.000000f) / 300.000000f);
+                if (health - (((float)dust_pm_25 - 150.000000f) / 300.000000f) <= 0)
+                {
+                    health = 0;
+                }
+                else
+                {
+                    health -= ((float)(dust_pm_25 - 150.000000f) / 300.000000f);
+                }
             }
 
-            if (health <= 0)
-            {
-                ReturnToPool();
-            }
-
-            print("PM 2.5 : " + dust_pm_25);
-            print("Health : " + health);
+            //print("PM 2.5 : " + dust_pm_25);
+            //print("Health : " + health);
         }
 
         protected virtual void ReturnToPool()

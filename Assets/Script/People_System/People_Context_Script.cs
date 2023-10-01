@@ -21,7 +21,7 @@ namespace GDD
 
         public void Update_per_hour()
         {
-            Debug.Log("Update");
+            //Debug.Log("Update");
             if(CurrentState != null)
                 CurrentState.Daily_life(_peopleSystemScript);
         }

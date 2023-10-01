@@ -28,9 +28,10 @@ namespace GDD
             }
             else
             {
+                print("death : " + (_peopleSaveData == null));
                 _constructionSystem.OnRemovePeople<Villager_System_Script>(this, peopleJob);
             }
-
+            
             GM.gameInstance.villagerSaveDatas.Remove(_peopleSaveData);
             
             base.OnDead();

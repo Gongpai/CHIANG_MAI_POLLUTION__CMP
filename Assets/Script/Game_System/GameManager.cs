@@ -52,7 +52,7 @@ namespace GDD
             get => workers_count;
             set => workers_count = value;
         }
-        
+        /*
         private void OnGUI()
         {
             string s = "Building count : " + gameInstance.buildingSaveDatas.Count + " | Road count : " + gameInstance.RoadSaveDatas.Count + " | Resource count : " + gameInstance.staticResourceSaveDatas.Count;
@@ -60,7 +60,7 @@ namespace GDD
             
             string p = "Villager count : " + gameInstance.villagerSaveDatas.Count + " | Worker count : " + gameInstance.workerSaveDatas.Count;
             GUI.Label(new Rect(new Vector2(5, 80), new Vector2(450, 30)), "Save Data : " + p);
-            /*
+            
             GUILayout.BeginArea(new Rect(10, 75, 500, 1080));
             
             //Villager Data
@@ -93,9 +93,9 @@ namespace GDD
             }
         
             GUILayout.EndArea();
-            */
+            
         }
-        
+        */
         public void OnGameLoad()
         {
             if (!FindObjectOfType<LoadSceneWithSaveData>())

@@ -322,6 +322,7 @@ namespace GDD
             foreach (var villager in _staticResourceSaveData.villagers)
             {
                 People_System_Script _peopleSystemScript = _villagerObjectPool.Spawn(villager);
+                _peopleSystemScript._constructionSystem = this;
                 villagers.Add(new Tuple<Villager_System_Script, PeopleJob>((Villager_System_Script)_peopleSystemScript, job));
                 GM.gameInstance.villagerSaveDatas.Add(villager);
             }
@@ -329,6 +330,7 @@ namespace GDD
             foreach (var worker in _staticResourceSaveData.workers)
             {
                 People_System_Script _peopleSystemScript = _workerObjectPool.Spawn(worker);
+                _peopleSystemScript._constructionSystem = this;
                 workers.Add(new Tuple<Worker_System_Script, PeopleJob>((Worker_System_Script)_peopleSystemScript, job));
                 GM.gameInstance.workerSaveDatas.Add(worker);
             }

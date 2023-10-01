@@ -26,9 +26,10 @@
             }
             else
             {
+                print("death");
                 _constructionSystem.OnRemovePeople<Worker_System_Script>(this, peopleJob);
             }
-
+            
             GM.gameInstance.workerSaveDatas.Remove(_peopleSaveData);
             
             base.OnDead();

@@ -510,7 +510,7 @@ namespace GDD
                 if ((int)number > 0 && HRM.CanGetVillager())
                 {
                     Tuple<Villager_System_Script, PeopleJob> villager = HRM.GetVillager();
-                    villager.Item1.saveData.job = (byte)job; 
+                    villager.Item1.saveData.job = (byte)job;
                     HRM.VillagerGotoWorkBuilding(villager, this);
 
                     _buildingSaveData.villagers.Add(villager.Item1.saveData);
@@ -831,6 +831,7 @@ namespace GDD
             foreach (var villager in _buildingSaveData.villagers)
             {
                 People_System_Script _peopleSystemScript = _villagerObjectPool.Spawn(villager);
+                _peopleSystemScript._constructionSystem = this;
                 villagers.Add(new Tuple<Villager_System_Script, PeopleJob>((Villager_System_Script)_peopleSystemScript, job));
                 GM.gameInstance.villagerSaveDatas.Add(villager);
             }
@@ -838,6 +839,7 @@ namespace GDD
             foreach (var worker in _buildingSaveData.workers)
             {
                 People_System_Script _peopleSystemScript = _workerObjectPool.Spawn(worker);
+                _peopleSystemScript._constructionSystem = this;
                 workers.Add(new Tuple<Worker_System_Script, PeopleJob>((Worker_System_Script)_peopleSystemScript, job));
                 GM.gameInstance.workerSaveDatas.Add(worker);
             }

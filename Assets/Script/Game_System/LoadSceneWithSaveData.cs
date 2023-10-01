@@ -109,6 +109,7 @@ namespace GDD
             {
                 People_System_Script peopleSystemScript = _villagerObjectPool.Spawn(GI.villagerSaveDatas[index]);
                 HRM.AddPeople<Villager_System_Script>(peopleSystemScript);
+                
             }
             
             for (int index = 0; index < GI.workerSaveDatas.Count; index++)
