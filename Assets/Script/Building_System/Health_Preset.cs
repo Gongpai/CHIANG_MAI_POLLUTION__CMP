@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace GDD
 {
@@ -7,6 +8,6 @@ namespace GDD
     public class Health_Preset : ScriptableObject
     {
         [Header("People Receiving Treatment")]
-        public float people = 10;
+        public int patient = 10;
     }
 }

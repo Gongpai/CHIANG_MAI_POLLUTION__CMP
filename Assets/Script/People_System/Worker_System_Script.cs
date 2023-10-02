@@ -15,6 +15,8 @@
         
         public override void SetPeopleDatatoSavaData()
         {
+            base.SetPeopleDatatoSavaData();
+            
             GM.gameInstance.workerSaveDatas.Add(_peopleSaveData);
         }
 

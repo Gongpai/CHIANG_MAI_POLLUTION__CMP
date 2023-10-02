@@ -1,19 +1,23 @@
 ﻿using System;
+using RandomNameGen;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
+using Random = System.Random;
 
 namespace GDD
 {
     public abstract class People_System_Script : MonoBehaviour
     {
+        [SerializeField] public string name_view;
         protected PeopleSystemSaveData _peopleSaveData = new PeopleSystemSaveData();
         protected ResourcesManager RM;
         protected TimeManager TM;
         protected GameManager GM;
         protected HumanResourceManager HRM;
         protected float efficiency_boot = 1;
-
+        
+        public Health_Script _current_healthScript { get; set; }
         public IConstruction_System _constructionSystem { get; set; }
         public IObjectPool<People_System_Script> Pool { get; set; }
 
@@ -21,6 +25,12 @@ namespace GDD
         {
             get => _peopleSaveData;
             set => _peopleSaveData = value;
+        }
+
+        public string name
+        {
+            get => _peopleSaveData.name;
+            set => _peopleSaveData.name = value;
         }
         
         public bool is_still_working
@@ -93,6 +103,12 @@ namespace GDD
             _sickState = gameObject.AddComponent<People_Sick_State>();
             _noworkingState = gameObject.AddComponent<People_NoWorking_State>();
             _workingState = gameObject.AddComponent<People_Working_State>();
+            
+            Random r = new Random(); 
+            RandomName rn = new RandomName(r);
+            name = rn.Generate(Sex.Male);
+            name_view = name;
+            print(" name is : " + name);
         }
 
         protected virtual void Update()
@@ -100,7 +116,14 @@ namespace GDD
             Update_per_hour();
         }
 
-        public abstract void SetPeopleDatatoSavaData();
+        public virtual void SetPeopleDatatoSavaData()
+        {
+            Random r = new Random(); 
+            RandomName rn = new RandomName(r);
+            name = rn.Generate(Sex.Male);
+            name_view = name;
+            print(" name is : " + name);
+        }
         
         private void Update_per_hour()
         {
@@ -114,14 +137,13 @@ namespace GDD
                 Hunger_Status_Controll();
                 health_Status_Controll();
                 
-                _peopleContextScript.Update_per_hour();
-                
-                Content_Status_Controll();
                 ChangeState_System();
+                _peopleContextScript.Update_per_hour();
+                Content_Status_Controll();
 
                 CheckHeathPeople();
                 
-                print("Efficiency : " + efficiency);
+                //print("Efficiency : " + efficiency);
             }
         }
 
@@ -180,6 +202,7 @@ namespace GDD
                 }
                 else
                 {
+                    print("ddddd : " + ((float)(dust_pm_25 - 150.000000f) / 300.000000f));
                     health -= ((float)(dust_pm_25 - 150.000000f) / 300.000000f);
                 }
             }
@@ -233,13 +256,13 @@ namespace GDD
 
         private void OnNoWorkingState()
         {
-            print("OnNoWorkingState");
+            //print("OnNoWorkingState");
             _peopleContextScript.Transition(_noworkingState);
         }
 
         private void OnWorkingState()
         {
-            print("OnWorkingState");
+            //print("OnWorkingState");
             _peopleContextScript.Transition(_workingState);
         }
 
@@ -251,6 +274,13 @@ namespace GDD
         protected virtual void OnDead()
         {
             HRM.peopleDeaths.Add(this);
+
+            if (_current_healthScript != null)
+            {
+                _current_healthScript.OnRecoverIllness(saveData);
+                _current_healthScript = null;
+            }
+
             _peopleSaveData = new PeopleSystemSaveData();
         }
     }

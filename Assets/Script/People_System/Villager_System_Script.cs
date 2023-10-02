@@ -17,6 +17,8 @@ namespace GDD
 
         public override void SetPeopleDatatoSavaData()
         {
+            base.SetPeopleDatatoSavaData();
+            
             GM.gameInstance.villagerSaveDatas.Add(_peopleSaveData);
         }
 

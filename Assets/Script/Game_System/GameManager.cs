@@ -52,6 +52,7 @@ namespace GDD
             get => workers_count;
             set => workers_count = value;
         }
+        
         /*
         private void OnGUI()
         {
@@ -73,6 +74,7 @@ namespace GDD
                 GUILayout.Label("Content : " + (peopleSystemSave.content * 100) + "%\n");
                 GUILayout.Label("Current Job : " + (PeopleJob)peopleSystemSave.job + "\n");
                 GUILayout.Label("DailyLife : " + (PeopleDailyLife)peopleSystemSave.dailyLife + "\n");
+                
                 GUILayout.EndHorizontal();
             }
             GUILayout.EndArea();
@@ -96,6 +98,7 @@ namespace GDD
             
         }
         */
+        
         public void OnGameLoad()
         {
             if (!FindObjectOfType<LoadSceneWithSaveData>())

@@ -1,5 +1,8 @@
-﻿namespace GDD
+﻿using System;
+
+namespace GDD
 {
+    [Serializable]
     public class PeopleSystemSaveData
     {
         public bool is_still_working;
@@ -9,5 +12,6 @@
         public float current_hour_update;
         public byte dailyLife;
         public byte job;
+        public string name;
     }
 }
