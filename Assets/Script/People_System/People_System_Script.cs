@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using RandomNameGen;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -16,8 +19,12 @@ namespace GDD
         protected GameManager GM;
         protected HumanResourceManager HRM;
         protected float efficiency_boot = 1;
+        protected float pm25_max = 800;
+        protected float hunger_value = 0.025f;
+        protected float hunger_damage = 0.05f;
         
         public Health_Script _current_healthScript { get; set; }
+        public People_Script _current_residentScript { get; set; }
         public IConstruction_System _constructionSystem { get; set; }
         public IObjectPool<People_System_Script> Pool { get; set; }
 
@@ -113,7 +120,36 @@ namespace GDD
 
         protected virtual void Update()
         {
+            FindResident();
             Update_per_hour();
+        }
+
+        protected virtual void FindResident()
+        {
+            if (_current_residentScript == null)
+            {
+                List<People_Script> _peopleScripts =
+                    FindObjectsByType<People_Script>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
+
+                People_Script peopleScript = null;
+                
+                Parallel.ForEach(_peopleScripts, (script, state) =>
+                {
+                    if (script.get_people_count < script.get_people_max && script.building_is_active)
+                    {
+                        peopleScript = script;
+                        
+                        state.Break();
+                    }
+                });
+
+                if (peopleScript != null)
+                {
+                    _current_residentScript = peopleScript;
+                    _current_residentScript.OnAddPeople(_peopleSaveData);
+                    HRM.residence.Add(this);
+                }
+            }
         }
 
         public virtual void SetPeopleDatatoSavaData()
@@ -157,10 +193,10 @@ namespace GDD
         
         private void Hunger_Status_Controll()
         {
-            if (hunger - 0.1f >= 0)
+            if (hunger - hunger_value >= 0)
             {
-                hunger -= 0.1f;
-            }else if (hunger - 0.1f <= 0)
+                hunger -= hunger_value;
+            }else if (hunger - hunger_value <= 0)
             {
                 hunger = 0;
             }
@@ -184,11 +220,11 @@ namespace GDD
 
         private void health_Status_Controll()
         {
-            if(hunger <= 0.1f && health - 0.1f >= 0)
+            if(hunger <= hunger_damage && health - hunger_damage >= 0)
             {
-                health -= 0.1f;
+                health -= hunger_damage;
             }
-            else if(health - 0.1f <= 0)
+            else if(health - hunger_damage <= 0)
             {
                 health = 0;
                 Debug.LogError("People Dead");
@@ -196,14 +232,14 @@ namespace GDD
 
             if (dust_pm_25 >= 150)
             {
-                if (health - (((float)dust_pm_25 - 150.000000f) / 300.000000f) <= 0)
+                if (health - (((float)dust_pm_25 - 150.000000f) / pm25_max) <= 0)
                 {
                     health = 0;
                 }
                 else
                 {
-                    print("ddddd : " + ((float)(dust_pm_25 - 150.000000f) / 300.000000f));
-                    health -= ((float)(dust_pm_25 - 150.000000f) / 300.000000f);
+                    //print("ddddd : " + ((float)(dust_pm_25 - 150.000000f) / pm25_max));
+                    health -= ((float)(dust_pm_25 - 150.000000f) / pm25_max);
                 }
             }
 
@@ -275,12 +311,37 @@ namespace GDD
         {
             HRM.peopleDeaths.Add(this);
 
-            if (_current_healthScript != null)
+            if(dailyLife == PeopleDailyLife.Sick_State && _current_healthScript == null)
+                HRM.patients.Remove(this);
+            if(dailyLife == PeopleDailyLife.Sick_State && _current_healthScript != null)
+                HRM.healing.Remove(this);
+            
+            if (peopleJob == PeopleJob.Nurse)
             {
-                _current_healthScript.OnRecoverIllness(saveData);
-                _current_healthScript = null;
+                if (dailyLife == PeopleDailyLife.Sick_State)
+                {
+                    print("Nurse Remove");
+                    Building_System_Script buildingSystem = (Building_System_Script)_constructionSystem;
+                    Health_Script healthScript = (Health_Script)buildingSystem;
+                    healthScript.OnRecoverIllness(_peopleSaveData, true);
+                }
+            }
+            else
+            {
+                if (_current_healthScript != null)
+                {
+                    _current_healthScript.OnRecoverIllness(_peopleSaveData);
+                    _current_healthScript = null;
+                }
             }
 
+            if (_current_residentScript != null)
+            {
+                _current_residentScript.OnRemovePeople(_peopleSaveData);
+                HRM.residence.Remove(this);
+                _current_residentScript = null;
+            }
+            
             _peopleSaveData = new PeopleSystemSaveData();
         }
     }

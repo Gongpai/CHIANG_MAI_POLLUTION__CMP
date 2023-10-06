@@ -27,6 +27,11 @@ namespace GDD
             }
         }
 
+        public float max_power_produce
+        {
+            get => m_generatorPreset.power;
+        }
+
         protected override void ResourceUsageRate()
         {
             base.ResourceUsageRate();

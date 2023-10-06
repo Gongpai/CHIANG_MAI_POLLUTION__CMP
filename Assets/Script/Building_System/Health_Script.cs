@@ -14,9 +14,14 @@ namespace GDD
 
         [SerializeField] private List<PeopleSystemSaveData> ppp = new List<PeopleSystemSaveData>();
 
-        public int get_patient_current
+        public int get_patient_count
         {
             get => _healthSaveData.patients.Count;
+        }
+
+        public int get_nurse_patient_count
+        {
+            get => _healthSaveData.nurse_patients.Count;
         }
 
         public int get_patient_max
@@ -37,7 +42,9 @@ namespace GDD
         public override void BeginStart()
         {
             BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[1].title, m_Preset.m_building_status[1].text, Building_Information_Type.ShowStatus, Building_Show_mode.TextOnly));
-            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[2].title, m_Preset.m_building_status[2].text + get_patient_current + "/" + get_patient_max + " คน", Building_Information_Type.ShowStatus, Building_Show_mode.TextWith_ProgressBar));
+            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[2].title, m_Preset.m_building_status[2].text + get_patient_count + "/" + get_patient_max + " คน", Building_Information_Type.ShowStatus, Building_Show_mode.TextWith_ProgressBar));
+            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[3].title, m_Preset.m_building_status[3].text + get_nurse_patient_count + "/" + (m_Preset.max_people + m_Preset.max_worker) + " คน", Building_Information_Type.ShowStatus, Building_Show_mode.TextWith_ProgressBar));
+            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[4].title, m_Preset.m_building_status[4].text + " " + efficiency, Building_Information_Type.ShowStatus, Building_Show_mode.TextWith_ProgressBar));
         }
 
         public override void EndStart()
@@ -51,19 +58,37 @@ namespace GDD
             ppp = _healthSaveData.patients;
         }
 
-        public void OnAdmit(PeopleSystemSaveData _peopleSaveData)
+        public void OnAdmit(PeopleSystemSaveData _peopleSaveData, bool is_nurse = false)
         {
-            if (get_patient_current < get_patient_max)
+            if (is_nurse)
             {
-                _healthSaveData.patients.Add(_peopleSaveData);
+                if (get_nurse_patient_count < m_Preset.max_people + m_Preset.max_worker)
+                {
+                    _healthSaveData.nurse_patients.Add(_peopleSaveData);
+                }
+            }
+            else
+            {
+                if (get_patient_count < get_patient_max)
+                {
+                    _healthSaveData.patients.Add(_peopleSaveData);
+                }
             }
         }
 
-        public void OnRecoverIllness(PeopleSystemSaveData _peopleSaveData)
+        public void OnRecoverIllness(PeopleSystemSaveData _peopleSaveData, bool is_nurse = false)
         {
-            if (get_patient_current > 0)
+            if (is_nurse)
             {
-                _healthSaveData.patients.Remove(_peopleSaveData);
+                if (get_nurse_patient_count > 0)
+                    _healthSaveData.nurse_patients.Remove(_peopleSaveData);
+            }
+            else
+            {
+                if (get_patient_count > 0)
+                {
+                    _healthSaveData.patients.Remove(_peopleSaveData);
+                }
             }
         }
         
@@ -85,7 +110,9 @@ namespace GDD
         protected override bool OnUpdateInformationValue()
         {
             list_information_values.Add(new Tuple<object, object, string>(active && !is_cant_use_power, null, m_Preset.m_building_status[1].text));
-            list_information_values.Add(new Tuple<object, object, string>((float)get_patient_current, (float)get_patient_max, m_Preset.m_building_status[2].text + " " + get_patient_current + "/" + get_patient_max + " คน"));
+            list_information_values.Add(new Tuple<object, object, string>((float)get_patient_count, (float)get_patient_max, m_Preset.m_building_status[2].text + " " + get_patient_count + "/" + get_patient_max + " คน"));
+            list_information_values.Add(new Tuple<object, object, string>((float)get_nurse_patient_count, (float)(m_Preset.max_people + m_Preset.max_worker), m_Preset.m_building_status[3].text + " " + get_nurse_patient_count + "/" + (m_Preset.max_people + m_Preset.max_worker) + " คน"));
+            list_information_values.Add(new Tuple<object, object, string>(efficiency, 1.0f, m_Preset.m_building_status[4].text+ " " + (int)(efficiency * 100) + "%"));
             return active && !is_cant_use_power;
         }
 

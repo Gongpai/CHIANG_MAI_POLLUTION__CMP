@@ -12,7 +12,9 @@ namespace GDD
         public List<Static_Resource_SaveData> staticResourceSaveDatas = new List<Static_Resource_SaveData>();
         public List<PeopleSystemSaveData> villagerSaveDatas = new List<PeopleSystemSaveData>();
         public List<PeopleSystemSaveData> workerSaveDatas = new List<PeopleSystemSaveData>();
-        public Resources_Data resources = new Resources_Data(250, 250, 0, 0);
+        public Resources_Data resources = new Resources_Data(250, 250, 0, 0, 0, 0);
+        public Resources_Data max_resources = new Resources_Data(1000, 1000, 1000, 1000, 0, 100);
+        public TechnologyUpgrade_DataSave TUDataSave = new TechnologyUpgrade_DataSave();
         public int pm_25;
         
         public GameDateTime gameDateTime;
@@ -49,6 +51,16 @@ namespace GDD
             return staticResourceSaveDatas[i];
         }
 
+        public int get_villager_count()
+        {
+            return villagerSaveDatas.Count;
+        }
+
+        public int get_worker_count()
+        {
+            return workerSaveDatas.Count;
+        }
+
         public void set_rock_resource(int resource)
         {
              resources.rock = resource;
@@ -67,6 +79,16 @@ namespace GDD
         public int get_tree_resource()
         {
             return resources.tree;
+        }
+        
+        public void set_raw_food_resource(int resource)
+        {
+            resources.raw_food = resource;
+        }
+        
+        public int get_raw_food_resource()
+        {
+            return resources.raw_food;
         }
         
         public void set_food_resource(int resource)
@@ -89,6 +111,16 @@ namespace GDD
             return resources.power;
         }
 
+        public void set_token_resource(int resource)
+        {
+            resources.token = resource;
+        }
+        
+        public int get_token_resource()
+        {
+            return resources.token;
+        }
+        
         public DateTime getSaveGameDateTime()
         {
             if (gameDateTime != null)
@@ -129,15 +161,19 @@ namespace GDD
     {
         public int rock = 0;
         public int tree = 0;
+        public int raw_food = 0;
         public int food = 0;
         public float power = 0;
+        public int token = 0;
 
-        public Resources_Data(int _rock, int _tree, int _food, int _power)
+        public Resources_Data(int _rock, int _tree, int _raw_food, int _food, float _power, int _token)
         {
             rock = _rock;
             tree = _tree;
+            raw_food = _raw_food;
             food = _food;
             power = _power;
+            token = _token;
         }
     }
 

@@ -20,8 +20,8 @@ namespace GDD
         {
             UpdatePm2_5();
             UpdateFogDistance();
-            
-            pm2_5_value = (int)pm2_5_delta;
+
+            pm2_5_value = 25; //(int)pm2_5_delta;
         }
 
         private void UpdatePm2_5()

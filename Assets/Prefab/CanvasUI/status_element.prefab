@@ -71,7 +71,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.221
+  m_FillAmount: 0.462
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -193,8 +193,13 @@ MonoBehaviour:
   m_buttons: []
   m_texts:
   - {fileID: 4019960824837635401}
-  m_images: []
+  m_tmp_inputfield: []
+  m_sliders: []
+  m_images:
+  - {fileID: 6661432557148870044}
   m_animators: []
+  m_audioSources: []
+  m_canvas_gameObject: []
 --- !u!1 &5511753119501017526
 GameObject:
   m_ObjectHideFlags: 0

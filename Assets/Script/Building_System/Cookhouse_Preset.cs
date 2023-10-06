@@ -6,7 +6,11 @@ namespace GDD
         menuName = "GDD/Building/Resources/Cookhouse", order = 0)]
     public class Cookhouse_Preset : ScriptableObject
     {
-        [Header("Residents")]
-        public float people = 10;
+        [Header("Food produced")]
+        public int food = 10;
+        
+        [Header("Resources Use")] 
+        public int wood_use;
+        public int raw_food_use;
     }
 }

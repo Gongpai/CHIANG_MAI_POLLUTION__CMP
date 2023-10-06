@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace GDD
@@ -72,9 +74,22 @@ namespace GDD
             GI.set_power_resource(sum_power);
         }
 
+        public int get_all_power_produce()
+        {
+            float all_power = 0;
+            List<Generator_Script> generaters = FindObjectsByType<Generator_Script>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
+            Parallel.ForEach(generaters, generatorScript =>
+            {
+                all_power += generatorScript.max_power_produce;
+            });
+
+            return (int)all_power;
+        }
+
         public void Set_Resources_Tree(int tree)
         {
-            if(GI.get_tree_resource() + tree >= 0) 
+            int resource = GI.get_tree_resource() + tree;
+            if(resource >= 0 && resource < GI.max_resources.tree) 
                 GI.set_tree_resource(GI.get_tree_resource() + tree);
         }
         
@@ -97,7 +112,8 @@ namespace GDD
         
         public void Set_Resources_Rock(int rock)
         {
-            if(GI.get_rock_resource() + rock >= 0) 
+            int resource = GI.get_rock_resource() + rock;
+            if(resource >= 0 && resource < GI.max_resources.rock) 
                 GI.set_rock_resource(GI.get_rock_resource() + rock);
         }
 
@@ -118,9 +134,27 @@ namespace GDD
             return GI.get_rock_resource();
         }
         
+        public void Set_Resources_Raw_Food(int raw_food)
+        {
+            int resource = GI.get_raw_food_resource() + raw_food;
+            if(resource >= 0 && resource < GI.max_resources.raw_food)  
+                GI.set_raw_food_resource(GI.get_raw_food_resource() + raw_food);
+        }
+        
+        public bool Can_Set_Resources_Raw_Food(int raw_food)
+        {
+            return !(GI.get_raw_food_resource() + raw_food < 0 || GI.get_raw_food_resource() == 0);
+        }
+
+        public int Get_Resources_Raw_Food()
+        {
+            return GI.get_raw_food_resource();
+        }
+        
         public void Set_Resources_Food(int food)
         {
-            if(GI.get_food_resource() + food >= 0) 
+            int resource = GI.get_food_resource() + food;
+            if(resource >= 0 && resource < GI.max_resources.food) 
                 GI.set_food_resource(GI.get_food_resource() + food);
         }
         
@@ -156,6 +190,23 @@ namespace GDD
         public float Get_Resources_Power()
         {
             return GI.get_power_resource();
+        }
+        
+        public void Set_Resources_Token(int token)
+        {
+            int resource = GI.get_token_resource() + token;
+            if(resource >= 0 && resource < GI.max_resources.token) 
+                GI.set_token_resource(GI.get_token_resource() + token);
+        }
+        
+        public bool Can_Set_Resources_Token(int token)
+        {
+            return !(GI.get_token_resource() + token < 0 || GI.get_token_resource() == 0);
+        }
+
+        public int Get_Resources_Token()
+        {
+            return GI.get_token_resource();
         }
     }
 }

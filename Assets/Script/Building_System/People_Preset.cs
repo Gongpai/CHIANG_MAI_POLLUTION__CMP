@@ -7,6 +7,6 @@ namespace GDD
     public class People_Preset : ScriptableObject
     {
         [Header("Residents")]
-        public float people = 10;
+        public int people = 10;
     }
 }

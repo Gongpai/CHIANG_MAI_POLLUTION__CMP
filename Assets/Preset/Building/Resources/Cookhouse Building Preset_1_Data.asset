@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1c76106069e8c943a11e1803376ca24, type: 3}
   m_Name: Cookhouse Building Preset_1_Data
   m_EditorClassIdentifier: 
-  people: 0
-  power_use: 1
+  food: 40
+  wood_use: 20
+  raw_food_use: 10

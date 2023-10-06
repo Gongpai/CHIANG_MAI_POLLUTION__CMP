@@ -24,6 +24,9 @@ namespace GDD
        //Check surrounding roads
        public void Check_Surround_Road();
        
+       //Get Construction Active
+       public bool Get_Construction_Active();
+       
        //End
        public void OnBeginRemove();
        public void OnEndRemove();

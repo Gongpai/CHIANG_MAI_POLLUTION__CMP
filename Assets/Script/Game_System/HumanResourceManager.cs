@@ -13,6 +13,9 @@ namespace GDD
         Worker_Object_Pool_Script _workerObjectPool;
         private List<Tuple<Villager_System_Script, PeopleJob>> villagers = new();
         private List<Tuple<Worker_System_Script, PeopleJob>> workers = new();
+        private List<People_System_Script> m_residences = new();
+        private List<People_System_Script> m_healings = new();
+        private List<People_System_Script> m_patients = new();
 
         private List<People_System_Script> _peopleDeaths = new();
 
@@ -21,7 +24,7 @@ namespace GDD
             get => _peopleDeaths;
             set => _peopleDeaths = value;
         }
-
+        
         public int villagers_count
         {
             get => villagers.Count;
@@ -30,6 +33,24 @@ namespace GDD
         public int worker_count
         {
             get => workers.Count;
+        }
+
+        public List<People_System_Script> residence
+        {
+            get => m_residences;
+            set => m_residences = value;
+        }
+
+        public List<People_System_Script> healing
+        {
+            get => m_healings;
+            set => m_healings = value;
+        }
+
+        public List<People_System_Script> patients
+        {
+            get => m_patients;
+            set => m_patients = value;
         }
 
         private void Awake()
@@ -54,6 +75,26 @@ namespace GDD
                 NM.AddNotification(notification);
 
                 peopleDeaths = new();
+            }
+        }
+        
+        public void OnSpawnPeople(int villager_count, int worker_count)
+        {
+            Villager_Object_Pool_Script _villagerObjectPool = FindObjectOfType<Villager_Object_Pool_Script>();
+            Worker_Object_Pool_Script _workerObjectPool = FindObjectOfType<Worker_Object_Pool_Script>();
+
+            for (int i = 0; i < villager_count; i++)
+            {
+                People_System_Script peopleSystemScript = _villagerObjectPool.Spawn();
+                print("Is Vill Nullll : " + (peopleSystemScript == null));
+                AddPeople<Villager_System_Script>(peopleSystemScript);
+            }
+
+            for (int i = 0; i < worker_count; i++)
+            {
+                People_System_Script peopleSystemScript = _workerObjectPool.Spawn();
+                print("Is Wok Nullll : " + (peopleSystemScript == null));
+                AddPeople<Worker_System_Script>(peopleSystemScript);
             }
         }
 

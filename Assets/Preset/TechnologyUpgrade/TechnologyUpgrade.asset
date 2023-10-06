@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7019f421453340f79ffc01c181363e0b, type: 3}
+  m_Name: TechnologyUpgrade
+  m_EditorClassIdentifier: 
+  generator_leveltwo: 50
+  resident_leveltwo: 50
+  wood_leveltwo: 25
+  rock_leveltwo: 25
+  food_leveltwo: 25
+  level_two: 75
+  resident_levelthree: 75
+  gate_leveltwo: 50
+  wood_levelthree: 50
+  rock_levelthree: 50
+  food_levelthree: 50
+  rawfood_leveltwo: 50
+  air_purifier_leveltwo: 50
+  level_three: 100
+  infirmary_unlock: 75
+  gate_levelthree: 75
+  wood_levelfour: 75
+  rock_levelfour: 75
+  food_levelfour: 75
+  rawfood_levelthree: 75
+  token_leveltwo: 50
+  level_four: 125
+  rawfood_levelfour: 125
+  token_levelthree: 75
+  air_purifier_levelthree: 75

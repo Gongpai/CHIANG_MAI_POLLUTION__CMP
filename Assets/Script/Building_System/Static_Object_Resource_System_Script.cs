@@ -149,6 +149,11 @@ namespace GDD
         {
             ResourceProductRate();
         }
+        
+        public bool Get_Construction_Active()
+        {
+            return true;
+        }
 
         private void Create_button_action_data_for_building()
         {

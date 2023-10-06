@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Image = UnityEngine.UI.Image;
 
@@ -103,19 +104,40 @@ namespace GDD
             }
         }
 
-        public GameObject CreateInputUI(UnityAction<string> event_on_value_Changed, UnityAction event_Button_OK, UnityAction event_Button_Cancel, string PlaceholderInputField, string OKText, string CancelText)
+        public GameObject CreateInputUI(UnityAction<string> event_on_value_Changed, UnityAction event_Button_OK, UnityAction event_Button_Cancel, string PlaceholderInputField, string OKText, string CancelText, bool isUseUiBack = true)
         {
             GameObject Input_Ui = Instantiate(_canvasUI);
 
             Canvas_Element_List input_ui_element = Input_Ui.GetComponent<Canvas_Element_List>();
             input_ui_element.inputFields[0].onValueChanged.AddListener(event_on_value_Changed);
+            
+            if (isUseUiBack)
+            {
+                input_ui_element.buttons[0].onClick.AddListener(() =>
+                {
+                    input_ui_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
+                });
+                input_ui_element.buttons[1].onClick.AddListener(() =>
+                {
+                    input_ui_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
+                });
+            }
+            
             input_ui_element.buttons[0].onClick.AddListener(event_Button_OK + (() =>
             {
-                
+                if (!isUseUiBack)
+                {
+                    _canvasUI = Input_Ui;
+                    RemoveUI();
+                }
             }) );
             input_ui_element.buttons[1].onClick.AddListener(event_Button_Cancel + (() =>
             {
-                
+                if (!isUseUiBack)
+                {
+                    _canvasUI = Input_Ui;
+                    RemoveUI();
+                }
             }));
             input_ui_element.inputFields[0].placeholder.GetComponent<TextMeshProUGUI>().text = PlaceholderInputField;
             input_ui_element.texts[0].text = OKText;
@@ -139,18 +161,100 @@ namespace GDD
             return Input_Ui;
         }
 
-        public GameObject CreateMessageUI(UnityAction event_Button_OK, UnityAction event_Button_Cancel, string title, string messageText, string OKText, string CancelText)
+        public GameObject CreateInputSliderUI(UnityAction<float> event_on_value_Changed, UnityAction event_Button_OK, UnityAction event_Button_Cancel, float min, float max, string title, string input_title, string OKText, string CancelText, bool isUseUiBack = false)
+        {
+            GameObject Input_Ui = Instantiate(_canvasUI);
+            Canvas_Element_List input_ui_element = Input_Ui.GetComponent<Canvas_Element_List>();
+            Slider _slider = input_ui_element.Sliders[0];
+           _slider.onValueChanged.AddListener(event_on_value_Changed);
+           _slider.minValue = min;
+           _slider.maxValue = max;
+
+           input_ui_element.GetComponent<Back_UI_Button_Script>().enabled = isUseUiBack;
+           if (isUseUiBack)
+           {
+               input_ui_element.buttons[0].onClick.AddListener(() =>
+               {
+                   input_ui_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
+               });
+               input_ui_element.buttons[1].onClick.AddListener(() =>
+               {
+                   input_ui_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
+               });
+           }
+           
+           input_ui_element.canvas_gameObjects[0].SetActive(false);
+           input_ui_element.canvas_gameObjects[1].SetActive(true);
+           input_ui_element.buttons[0].onClick.AddListener(event_Button_OK + (() =>
+           {
+               if (!isUseUiBack)
+               {
+                   _canvasUI = Input_Ui;
+                   RemoveUI();
+               }
+           }) );
+           input_ui_element.buttons[1].onClick.AddListener(event_Button_Cancel + (() =>
+           {
+               if (!isUseUiBack)
+               {
+                   _canvasUI = Input_Ui;
+                   RemoveUI();
+               }
+           }));
+           
+           input_ui_element.texts[0].text = OKText;
+           input_ui_element.texts[1].text = CancelText;
+           input_ui_element.texts[2].text = title;
+           input_ui_element.canvas_gameObjects[1].GetComponent<SliderInput>().text = input_title;
+           
+           Canvas _canvas = Input_Ui.GetComponent<Canvas>();
+            
+           if (_useCameraOverlay)
+           {
+               _canvas.worldCamera = Camera.main.GetUniversalAdditionalCameraData().cameraStack[_cameraOverlay_Index];
+           }
+           else
+           {
+               _canvas.worldCamera = _camera;
+           }
+            
+           _canvas.planeDistance = _planeDistance;
+           _canvas.sortingOrder = _order_in_layer;
+            
+            return Input_Ui;
+        }
+
+        public GameObject CreateMessageUI(UnityAction event_Button_OK, UnityAction event_Button_Cancel, string title, string messageText, string OKText, string CancelText, bool isUseUiBack = true)
         {
             GameObject Message_Ui = Instantiate(_canvasUI);
 
             Canvas_Element_List messagebox_element = Message_Ui.GetComponent<Canvas_Element_List>();
+            if (isUseUiBack)
+            {
+                messagebox_element.buttons[0].onClick.AddListener(() =>
+                {
+                    messagebox_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
+                });
+                messagebox_element.buttons[1].onClick.AddListener(() =>
+                {
+                    messagebox_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
+                });
+            }
             messagebox_element.buttons[0].onClick.AddListener(event_Button_OK + (() =>
             {
-                
+                if (!isUseUiBack)
+                {
+                    _canvasUI = Message_Ui;
+                    RemoveUI();
+                }
             }) );
             messagebox_element.buttons[1].onClick.AddListener(event_Button_Cancel + (() =>
             {
-                
+                if (!isUseUiBack)
+                {
+                    _canvasUI = Message_Ui;
+                    RemoveUI();
+                }
             }) );
             messagebox_element.texts[2].text = title;
             messagebox_element.texts[3].text = messageText;

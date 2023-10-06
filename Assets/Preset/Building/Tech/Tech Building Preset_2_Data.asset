@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eddc5ca49edd0143a8e1999335260c5, type: 3}
   m_Name: Tech Building Preset_2_Data
   m_EditorClassIdentifier: 
-  speed: 3
-  power_use: 3
+  token: 50

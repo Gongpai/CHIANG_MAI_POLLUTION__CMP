@@ -121,6 +121,11 @@ namespace GDD
         {
             OnProgress();
         }
+        
+        public bool Get_Construction_Active()
+        {
+            return true;
+        }
 
         public void OnGameLoad()
         {

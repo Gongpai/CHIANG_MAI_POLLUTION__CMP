@@ -145,7 +145,7 @@ namespace GDD
             get => (buildingSaveData.construction_In_Progress / 3600) / m_Preset.time_construction;
         }
 
-        protected float efficiency
+        public float efficiency
         {
             get => (Get_Villager_Efficiency() + Get_Worker_Efficiency()) / 2;
         }
@@ -448,6 +448,11 @@ namespace GDD
                     OnDisableBuilding();
                 }
             }
+        }
+
+        public bool Get_Construction_Active()
+        {
+            return building_is_active;
         }
 
         public abstract void OnEnableBuilding();
