@@ -126,11 +126,15 @@ MonoBehaviour:
   - {fileID: 1062181614677695456}
   - {fileID: 4422988395820248380}
   - {fileID: 3675130397066350947}
+  m_tmp_inputfield: []
+  m_sliders: []
   m_images:
   - {fileID: 5564014998480011566}
   - {fileID: 4677198833724058146}
   m_animators:
   - {fileID: 5592679127716966636}
+  m_audioSources: []
+  m_canvas_gameObject: []
 --- !u!95 &5592679127716966636
 Animator:
   serializedVersion: 5
@@ -159,7 +163,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1941303709794499846}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 324a03bb40414d849dce0f20f75024af, type: 3}
   m_Name: 

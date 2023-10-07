@@ -110,19 +110,7 @@ namespace GDD
 
             Canvas_Element_List input_ui_element = Input_Ui.GetComponent<Canvas_Element_List>();
             input_ui_element.inputFields[0].onValueChanged.AddListener(event_on_value_Changed);
-            
-            if (isUseUiBack)
-            {
-                input_ui_element.buttons[0].onClick.AddListener(() =>
-                {
-                    input_ui_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
-                });
-                input_ui_element.buttons[1].onClick.AddListener(() =>
-                {
-                    input_ui_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
-                });
-            }
-            
+            input_ui_element.GetComponent<Back_UI_Button_Script>().enabled = isUseUiBack;
             input_ui_element.buttons[0].onClick.AddListener(event_Button_OK + (() =>
             {
                 if (!isUseUiBack)
@@ -130,13 +118,22 @@ namespace GDD
                     _canvasUI = Input_Ui;
                     RemoveUI();
                 }
+                else
+                {
+                    input_ui_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
+                }
             }) );
             input_ui_element.buttons[1].onClick.AddListener(event_Button_Cancel + (() =>
             {
                 if (!isUseUiBack)
                 {
                     _canvasUI = Input_Ui;
+                    print("Remove");
                     RemoveUI();
+                }
+                else
+                {
+                    input_ui_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
                 }
             }));
             input_ui_element.inputFields[0].placeholder.GetComponent<TextMeshProUGUI>().text = PlaceholderInputField;
@@ -228,32 +225,37 @@ namespace GDD
         {
             GameObject Message_Ui = Instantiate(_canvasUI);
 
+            
+            print("IS ONNN : " + isUseUiBack);
             Canvas_Element_List messagebox_element = Message_Ui.GetComponent<Canvas_Element_List>();
-            if (isUseUiBack)
-            {
-                messagebox_element.buttons[0].onClick.AddListener(() =>
-                {
-                    messagebox_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
-                });
-                messagebox_element.buttons[1].onClick.AddListener(() =>
-                {
-                    messagebox_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
-                });
-            }
+            messagebox_element.GetComponent<Back_UI_Button_Script>().enabled = isUseUiBack;
             messagebox_element.buttons[0].onClick.AddListener(event_Button_OK + (() =>
             {
+                print("IS ONNN : " + isUseUiBack);
+                
                 if (!isUseUiBack)
                 {
                     _canvasUI = Message_Ui;
                     RemoveUI();
                 }
+                else
+                {
+                    messagebox_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
+                }
             }) );
             messagebox_element.buttons[1].onClick.AddListener(event_Button_Cancel + (() =>
             {
+                print("IS ONNN : " + isUseUiBack);
+                
                 if (!isUseUiBack)
                 {
                     _canvasUI = Message_Ui;
+                    print("Remove");
                     RemoveUI();
+                }
+                else
+                {
+                    messagebox_element.GetComponent<Back_UI_Button_Script>().OnDestroyUI(false); 
                 }
             }) );
             messagebox_element.texts[2].text = title;

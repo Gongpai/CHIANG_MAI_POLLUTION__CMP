@@ -28,8 +28,8 @@ namespace GDD
     {
         public string name;
         public string title;
-        public string message;
-        public string disciption;
+        [TextArea]public string message;
+        [TextArea]public string disciption;
 
         public TechnologyUpgrade_Details(string _name, string _title, string _message, string _disciption)
         {

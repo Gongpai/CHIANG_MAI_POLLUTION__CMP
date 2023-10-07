@@ -89,7 +89,7 @@ namespace GDD
         public void Set_Resources_Tree(int tree)
         {
             int resource = GI.get_tree_resource() + tree;
-            if(resource >= 0 && resource < GI.max_resources.tree) 
+            if(resource >= 0 && (resource < GI.max_resources.tree || tree <= 0)) 
                 GI.set_tree_resource(GI.get_tree_resource() + tree);
         }
         
@@ -113,7 +113,7 @@ namespace GDD
         public void Set_Resources_Rock(int rock)
         {
             int resource = GI.get_rock_resource() + rock;
-            if(resource >= 0 && resource < GI.max_resources.rock) 
+            if(resource >= 0 && (resource < GI.max_resources.rock || rock <= 0)) 
                 GI.set_rock_resource(GI.get_rock_resource() + rock);
         }
 
@@ -137,7 +137,7 @@ namespace GDD
         public void Set_Resources_Raw_Food(int raw_food)
         {
             int resource = GI.get_raw_food_resource() + raw_food;
-            if(resource >= 0 && resource < GI.max_resources.raw_food)  
+            if(resource >= 0 && (resource < GI.max_resources.raw_food || raw_food <= 0))  
                 GI.set_raw_food_resource(GI.get_raw_food_resource() + raw_food);
         }
         
@@ -154,7 +154,7 @@ namespace GDD
         public void Set_Resources_Food(int food)
         {
             int resource = GI.get_food_resource() + food;
-            if(resource >= 0 && resource < GI.max_resources.food) 
+            if(resource >= 0 && (resource < GI.max_resources.food || food <= 0)) 
                 GI.set_food_resource(GI.get_food_resource() + food);
         }
         
@@ -195,7 +195,7 @@ namespace GDD
         public void Set_Resources_Token(int token)
         {
             int resource = GI.get_token_resource() + token;
-            if(resource >= 0 && resource < GI.max_resources.token) 
+            if(resource >= 0 && (resource < GI.max_resources.token || token <= 0)) 
                 GI.set_token_resource(GI.get_token_resource() + token);
         }
         

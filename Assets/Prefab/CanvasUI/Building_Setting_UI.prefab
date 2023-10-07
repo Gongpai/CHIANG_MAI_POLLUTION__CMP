@@ -773,7 +773,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1053,10 +1053,12 @@ MonoBehaviour:
   m_texts:
   - {fileID: 2773267168235980899}
   m_tmp_inputfield: []
+  m_sliders: []
   m_images:
   - {fileID: 2773267167226123731}
   m_animators:
   - {fileID: 4223803197687867776}
+  m_audioSources: []
   m_canvas_gameObject:
   - {fileID: 1549682595674654228}
   - {fileID: 6844974067895899059}

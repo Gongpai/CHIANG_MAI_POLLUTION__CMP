@@ -12,8 +12,8 @@ namespace GDD
         public List<Static_Resource_SaveData> staticResourceSaveDatas = new List<Static_Resource_SaveData>();
         public List<PeopleSystemSaveData> villagerSaveDatas = new List<PeopleSystemSaveData>();
         public List<PeopleSystemSaveData> workerSaveDatas = new List<PeopleSystemSaveData>();
-        public Resources_Data resources = new Resources_Data(250, 250, 0, 0, 0, 0);
-        public Resources_Data max_resources = new Resources_Data(1000, 1000, 1000, 1000, 0, 100);
+        public Resources_Data resources = new Resources_Data(250, 250, 0, 0, 0, 2000);
+        public Resources_Data max_resources = new Resources_Data(500, 500, 500, 500, 0, 100);
         public TechnologyUpgrade_DataSave TUDataSave = new TechnologyUpgrade_DataSave();
         public int pm_25;
         
