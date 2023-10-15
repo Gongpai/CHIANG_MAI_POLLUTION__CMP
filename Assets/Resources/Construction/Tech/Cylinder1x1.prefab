@@ -114,7 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enum_buildingType: 4
   m_Preset: {fileID: 11400000, guid: c2d9cb0bc011f8c4192ee1c10ee3654f, type: 2}
-  m_construction_zone: {fileID: 919132149155446097, guid: e141ceb5e38154347b5299cc4de70227,
+  m_construction_zone: {fileID: 919132149155446097, guid: 6f3fdd5dbae421a478da6a2cd36966ed,
     type: 3}
   m_construction_progress: {fileID: 48869270387604350}
   m_warning_noti: {fileID: 4963278758806807180}

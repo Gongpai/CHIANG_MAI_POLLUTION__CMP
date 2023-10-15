@@ -31,6 +31,7 @@
         
         //Level 4
         public bool rawfood_levelfour = false;
+        public bool gate_levelfour = false;
         public bool token_levelthree = false;
         public bool air_purifier_levelthree = false;
     }

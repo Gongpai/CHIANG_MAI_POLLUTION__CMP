@@ -11,7 +11,8 @@ namespace GDD
         [SerializeField] private Sprite m_road_remove_Icon;
         [SerializeField] private GameObject Content_List;
         [SerializeField] private GameObject Content_Element;
-        
+
+        private Resources_PreferencesData RPD;
         private Dictionary<string, string> Object_Data = new Dictionary<string, string>();
         private bool Is_UI_Open = false;
         private Building_place buildingPlace;
@@ -23,8 +24,8 @@ namespace GDD
             Interface_Resources_PreferencesData IRPD = new SaveLoad_Resources_Data();
             GetSet_Resources_Data GS_RD = new GetSet_Resources_Data();
             
-            Object_Data = IRPD.Get_Resources_PreferencesData(GS_RD.resources_data_path)
-                .Resources_Data;
+            RPD = IRPD.Get_Resources_PreferencesData(GS_RD.resources_data_path);
+            Object_Data = RPD.Resources_Data;
 
             foreach (var _but in buttonTabs)
             {
@@ -63,6 +64,9 @@ namespace GDD
                     
                     Object_Element_UI element_ui = CreateButtonElement();
                     element_ui.text.text = ob_data.Key;
+                    if (nameAsset != "Road")
+                        element_ui.image.sprite = Resources.Load<GameObject>(ob_data.Value).GetComponent<Building_System_Script>().icon;
+                    
                     element_ui.botton.onClick.AddListener(() =>
                     {
                         if (nameAsset != "Road")

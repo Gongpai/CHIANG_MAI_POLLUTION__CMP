@@ -40,7 +40,7 @@ PrefabInstance:
     - target: {fileID: 3317103481877361995, guid: d83be89125c44a74c857e2e28888efb3,
         type: 3}
       propertyPath: m_Name
-      value: OKButton
+      value: MessageButton
       objectReference: {fileID: 0}
     - target: {fileID: 3744547984655839849, guid: d83be89125c44a74c857e2e28888efb3,
         type: 3}
@@ -62,6 +62,31 @@ PrefabInstance:
       propertyPath: m_PreferredHeight
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 5397525786804524626, guid: d83be89125c44a74c857e2e28888efb3,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397525786804524626, guid: d83be89125c44a74c857e2e28888efb3,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397525786804524626, guid: d83be89125c44a74c857e2e28888efb3,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397525786804524626, guid: d83be89125c44a74c857e2e28888efb3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 77
+      objectReference: {fileID: 0}
+    - target: {fileID: 5397525786804524626, guid: d83be89125c44a74c857e2e28888efb3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -12.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5569034492391167100, guid: d83be89125c44a74c857e2e28888efb3,
         type: 3}
       propertyPath: m_Spacing
@@ -76,6 +101,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Padding.m_Right
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6356605357800156029, guid: d83be89125c44a74c857e2e28888efb3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6855274331104748788, guid: d83be89125c44a74c857e2e28888efb3,
         type: 3}

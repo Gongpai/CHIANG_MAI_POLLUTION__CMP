@@ -42,7 +42,7 @@ namespace GDD
             });
             m_backtomainmenu_button.onClick.AddListener((() =>
             {
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene(1);
                 Destroy(GameManager.Instance.gameObject);
                 Destroy(SaveManager.Instance.gameObject);
             }));

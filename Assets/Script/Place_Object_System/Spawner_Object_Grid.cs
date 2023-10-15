@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Outline.Scripts;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -294,22 +295,11 @@ namespace GDD
                 _renderer.material = _defaultMaterial;
                 Old_ObjectSpawn.GetComponent<Collider>().enabled = true;
 
-                Outliner old_outliner;
+                Get_Outliner(Old_ObjectSpawn);
 
-                if (Old_ObjectSpawn.GetComponent<Outliner>() == null)
-                {
-                    old_outliner = Old_ObjectSpawn.AddComponent<Outliner>();
-                }
-                else
-                {
-                    old_outliner = Old_ObjectSpawn.GetComponent<Outliner>();
-                }
-
-                old_outliner.OutlineWidth = 1.05f;
-                old_outliner.enabled = false;
                 Old_ObjectSpawn.GetComponent<Building_System_Script>().name = objectData[0];
                 Old_ObjectSpawn.GetComponent<Building_System_Script>().path = objectData[1];
-                if (halfObjectSize.x > 0.5f )
+                if (halfObjectSize.x > 0.5f)
                 {
                     GameObject Child_SpawnObject = new GameObject("Obstacle");
                     Child_SpawnObject.transform.parent = Old_ObjectSpawn.transform;
@@ -317,11 +307,12 @@ namespace GDD
                     Child_SpawnObject.layer = L_Obstacle;
                     Child_SpawnObject.AddComponent<BoxCollider>();
                     BoxCollider childboxCollider = Child_SpawnObject.GetComponent<BoxCollider>();
-                    childboxCollider.size = new Vector3(0.5f, 1, ((float)(Math.Floor(halfObjectSize.y) / 2) - halfObjectSize.x) * -1);
+                    childboxCollider.size = new Vector3(0.5f, 1,
+                        (((float)(Math.Floor(halfObjectSize.y) / 2) - halfObjectSize.x) * -1) / 2);
                     print("H Size : " + halfObjectSize.x);
                 }
             }
-            
+
             if (can_place)
             {
                 ObjectSpawn = Instantiate(objectToSapwn, GameObjectLayer.transform);
@@ -367,24 +358,32 @@ namespace GDD
             }
             
             GameObject spawn = Instantiate(buildingObject, GameObjectLayer.transform);
-            Outliner old_outliner;
+            Get_Outliner(spawn);
             
-            if (spawn.GetComponent<Outliner>() == null)
-            {
-                old_outliner = spawn.AddComponent<Outliner>();
-            }
-            else
-            {
-                old_outliner = spawn.GetComponent<Outliner>();
-            }
-            
-            old_outliner.OutlineWidth = 1.05f;
-            old_outliner.enabled = false;
             Building_System_Script buildingSystemScript = spawn.GetComponent<Building_System_Script>();
             
             //print(buildingSaveData.Position.X + " | " + buildingSaveData.Position.Y + " | " + buildingSaveData.Position.Z);
             buildingSystemScript.buildingSaveData = buildingSaveData;
             buildingSystemScript.OnGameLoad();
+        }
+
+        public void Get_Outliner(GameObject Old_ObjectSpawn)
+        {
+            List<AutoAddOutlinerGameObjects> old_outliners = new();
+
+            foreach (var buildingObject in Old_ObjectSpawn.GetComponent<Building_System_Script>().building_Objects)
+            {
+                old_outliners.Add(buildingObject.AddComponent<AutoAddOutlinerGameObjects>());
+            }
+
+            foreach (var _object in old_outliners)
+            {
+                foreach (var _outliner in _object.get_outliners)
+                {
+                    _outliner.OutlineWidth = 1.05f;
+                    _outliner.enabled = false;
+                }
+            }
         }
 
         public Vector2 SizeObjectForGrid(Vector2 size)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using TMPro;
 using Unity.VisualScripting;
@@ -84,23 +85,30 @@ namespace GDD
             Ui_Element = Text_element;
         }
 
-        public GameObject Add_Button_Element_To_List_View(GameObject List_View, UnityAction event_call,
-            string Button_text)
+        public GameObject Add_Button_Element_To_List_View(GameObject List_View, List<UnityAction> event_calls, string Button_text)
         {
-            if (Ui_Element.GetComponent<Canvas_Element_List>() != null)
+            Ui_Element.GetComponent<Canvas_Element_List>().texts[0].text = Button_text;
+            GameObject button = Instantiate(Ui_Element, List_View.transform);
+            RectTransform but_rectTransform = button.GetComponent<RectTransform>();
+            //print("UIUIUIUIUI : " + Ui_Element.name);
+            
+            int i = 0;
+            foreach (var button_element in button.GetComponent<Canvas_Element_List>().buttons)
             {
-                //print("UIUIUIUIUI : " + Ui_Element.name);
-                Ui_Element.GetComponent<Canvas_Element_List>().texts[0].text = Button_text;
-                GameObject button = Instantiate(Ui_Element, List_View.transform);
-                RectTransform but_rectTransform = button.GetComponent<RectTransform>();
                 but_rectTransform.sizeDelta = new Vector2(1, 1);
                 but_rectTransform.anchoredPosition = Vector2.zero;
-                button.GetComponent<Button>().onClick.AddListener(event_call);
-                return button;
+                button_element.onClick.AddListener(event_calls[i]);
+                print("HIHHHHHHHHHHH " + button_element.name);
+                i++;
+            }
+
+            if (Ui_Element.GetComponent<Canvas_Element_List>() == null)
+            {
+                return null;
             }
             else
             {
-                return null;
+                return button;
             }
         }
 

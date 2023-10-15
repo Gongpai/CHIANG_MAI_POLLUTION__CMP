@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Outline.Scripts;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -449,38 +450,91 @@ namespace GDD
             return isDisable;
         }
         
-        private void OnOutlineObject(GameObject gameObject, GameObject old_gameObject)
+        private void OnOutlineObject(GameObject _gameObject, GameObject old_gameObject)
         {
-            if ((gameObject.transform.parent == m_GameObjectLayer.transform || gameObject.transform.parent == m_ResourceLayer.transform) && CheckComponentDisable())
+            if ((_gameObject.transform.parent == m_GameObjectLayer.transform || _gameObject.transform.parent == m_ResourceLayer.transform) && CheckComponentDisable())
             {
-                Outliner outliner_parent = gameObject.GetComponent<Outliner>();
+                List<Outliner> outliner_parents = GetOutliner(_gameObject);
 
                 
-                if (gameObject.GetComponent<Building_System_Script>() != null && gameObject.GetComponent<Building_System_Script>().Construction_Progress_Object != null)
+                if (_gameObject.GetComponent<Building_System_Script>() != null && _gameObject.GetComponent<Building_System_Script>().Construction_Progress_Object != null)
                 {
-                    Outliner outliner_construction_progress = gameObject.GetComponent<Building_System_Script>().Construction_Progress_Object.GetComponent<Outliner>();
-                    outliner_construction_progress = gameObject.GetComponent<Building_System_Script>().Construction_Progress_Object.GetComponent<Outliner>();
-                    outliner_construction_progress.enabled = true;
-                    outliner_construction_progress.OutlineColor = Color.yellow;
+                    List<Outliner> outliner_construction_progress = GetOutliner(_gameObject.GetComponent<Building_System_Script>().Construction_Progress_Object);
+                    foreach (var _outliner in outliner_construction_progress)
+                    {
+                        _outliner.enabled = true;
+                        _outliner.OutlineColor = Color.yellow;
+                    }
                 }
 
-                outliner_parent.enabled = true;
-                outliner_parent.OutlineColor = Color.yellow;
+                foreach (var _outliner in outliner_parents)
+                {
+                    _outliner.enabled = true;
+                    _outliner.OutlineColor = Color.yellow;
+                }
+                
                 
             }
 
-            if (old_gameObject != null && old_objecthit != gameObject && (old_gameObject.transform.parent == m_GameObjectLayer.transform || old_gameObject.transform.parent == m_ResourceLayer.transform))
+            if (old_gameObject != null && old_objecthit != _gameObject && (old_gameObject.transform.parent == m_GameObjectLayer.transform || old_gameObject.transform.parent == m_ResourceLayer.transform))
             {
                 if (old_gameObject.GetComponent<Building_System_Script>() != null && old_gameObject.GetComponent<Building_System_Script>().Construction_Progress_Object != null)
                 {
                     old_gameObject.GetComponent<Building_System_Script>().Construction_Progress_Object.layer = L_Place_Object;
-                    old_gameObject.GetComponent<Building_System_Script>().Construction_Progress_Object.GetComponent<Outliner>().enabled = false;
+                    HideOutliner(old_gameObject.GetComponent<Building_System_Script>().Construction_Progress_Object);
                 }
                 
-                old_gameObject.GetComponent<Outliner>().enabled = false;
+                HideOutliner(old_gameObject);
             }
             
             //print("Outline : " + (old_gameObject == null));
+        }
+
+        private List<Outliner> GetOutliner(GameObject _gameObject)
+        {
+            List<Outliner> outliner_parents = new ();
+            if(_gameObject.GetComponent<Outliner>() != null)
+                outliner_parents.Add(_gameObject.GetComponent<Outliner>());
+            else if (_gameObject.GetComponent<AutoAddOutlinerGameObjects>() != null)
+            {
+                foreach (var _outliner in _gameObject.GetComponent<AutoAddOutlinerGameObjects>().get_outliners)
+                {
+                    outliner_parents.Add(_outliner);
+                }
+            } else if (_gameObject.GetComponent<Building_System_Script>() != null)
+            {
+                foreach (var _gObject in _gameObject.GetComponent<Building_System_Script>().building_Objects)
+                {
+                    foreach (var _outliner in _gObject.GetComponent<AutoAddOutlinerGameObjects>().get_outliners)
+                    {
+                        outliner_parents.Add(_outliner);
+                    }
+                }
+            }
+
+            return outliner_parents;
+        }
+        
+        private void HideOutliner(GameObject _gameObject)
+        {
+            if(_gameObject.GetComponent<Outliner>() != null)
+                _gameObject.GetComponent<Outliner>().enabled = false;
+            else if (_gameObject.GetComponent<AutoAddOutlinerGameObjects>() != null)
+            {
+                foreach (var _outliner in _gameObject.GetComponent<AutoAddOutlinerGameObjects>().get_outliners)
+                {
+                    _outliner.enabled = false;
+                }
+            }else if (_gameObject.GetComponent<Building_System_Script>() != null)
+            {
+                foreach (var _gObject in _gameObject.GetComponent<Building_System_Script>().building_Objects)
+                {
+                    foreach (var _outliner in _gObject.GetComponent<AutoAddOutlinerGameObjects>().get_outliners)
+                    {
+                        _outliner.enabled = false;
+                    }
+                }
+            }
         }
     }
 }

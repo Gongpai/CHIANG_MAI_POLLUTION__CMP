@@ -45,7 +45,7 @@ namespace RandomNameGen
 
             JsonSerializer serializer = new JsonSerializer();
 
-            string path = Application.dataPath + "/Resources/Name/";
+            string path = Application.streamingAssetsPath + "/Name/";
             using (StreamReader reader = new StreamReader(path + "names.json"))
             using (JsonReader jreader = new JsonTextReader(reader))
             {

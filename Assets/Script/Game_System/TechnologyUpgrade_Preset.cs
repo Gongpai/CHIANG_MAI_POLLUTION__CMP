@@ -36,6 +36,7 @@ namespace GDD
         [Header("Level 4 Token Use")] 
         public int level_four;
         public int rawfood_levelfour;
+        public int gate_levelfour;
         public int token_levelthree;
         public int air_purifier_levelthree;
     }

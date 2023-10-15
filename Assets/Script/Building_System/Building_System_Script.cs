@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
+using Outline.Scripts;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -16,6 +15,8 @@ namespace GDD
         [SerializeField] protected GameObject m_construction_zone;
         [SerializeField] protected GameObject m_construction_progress;
         [SerializeField] protected GameObject m_warning_noti;
+        [SerializeField] protected List<GameObject> m_building_Objects = new List<GameObject>();
+        [SerializeField] private Sprite m_icon;
         
         protected BuildingSaveData _buildingSaveData = new BuildingSaveData();
         protected GameManager GM;
@@ -31,6 +32,7 @@ namespace GDD
         protected List<Building_Information_Data> BI_datas = new List<Building_Information_Data>();
         protected List<Tuple<Villager_System_Script, PeopleJob>> villagers = new();
         protected List<Tuple<Worker_System_Script, PeopleJob>> workers = new();
+        protected Building_Active _buildingActive;
         protected GameObject construction_zone_pivot;
         protected bool is_addSettingother = true;
         protected bool is_cant_use_resource = false;
@@ -58,6 +60,16 @@ namespace GDD
             set { enum_buildingType = value; }
         }
 
+        public List<GameObject> building_Objects
+        {
+            get => m_building_Objects;
+        }
+
+        public Sprite icon
+        {
+            get => m_icon;
+        }
+        
         public bool active
         {
             get => _buildingSaveData.Building_active;
@@ -282,6 +294,8 @@ namespace GDD
             L_Building = LayerMask.NameToLayer("Place_Object");
             L_Obstacle = LayerMask.NameToLayer("Obstacle_Ojbect");
 
+            _buildingActive = GetComponent<Building_Active>();
+            
             Create_button_action_data_for_building();
             
             /*
@@ -492,6 +506,11 @@ namespace GDD
         public void SetActiveBuilding(object obj)
         {
             active = !active;
+            if(active)
+                _buildingActive.Play();
+            else
+                _buildingActive.Stop();
+            
             auto_disable = active;
         }
 
@@ -856,24 +875,30 @@ namespace GDD
             {
                 if (construction_zone_pivot == null)
                 {
-                    construction_zone_pivot = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    construction_zone_pivot = Instantiate(m_construction_zone);
+                    
+                    for (int i = 0; i < construction_zone_pivot.transform.childCount; i++)
+                    {
+                        construction_zone_pivot.transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("Place_Object");
+                    }
+                    
                     construction_zone_pivot.layer = LayerMask.NameToLayer("Place_Object");
                     construction_zone_pivot.transform.parent = transform;
                     construction_zone_pivot.transform.localPosition = new Vector3(0, -0.5f, 0);
+                    construction_zone_pivot.transform.rotation = transform.rotation;
                     Destroy(construction_zone_pivot.GetComponent<BoxCollider>());
-                    Outliner _outliner = construction_zone_pivot.AddComponent<Outliner>();
-                    _outliner.OutlineWidth = 1.05f;
-                    _outliner.enabled = false;
-
-                    construction_zone_pivot.GetComponent<MeshFilter>().sharedMesh = m_construction_zone.GetComponent<MeshFilter>().sharedMesh;
+                    construction_zone_pivot.AddComponent<AutoAddOutlinerGameObjects>();
                 }
 
                 if (is_set_building_active)
                 {
                     active = false;
                 }
-                
-                GetComponent<MeshRenderer>().enabled = false;
+
+                foreach (var building_Object in m_building_Objects)
+                {
+                    building_Object.SetActive(false);
+                }
                 construction_zone_pivot.SetActive(true);
             }
             else
@@ -890,7 +915,10 @@ namespace GDD
                     disable = true;
                 }
                 
-                GetComponent<MeshRenderer>().enabled = true;
+                foreach (var building_Object in m_building_Objects)
+                {
+                    building_Object.SetActive(true);
+                }
                 construction_zone_pivot.SetActive(false);
             }
         }

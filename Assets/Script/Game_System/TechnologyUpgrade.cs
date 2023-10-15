@@ -104,8 +104,10 @@ namespace GDD
                         case 1:
                             return TU_Upgrade_Preset.rawfood_levelfour;
                         case 2:
-                            return TU_Upgrade_Preset.token_levelthree;
+                            return TU_Upgrade_Preset.gate_levelfour;
                         case 3:
+                            return TU_Upgrade_Preset.token_levelthree;
+                        case 4:
                             return TU_Upgrade_Preset.air_purifier_levelthree;
                     }
 
@@ -181,8 +183,10 @@ namespace GDD
                         case 1:
                             return _TUDataSave.rawfood_levelfour;
                         case 2:
-                            return _TUDataSave.token_levelthree;
+                            return _TUDataSave.gate_levelfour;
                         case 3:
+                            return _TUDataSave.token_levelthree;
+                        case 4:
                             return _TUDataSave.air_purifier_levelthree;
                     }
 
