@@ -6,10 +6,11 @@ namespace GDD
     {
         //Save Sata For Building
         public string nameObject;
-        public bool WorkOverTime;
+        public bool is_work_overtime;
         public int id;
         public List<PeopleSystemSaveData> villagers;
         public List<PeopleSystemSaveData> workers;
         public float re_userate_hour = 0;
+        public bool is_work_24h = false;
     }
 }

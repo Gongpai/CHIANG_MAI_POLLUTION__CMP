@@ -50,7 +50,23 @@ namespace GDD
         {
             get
             {
-                return (((hunger * 1) + (content * 1)) / 2) * efficiency_boot;
+                if (_constructionSystem.Get_WrokOverTime())
+                {
+                    if(TM.get_DateTime.Hour >= 6 && TM.get_DateTime.Hour < 18)
+                        return (((hunger * 1) + (content * 1)) / 2) * efficiency_boot;
+                    else
+                        return 0;
+                } else if (_constructionSystem.Get_Wrok24H())
+                {
+                    return (((hunger * 1) + (content * 1)) / 2) * efficiency_boot;
+                }
+                else
+                {
+                    if(TM.get_DateTime.Hour >= 8 && TM.get_DateTime.Hour < 16)
+                        return (((hunger * 1) + (content * 1)) / 2) * efficiency_boot;
+                    else
+                        return 0;
+                }
             }
         }
 
@@ -74,7 +90,13 @@ namespace GDD
 
         protected int dust_pm_25
         {
-            get => GM.PM_25;
+            get
+            {
+                if (_constructionSystem != null)
+                    return GM.PM_25 - _constructionSystem.Get_Air_Filtration_Ability();
+                else
+                    return GM.PM_25;
+            }
         }
 
         public PeopleDailyLife dailyLife

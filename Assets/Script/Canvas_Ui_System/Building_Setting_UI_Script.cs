@@ -257,6 +257,7 @@ namespace GDD
                 foreach (KeyValuePair<GameObject, Button_Action_Data> buttonActionData in list_button_action_bottoms)
                 {
                     Canvas_Element_List _element = buttonActionData.Key.GetComponent<Canvas_Element_List>();
+                    _element.buttons[0].onClick.RemoveAllListeners();
                     _element.buttons[0].onClick
                         .AddListener(_buildingSystemScript.GetUpdateButtonAction(i_BAD).unityAction);
                     _element.buttons[0].colors = _buildingSystemScript.GetUpdateButtonAction(i_BAD).colorBlock;
@@ -445,6 +446,7 @@ namespace GDD
                 GameObject button = Instantiate(m_Prefab_Button[2], m_Button_Bottom_Bar_List.transform);
                 list_button_action_bottoms.Add(button, buttonActionData);
                 Canvas_Element_List _element = button.GetComponent<Canvas_Element_List>();
+                _element.buttons[0].onClick.RemoveAllListeners();
                 _element.buttons[0].onClick.AddListener(buttonActionData.unityAction);
                 _element.buttons[0].colors = buttonActionData.colorBlock;
                 _element.image[0].sprite = buttonActionData.sprite;

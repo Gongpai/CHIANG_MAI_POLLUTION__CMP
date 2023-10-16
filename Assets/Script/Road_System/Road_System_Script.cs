@@ -109,7 +109,22 @@ namespace GDD
                 _roadSaveData.path = value;
             }
         }
+        
+        public bool Get_WrokOverTime()
+        {
+            return false;
+        }
 
+        public bool Get_Wrok24H()
+        {
+            return false;
+        }
+
+        public int Get_Air_Filtration_Ability()
+        {
+            return 0;
+        }
+        
         private void Start()
         {
             TM = TimeManager.Instance;

@@ -352,15 +352,17 @@ public class DD_DataDiagram : MonoBehaviour , IScrollHandler, IDragHandler {
             return false;
         }
 
+        /*
         GameObject button = Instantiate((GameObject)Resources.Load("Prefabs/LineButton"), lineButtonsContent.transform);
         if (null == button) {
             Debug.LogWarning(this + "AddLineButton Error : null == button");
             return false;
         }
+        */
 
         //button.name = string.Format("Button{0}", line.name);
         //button.GetComponent<Image>().color = lines.color;
-        button.GetComponent<DD_LineButton>().line = line;
+        //button.GetComponent<DD_LineButton>().line = line;
 
         return true;
     }
@@ -402,6 +404,7 @@ public class DD_DataDiagram : MonoBehaviour , IScrollHandler, IDragHandler {
             return null;
         }
 
+        print("lineButtonsContent : " + (lineButtonsContent == null));
         if(coordinate.lineNum != lineButtonsContent.transform.childCount) {
             print("coordinate.lineNum != m_LineButtonList.Count");
             ///check this 

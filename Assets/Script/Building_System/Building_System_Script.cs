@@ -32,6 +32,7 @@ namespace GDD
         protected List<Building_Information_Data> BI_datas = new List<Building_Information_Data>();
         protected List<Tuple<Villager_System_Script, PeopleJob>> villagers = new();
         protected List<Tuple<Worker_System_Script, PeopleJob>> workers = new();
+        protected List<Button_Action_Data> menuDatas = new List<Button_Action_Data>();
         protected Building_Active _buildingActive;
         protected GameObject construction_zone_pivot;
         protected bool is_addSettingother = true;
@@ -122,6 +123,17 @@ namespace GDD
             get => is_construction_in_progress;
         }
 
+        public float get_power_use
+        {
+            get
+            {
+                if(_buildingSaveData.Air_purifier_Speed_Up)
+                    return building_preset.power_use + 1;
+                else
+                    return building_preset.power_use;
+            }
+        }
+        
         public int villager_count
         {
             get => villagers.Count;
@@ -253,14 +265,27 @@ namespace GDD
 
         public virtual List<Button_Action_Data> GetInteractAction()
         {
-            List<Button_Action_Data> menuDatas = new List<Button_Action_Data>();
+            menuDatas = new List<Button_Action_Data>();
             
-            menuDatas.Add(new Button_Action_Data("Interact", Resources.Load<Sprite>("Icon/build_"), Interact));
-            menuDatas.Add(new Button_Action_Data("Change Enable Building", Resources.Load<Sprite>("Icon/construction"), ChangeEnableBuilding));
+            //On/Off Building
+            if(active)
+                menuDatas.Add(new Button_Action_Data("Turn Off", Resources.Load<Sprite>("Icon/lightbulb_Off"), () => { SetActiveBuilding(0);}));
+            else
+                menuDatas.Add(new Button_Action_Data("Turn On", Resources.Load<Sprite>("Icon/lightbulb_On"), () => { SetActiveBuilding(0);}));
+            
+            //Air Purifier Speed
+            if(_buildingSaveData.Air_purifier_Speed_Up)
+                menuDatas.Add(new Button_Action_Data("Speed Down", Resources.Load<Sprite>("Icon/air_purifier_icon"), () => { SetAirPurifierSpeedUp(0);}));
+            else
+                menuDatas.Add(new Button_Action_Data("Speed Up", Resources.Load<Sprite>("Icon/fan_Speed"), () => { SetAirPurifierSpeedUp(0);}));
 
+            //Add Other Interaction
+            AddInteractAction();
+            
+            //Remove Building
             if (!is_remove_building)
             {
-                menuDatas.Add(new Button_Action_Data("Remove", Resources.Load<Sprite>("Icon/account_tree"), () =>
+                menuDatas.Add(new Button_Action_Data("Remove", Resources.Load<Sprite>("Icon/construction"), () =>
                     {
                         OnRemoveBuilding();
                     }));
@@ -356,9 +381,6 @@ namespace GDD
             _buttonActionDatas = new List<Button_Action_Data>();
             _buttonActionDatas.Add(new Button_Action_Data("remove", Resources.Load<Sprite>("Icon/remove_home"),
                 () => { OnRemoveBuilding(); }));
-            _buttonActionDatas.Add(new Button_Action_Data("null", Resources.Load<Sprite>("Icon/24H"),
-                () => { print("24HHHHHH"); }));
-
 
             RectTransform _rectTransform_warning = m_warning_noti.GetComponent<RectTransform>();
             _rectTransform_warning.sizeDelta = Vector2.zero;
@@ -411,6 +433,24 @@ namespace GDD
             });
 
             return average_efficiency / m_Preset.max_worker;
+        }
+
+        public virtual bool Get_WrokOverTime()
+        {
+            return _buildingSaveData.is_work_overtime;
+        }
+
+        public virtual bool Get_Wrok24H()
+        {
+            return _buildingSaveData.is_work_24h;
+        }
+
+        public int Get_Air_Filtration_Ability()
+        {
+            if (_buildingSaveData.Air_purifier_Speed_Up)
+                return building_preset.air_filtration_ability + 100;
+            else
+                return building_preset.air_filtration_ability;
         }
 
         private void Check_power_resource()
@@ -521,7 +561,16 @@ namespace GDD
 
         public void SetWorkOverTime(object obj)
         {
-            _buildingSaveData.WorkOverTime = !_buildingSaveData.WorkOverTime;
+            _buildingSaveData.is_work_overtime = !_buildingSaveData.is_work_overtime;
+            if (_buildingSaveData.is_work_overtime)
+                _buildingSaveData.is_work_24h = false;
+        }
+
+        public void SetWork24h()
+        {
+            _buildingSaveData.is_work_24h = !_buildingSaveData.is_work_24h;
+            if (_buildingSaveData.is_work_24h)
+                _buildingSaveData.is_work_overtime = false;
         }
         
         public void RemoveAndAddPeople(object number)
@@ -648,16 +697,14 @@ namespace GDD
                     Resources.Load<Sprite>("Icon/construction"), () => { OnRemoveBuilding(true); }, _colorBlock));
             }
 
-            //Over Time 24H
-            _colorBlock.normalColor = new Color(0, 0, 0, 200);
-            _colorBlock.highlightedColor = new Color(175, 175, 0, 240);
-            _colorBlock.pressedColor = new Color(255, 255, 0, 175);
-            _colorBlock.selectedColor = new Color(175, 175, 0, 240);
-            _colorBlock.disabledColor = new Color(0, 0, 0, 0);
-            _buttonActionDatas.Add(new Button_Action_Data("null", Resources.Load<Sprite>("Icon/24H"),
-                () => { print("24HHHHHH"); }, _colorBlock));
-
+            AddUpdateButtonAction();
+            
             return _buttonActionDatas[index];
+        }
+
+        public virtual void AddUpdateButtonAction()
+        {
+            
         }
 
         public object GetValueBuilingSetting(int index)
@@ -670,7 +717,7 @@ namespace GDD
             if (is_addSettingother)
             {
                 list_setting_values.Add(_buildingSaveData.Air_purifier_Speed_Up);
-                list_setting_values.Add(_buildingSaveData.WorkOverTime);
+                list_setting_values.Add(_buildingSaveData.is_work_overtime);
                 list_setting_values.Add(new Tuple<float, float>(villager_count, m_Preset.max_people));
                 list_setting_values.Add(new Tuple<float, float>(worker_count, m_Preset.max_worker));
             }
@@ -783,6 +830,11 @@ namespace GDD
 
         }
 
+        public virtual void AddInteractAction()
+        {
+            
+        }
+        
         protected abstract void OnUpdateSettingValue();
         protected abstract bool OnUpdateInformationValue();
         
@@ -897,7 +949,17 @@ namespace GDD
 
                 foreach (var building_Object in m_building_Objects)
                 {
-                    building_Object.SetActive(false);
+                    if (building_Object.GetComponent<Joint>() != null)
+                    {
+                        if (building_Object.GetComponent<MeshRenderer>() != null)
+                            building_Object.GetComponent<MeshRenderer>().enabled = false;
+                        else
+                            building_Object.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
+                    }
+                    else
+                    {
+                        building_Object.SetActive(false);
+                    }
                 }
                 construction_zone_pivot.SetActive(true);
             }
@@ -917,7 +979,17 @@ namespace GDD
                 
                 foreach (var building_Object in m_building_Objects)
                 {
-                    building_Object.SetActive(true);
+                    if (building_Object.GetComponent<Joint>() != null)
+                    {
+                        if (building_Object.GetComponent<MeshRenderer>() != null)
+                            building_Object.GetComponent<MeshRenderer>().enabled = true;
+                        else
+                            building_Object.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
+                    }
+                    else
+                    {
+                        building_Object.SetActive(true);
+                    }
                 }
                 construction_zone_pivot.SetActive(false);
             }

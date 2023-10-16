@@ -33,7 +33,7 @@
     <Value xsi:type="xsd:string">Construction/Road/Road</Value>
   </Entry>
   <Entry>
-    <Key xsi:type="xsd:string">Cylinder1x1</Key>
-    <Value xsi:type="xsd:string">Construction/Tech/Cylinder1x1</Value>
+    <Key xsi:type="xsd:string">Laboratory</Key>
+    <Value xsi:type="xsd:string">Construction/Tech/Laboratory</Value>
   </Entry>
 </ArrayOfEntry>

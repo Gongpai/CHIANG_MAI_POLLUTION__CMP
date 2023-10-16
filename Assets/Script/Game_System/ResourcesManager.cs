@@ -60,7 +60,7 @@ namespace GDD
                 {
                     if (sum_power - _buildingSystemScript.building_preset.power_use > 0 && _buildingSystemScript.active)
                     {
-                        sum_power -= _buildingSystemScript.building_preset.power_use;
+                        sum_power -= _buildingSystemScript.get_power_use;
                         _buildingSystemScript.cant_use_power = false;
                     }
                     else

@@ -369,6 +369,7 @@ namespace GDD
                 GameObject button = Instantiate(m_Prefab_Button[2], m_Button_Bottom_Bar_List.transform);
                 list_button_action_bottoms.Add(button, buttonActionData);
                 Canvas_Element_List _element = button.GetComponent<Canvas_Element_List>();
+                _element.buttons[0].onClick.RemoveAllListeners();
                 _element.buttons[0].onClick.AddListener(buttonActionData.unityAction);
                 _element.buttons[0].colors = buttonActionData.colorBlock;
                 _element.image[0].sprite = buttonActionData.sprite;

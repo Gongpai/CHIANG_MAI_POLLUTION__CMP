@@ -27,6 +27,13 @@ namespace GDD
        //Get Construction Active
        public bool Get_Construction_Active();
        
+       //Get Work TIme
+       public bool Get_WrokOverTime();
+       public bool Get_Wrok24H();
+       
+       //Get PM2_5 
+       public int Get_Air_Filtration_Ability();
+       
        //End
        public void OnBeginRemove();
        public void OnEndRemove();

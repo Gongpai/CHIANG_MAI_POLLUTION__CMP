@@ -12,9 +12,12 @@ namespace GDD
         
         public void Stop()
         {
-            foreach (var hingeJoint in m_hingeJoints)
+            if (m_hingeJoints.Count > 0)
             {
-                hingeJoint.useMotor = false;
+                foreach (var hingeJoint in m_hingeJoints)
+                {
+                    hingeJoint.useMotor = false;
+                }
             }
 
             foreach (var material in m_materials)

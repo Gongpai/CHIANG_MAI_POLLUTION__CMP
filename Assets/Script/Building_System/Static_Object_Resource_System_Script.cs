@@ -112,13 +112,32 @@ namespace GDD
         {
             get => (Get_Villager_Efficiency() + Get_Worker_Efficiency()) / 2;
         }
+        
+        public bool Get_WrokOverTime()
+        {
+            return _staticResourceSaveData.is_work_overtime;
+        }
+
+        public bool Get_Wrok24H()
+        {
+            return _staticResourceSaveData.is_work_24h;
+        }
 
         public virtual List<Button_Action_Data> GetInteractAction()
         {
             List<Button_Action_Data> menuDatas = new List<Button_Action_Data>();
             
-            menuDatas.Add(new Button_Action_Data("Interact", Resources.Load<Sprite>("Icon/build_"), Interact));
-            menuDatas.Add(new Button_Action_Data("Change Enable Building", Resources.Load<Sprite>("Icon/construction"), ChangeEnableBuilding));
+            //Work Overtime 8/12 hour
+            if(_staticResourceSaveData.is_work_overtime)
+                menuDatas.Add(new Button_Action_Data("Work 8 hour", Resources.Load<Sprite>("Icon/clock"), () => { SetWorkOverTime(0);}));
+            else
+                menuDatas.Add(new Button_Action_Data("Work 12 Hour", Resources.Load<Sprite>("Icon/overtime"), () => { SetWorkOverTime(0);}));
+            
+            //Work Overtime 24 hour
+            if(_staticResourceSaveData.is_work_24h)
+                menuDatas.Add(new Button_Action_Data("Stop work 24 hour", Resources.Load<Sprite>("Icon/clock"), () => { SetWork24h();}));
+            else
+                menuDatas.Add(new Button_Action_Data("Work 24 Hour", Resources.Load<Sprite>("Icon/24H"), () => { SetWork24h();}));
 
             return menuDatas;
         }
@@ -177,7 +196,7 @@ namespace GDD
             //Static_Resource_setting_danger
             _buttonActionDatas = new List<Button_Action_Data>();
             _buttonActionDatas.Add(new Button_Action_Data("null", Resources.Load<Sprite>("Icon/24H"),
-                () => { print("24HHHHHH"); }));
+                () => { SetWork24h(); print("24HHHHHH"); }));
 
             add_action = new List<UnityAction<object>>();
             BeginStart();
@@ -262,7 +281,21 @@ namespace GDD
 
         public void SetWorkOverTime(object obj)
         {
-            _staticResourceSaveData.WorkOverTime = !_staticResourceSaveData.WorkOverTime;
+            _staticResourceSaveData.is_work_overtime = !_staticResourceSaveData.is_work_overtime;
+            if (_staticResourceSaveData.is_work_overtime)
+                _staticResourceSaveData.is_work_24h = false;
+        }
+
+        public void SetWork24h()
+        {
+            _staticResourceSaveData.is_work_24h = !_staticResourceSaveData.is_work_24h;
+            if (_staticResourceSaveData.is_work_24h)
+                _staticResourceSaveData.is_work_overtime = false;
+        }
+        
+        public int Get_Air_Filtration_Ability()
+        {
+            return 0;
         }
         
         public void RemoveAndAddPeople(object number)
@@ -340,22 +373,31 @@ namespace GDD
                 GM.gameInstance.workerSaveDatas.Add(worker);
             }
         }
-
         public Button_Action_Data GetUpdateButtonAction(int index)
         {
             _buttonActionDatas = new List<Button_Action_Data>();
 
             //Over Time 24H
+            //Over Time 24H
             ColorBlock _colorBlock = new ColorBlock();
-            _colorBlock.normalColor = new Color(0, 0, 0, 200);
-            _colorBlock.highlightedColor = new Color(175, 175, 0, 240);
-            _colorBlock.pressedColor = new Color(255, 255, 0, 175);
-            _colorBlock.selectedColor = new Color(175, 175, 0, 240);
+            _colorBlock.highlightedColor = new Color(150, 0, 0, 240);
+            _colorBlock.pressedColor = new Color(100, 0, 0, 200);
+            _colorBlock.selectedColor = new Color(150, 0, 0, 240);
             _colorBlock.disabledColor = new Color(0, 0, 0, 0);
             _colorBlock.colorMultiplier = 1;
             _colorBlock.fadeDuration = 0.1f;
-            _buttonActionDatas.Add(new Button_Action_Data("null", Resources.Load<Sprite>("Icon/24H"),
-                () => { print("24HHHHHH"); }, _colorBlock));
+            if (_staticResourceSaveData.is_work_24h)
+            {
+                _colorBlock.normalColor = new Color(100, 0, 0, 200);
+                _buttonActionDatas.Add(new Button_Action_Data("null", Resources.Load<Sprite>("Icon/24H"),
+                    () => {SetWork24h(); /*print("24HHHHHH");*/ }, _colorBlock));
+            }
+            else
+            {
+                _colorBlock.normalColor = new Color(0, 0, 0, 200);
+                _buttonActionDatas.Add(new Button_Action_Data("null", Resources.Load<Sprite>("Icon/24H"),
+                    () => {SetWork24h(); /*print("24HHHHHH");*/ }, _colorBlock));
+            }
 
             return _buttonActionDatas[index];
         }
@@ -365,7 +407,7 @@ namespace GDD
             list_setting_values = new List<object>();
             list_setting_values.Add(new Tuple<float, float>(villager_count, m_Resource_Preset.max_people));
             list_setting_values.Add(new Tuple<float, float>(worker_count, m_Resource_Preset.max_worker));
-            list_setting_values.Add(_staticResourceSaveData.WorkOverTime);
+            list_setting_values.Add(_staticResourceSaveData.is_work_overtime);
             OnUpdateSettingValue();
             
             return list_setting_values[index];

@@ -12,7 +12,7 @@ namespace GDD
         public byte b_buildingtype;
         public bool Building_active;
         public bool Air_purifier_Speed_Up;
-        public bool WorkOverTime;
+        public bool is_work_overtime;
         public float construction_In_Progress;
         public float re_userate_hour = 0;
         public List<PeopleSystemSaveData> villagers = new List<PeopleSystemSaveData>();
@@ -22,7 +22,7 @@ namespace GDD
         public bool building_is_remove;
         public bool is_auto_disable;
         public bool Building_Disable;
-        
+        public bool is_work_24h = false;
         //For other child class
         public object saveDataObject;
     }
