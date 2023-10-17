@@ -15,7 +15,11 @@ namespace GDD
         public Resources_Data resources = new Resources_Data(250, 250, 0, 0, 0, 2000);
         public Resources_Data max_resources = new Resources_Data(500, 500, 500, 500, 0, 100);
         public TechnologyUpgrade_DataSave TUDataSave = new TechnologyUpgrade_DataSave();
+        public Time_Measurement_Save_Data timeMeasurementSaveData = new Time_Measurement_Save_Data();
         public int pm_25;
+        public int day_before_pm2_5 = 9;
+        public int day_after_pm2_5 = 1;
+        public int current_day_mp2_5 = 0; 
         
         public GameDateTime gameDateTime;
 
@@ -177,6 +181,26 @@ namespace GDD
         }
     }
 
+    public class Time_Measurement_Save_Data
+    {
+        public float pos_spawn_warning;
+        public int current_datetime;
+        public int default_hour_spawn;
+        public int offset_warning_spawn;
+        public int spawn_number;
+        public List<float> pos_warning_lists = new List<float>();
+
+        public Time_Measurement_Save_Data(float _pos_spawn_warning = 0, int _current_datetime = 0, int _default_hour_spawn = 7, int _offset_warning_spawn = 5, int _spawn_number = 0, List<float> _pos_warning_lists = null)
+        {
+            pos_spawn_warning = _pos_spawn_warning;
+            current_datetime = _current_datetime;
+            default_hour_spawn = _default_hour_spawn;
+            offset_warning_spawn = _offset_warning_spawn;
+            spawn_number = _spawn_number;
+            pos_warning_lists = _pos_warning_lists;
+        }
+    }
+    
     public class Vector3D
     {
         public float X;

@@ -547,8 +547,12 @@ MonoBehaviour:
   - {fileID: 2523323298706230076}
   - {fileID: 1011237225608919576}
   - {fileID: 3090807781357893842}
+  m_tmp_inputfield: []
+  m_sliders: []
   m_images: []
   m_animators: []
+  m_audioSources: []
+  m_canvas_gameObject: []
 --- !u!1 &6889259137579455557
 GameObject:
   m_ObjectHideFlags: 0

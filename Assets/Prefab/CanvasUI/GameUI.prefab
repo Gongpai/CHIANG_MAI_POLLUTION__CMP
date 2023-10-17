@@ -57,6 +57,7 @@ MonoBehaviour:
   - {fileID: 8510570855316031859}
   - {fileID: 5774542275207408083}
   m_tmp_inputfield: []
+  m_sliders: []
   m_images: []
   m_animators: []
   m_audioSources: []
@@ -192,6 +193,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_area_Time: {fileID: 84125922709943277}
   m_prefab_time_measurement_line: {fileID: 6879963448544706316, guid: fa0abf0e881ee1949804893487d1263b,
+    type: 3}
+  m_prefab_pm2_5_warning: {fileID: 1534210706807802948, guid: 69435a82129fcdd4ab0264aa8149cf8b,
     type: 3}
 --- !u!1 &131250494665336173
 GameObject:
@@ -1398,6 +1401,7 @@ MonoBehaviour:
   - {fileID: 3383140930096349544}
   - {fileID: 5450348146400298404}
   m_tmp_inputfield: []
+  m_sliders: []
   m_images: []
   m_animators:
   - {fileID: 3470054459710143862}
@@ -2793,6 +2797,7 @@ MonoBehaviour:
   - {fileID: 44214256256546460}
   m_texts: []
   m_tmp_inputfield: []
+  m_sliders: []
   m_images: []
   m_animators: []
   m_audioSources: []
@@ -3131,6 +3136,7 @@ MonoBehaviour:
   - {fileID: 8833238907245493446}
   m_texts: []
   m_tmp_inputfield: []
+  m_sliders: []
   m_images: []
   m_animators: []
   m_audioSources: []
@@ -4439,6 +4445,7 @@ MonoBehaviour:
   - {fileID: 3473231786890533665}
   - {fileID: 6502139438282518268}
   m_tmp_inputfield: []
+  m_sliders: []
   m_images: []
   m_animators:
   - {fileID: 1867461576225133865}
@@ -6055,6 +6062,7 @@ MonoBehaviour:
   m_texts:
   - {fileID: 1354099883502227462}
   m_tmp_inputfield: []
+  m_sliders: []
   m_images:
   - {fileID: 8121319799664369180}
   m_animators:

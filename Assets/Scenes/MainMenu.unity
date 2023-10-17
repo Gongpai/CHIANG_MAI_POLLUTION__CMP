@@ -196,8 +196,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0af71920687efb1409a1327c04c21115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  villagers_count: 12
-  workers_count: 12
+  m_pm2_5Preset: {fileID: 11400000, guid: 688b2761f50026040a62ef6d11a08047, type: 2}
+  villagers_count: 25
+  workers_count: 25
 --- !u!4 &90808166
 Transform:
   m_ObjectHideFlags: 0

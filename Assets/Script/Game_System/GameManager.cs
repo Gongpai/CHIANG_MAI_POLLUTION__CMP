@@ -5,6 +5,7 @@ namespace GDD
 {
     public class GameManager:Singleton_With_DontDestroy<GameManager>
     {
+        [SerializeField]private PM2_5_Preset m_pm2_5Preset;
         [SerializeField]private int villagers_count = 12;
         [SerializeField]private int workers_count = 12;
         
@@ -34,6 +35,11 @@ namespace GDD
         {
             get => gameInstance.pm_25;
             set => gameInstance.pm_25 = value;
+        }
+
+        public PM2_5_Preset Pm25Preset
+        {
+            get => m_pm2_5Preset;
         }
 
         public int villagers_start
