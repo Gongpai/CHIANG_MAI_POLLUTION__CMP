@@ -8,5 +8,8 @@ namespace GDD
     {
         [Header("Residents")]
         public int people = 10;
+
+        [Header("AI Max")] 
+        int ai_max;
     }
 }

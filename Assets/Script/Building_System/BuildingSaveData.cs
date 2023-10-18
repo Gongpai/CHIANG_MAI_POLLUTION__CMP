@@ -23,6 +23,7 @@ namespace GDD
         public bool is_auto_disable;
         public bool Building_Disable;
         public bool is_work_24h = false;
+        
         //For other child class
         public object saveDataObject;
     }

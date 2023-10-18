@@ -36,6 +36,7 @@ Transform:
   - {fileID: 2676429305546498310}
   - {fileID: 4518412697291288174}
   - {fileID: 6002918869631440632}
+  - {fileID: 4831247009273825016}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -80,6 +81,7 @@ MonoBehaviour:
   m_building_Objects:
   - {fileID: 3345971016801926076}
   m_icon: {fileID: 21300000, guid: 5877548a169b50641a27222c822bc717, type: 3}
+  m_waypoint: {fileID: 8718852013924501304}
   m_healthPreset: {fileID: 11400000, guid: 08fe8d9dc2c13914388a3c55e5596894, type: 2}
   ppp: []
 --- !u!65 &4760527475977498303
@@ -145,6 +147,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &8718852013924501304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4831247009273825016}
+  m_Layer: 6
+  m_Name: Waypoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4831247009273825016
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8718852013924501304}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3600288624627881010}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1021776085796818243
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -408,6 +441,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Movement
       objectReference: {fileID: 0}
+    - target: {fileID: -8068073526183931155, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8068073526183931155, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -6844751790384224856, guid: f9be244924559b644ad28ad31b563ad8,
         type: 3}
       propertyPath: m_Layer
@@ -417,6 +460,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Movement
+      objectReference: {fileID: 0}
+    - target: {fileID: -6844751790384224856, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6844751790384224856, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: -6764904992561783182, guid: f9be244924559b644ad28ad31b563ad8,
         type: 3}
@@ -428,6 +481,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Movement
       objectReference: {fileID: 0}
+    - target: {fileID: -6764904992561783182, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6764904992561783182, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -6205903026818386954, guid: f9be244924559b644ad28ad31b563ad8,
         type: 3}
       propertyPath: m_Layer
@@ -437,6 +500,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Movement
+      objectReference: {fileID: 0}
+    - target: {fileID: -6205903026818386954, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6205903026818386954, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: -4101031403483396905, guid: f9be244924559b644ad28ad31b563ad8,
         type: 3}
@@ -453,6 +526,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Movement
       objectReference: {fileID: 0}
+    - target: {fileID: -3362810692954605615, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3362810692954605615, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -1331998841041151882, guid: f9be244924559b644ad28ad31b563ad8,
         type: 3}
       propertyPath: m_Enabled
@@ -468,6 +551,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Movement
       objectReference: {fileID: 0}
+    - target: {fileID: -1120801755622599398, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1120801755622599398, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 431980586301623958, guid: f9be244924559b644ad28ad31b563ad8,
         type: 3}
       propertyPath: m_Enabled
@@ -482,6 +575,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Movement
+      objectReference: {fileID: 0}
+    - target: {fileID: 529783828677035687, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 529783828677035687, guid: f9be244924559b644ad28ad31b563ad8,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 534266430955668266, guid: f9be244924559b644ad28ad31b563ad8,
         type: 3}

@@ -12,5 +12,8 @@ namespace GDD
         public List<PeopleSystemSaveData> workers;
         public float re_userate_hour = 0;
         public bool is_work_24h = false;
+        
+        //For other child class
+        public object saveDataObject;
     }
 }

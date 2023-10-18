@@ -73,7 +73,7 @@ namespace GDD
 
         private void gameTimeSystem()
         {
-            _deltaTime = Time.deltaTime * Mathf.Pow(1000, _timescale);
+            _deltaTime = Time.deltaTime * Mathf.Pow(100, _timescale);
             date_Time = date_Time.AddSeconds(_deltaTime);
 
             if ((date_Time.DayOfYear == 365 && !DateTime.IsLeapYear(date_Time.Year)) || date_Time.DayOfYear == 366)
@@ -93,6 +93,7 @@ namespace GDD
             day = Mathf.FloorToInt(To_Totalday(date_Time));
             
             GI.gameDateTime = new GameDateTime(date_Time.Year, date_Time.Month, date_Time.Day, date_Time.Hour, date_Time.Minute, date_Time.Second, date_Time.Millisecond);
+            //print("Is Date Time NULL?? : " + (GI.gameDateTime == null));
             //print("Old Year : " + date_Time.Minute + " :: " + date_Time.DayOfYear);
         }
 
@@ -128,6 +129,13 @@ namespace GDD
             DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             TimeSpan diff = _dateTime - origin;
             return (float)diff.TotalHours;
+        }
+        
+        public float To_TotalMinute(DateTime _dateTime)
+        {
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            TimeSpan diff = _dateTime - origin;
+            return (float)diff.TotalMinutes;
         }
     }
 }

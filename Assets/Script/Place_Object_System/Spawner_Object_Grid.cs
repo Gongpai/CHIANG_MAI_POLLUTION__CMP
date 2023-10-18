@@ -32,7 +32,9 @@ namespace GDD
         private int L_Default;
         private int L_Building;
         private int L_Obstacle;
+        private int L_Resource;
         private int L_Road;
+        private int L_AI;
 
         public Vector3 Place_Object_Size
         {
@@ -83,6 +85,8 @@ namespace GDD
             L_Building = LayerMask.NameToLayer("Place_Object");
             L_Obstacle = LayerMask.NameToLayer("Obstacle_Ojbect");
             L_Road = LayerMask.NameToLayer("Road_Object");
+            L_AI = LayerMask.NameToLayer("AI_Layer");
+            L_Resource = LayerMask.NameToLayer("Resource_Object");
 
             if (GameObjectLayer == null)
             {
@@ -191,7 +195,7 @@ namespace GDD
 
         public Tuple<RaycastHit, RaycastHit, Vector2, Vector3> CreateRaycast(Ray ray, Color color, out bool hit_obj, out GameObject object_hit, out bool hit_floor)
         {
-            hit_floor = Physics.Raycast(ray, out var hit_floorraycasthit, 1000f, 1<<L_Landscape|0<<L_Default|0<<L_Building|0<<L_Obstacle|0<<L_Road);
+            hit_floor = Physics.Raycast(ray, out var hit_floorraycasthit, 1000f, 1<<L_Landscape|0<<L_Default|0<<L_Building|0<<L_Obstacle|0<<L_Road|0<<L_AI);
             var hit1 = hit_floorraycasthit;
 
             Vector3 snapPosV3 = new Vector3(GridSnap(hit_floorraycasthit.point, default, true).x, 0,
@@ -200,7 +204,7 @@ namespace GDD
             Debug.DrawLine( snapPosV3 + (Vector3.up * 10), snapPosV3 + (Vector3.down * 10), color);
             
             Ray rayfloor = new Ray(snapPosV3 + (Vector3.up * 100), Vector3.down);
-            hit_obj = Physics.Raycast(rayfloor, out var hit_objraycast);
+            hit_obj = Physics.Raycast(rayfloor, out var hit_objraycast, 100f, 1<<L_Landscape|1<<L_Default|1<<L_Building|1<<L_Obstacle|1<<L_Road|1<<L_Resource|0<<L_AI);
 
             if (hit_objraycast.transform.parent == GameObjectLayer)
                 object_hit = hit_objraycast.transform.gameObject;

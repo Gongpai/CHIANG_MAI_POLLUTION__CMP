@@ -1,29 +1,65 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace GDD
 {
     public class PM2_5_System_Script : Sinagleton_CanDestroy<PM2_5_System_Script>
     {
         private GameManager GM;
+        private TimeManager TM;
         
         private float pm2_5_delta = 1;
         private bool is_add_value = false;
+        private float current_time = 0;
+        private bool is_change_pm = false;
+        private int set_pm2_5_value;
+        private int Old_pm2_5_value = 0;
         public int pm2_5_value;
+        
 
         private void Start()
         {
             GM = GameManager.Instance;
+            TM = TimeManager.Instance;
         }
 
         private void Update()
         {
-            UpdatePm2_5();
+            //UpdatePm2_5();
+
+            if (is_change_pm)
+                ChangePM2_5_Current();
+            
             UpdateFogDistance();
 
             //pm2_5_value = 300; //(int)pm2_5_delta;
         }
 
+        public void OnChangePM2_5_Value(int pm_value)
+        {
+            set_pm2_5_value = pm_value;
+            current_time = 0;
+            Old_pm2_5_value = pm2_5_value;
+            is_change_pm = true;
+            
+            print("PM Value : " + pm_value);
+        }
+
+        private void ChangePM2_5_Current()
+        {
+            if (current_time + (TM.deltaTime * 0.01f) >= 1)
+            {
+                current_time = 1;
+            }
+            else
+            {
+                current_time += (TM.deltaTime * 0.01f);
+            }
+            
+            pm2_5_value = (int)Mathf.Lerp(Old_pm2_5_value, set_pm2_5_value, current_time);
+            if (current_time >= 1)
+                is_change_pm = false;
+        }
+        
         private void UpdatePm2_5()
         {
             if (pm2_5_value > 310)

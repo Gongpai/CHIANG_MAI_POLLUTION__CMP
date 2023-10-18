@@ -13,8 +13,10 @@ namespace GDD
         private TimeManager TM;
         private GameManager GM;
         private GameInstance GI;
+        PM2_5_System_Script PM2_5;
         private List<GameObject> m_time_measurement_line_lists = new List<GameObject>();
         private List<GameObject> warning_pm2_5_lists = new List<GameObject>();
+        private bool is_update_pm2_5 = false;
         private int day = 0;
 
         private float pos_spawn_warning
@@ -52,19 +54,32 @@ namespace GDD
             get => GI.timeMeasurementSaveData.spawn_number;
             set => GI.timeMeasurementSaveData.spawn_number = value;
         }
-        
-        private int olddyaa = 0;
+
+        private int pm2_5_before
+        {
+            get => GI.day_before_pm2_5;
+            set => GI.day_before_pm2_5 = value;
+        }
+
+        private int pm2_5_after
+        {
+            get => GI.day_after_pm2_5;
+            set => GI.day_after_pm2_5 = value;
+        }
 
         private void OnEnable()
         {
             TM = TimeManager.Instance;
             GM = GameManager.Instance;
             GI = GM.gameInstance;
+            PM2_5 = PM2_5_System_Script.Instance;
         }
 
         private void Start()
         {
-            GI.current_day_mp2_5 += GI.day_before_pm2_5;
+            if(GI.timeMeasurementSaveData.pos_warning_lists == null)
+                GI.current_day_mp2_5 += GI.day_before_pm2_5;
+            
             m_time_measurement_line_lists.Add(Instantiate(m_prefab_time_measurement_line, m_area_Time.transform));
             m_time_measurement_line_lists[0].GetComponent<RectTransform>().pivot = new Vector2(0, 1);
             m_time_measurement_line_lists[0].GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
@@ -86,8 +101,9 @@ namespace GDD
             if(TM.getTotalDay != olddyaa)
                 print("Day Move : " + m_time_measurement_line_lists[0].GetComponent<RectTransform>().anchoredPosition.x);
             */
-            olddyaa = TM.getTotalDay;
-            
+            //olddyaa = TM.getTotalDay;
+
+            UpdatePM2_5();
             Add_PM2_5_Warning();
             
             //print("Scale : " + ((m_time_measurement_line_lists[0].GetComponent<RectTransform>().rect.width / 675) * 100) + "%");
@@ -130,28 +146,122 @@ namespace GDD
             }
         }
 
+        private float Check_Spawn_number()
+        {
+            if (spawn_number <= 2)
+            {
+                if (GI.current_day_mp2_5 - (GI.day_after_pm2_5 + GI.day_before_pm2_5) > 0)
+                {
+                    return GI.current_day_mp2_5 - (9 + (10 - GI.day_before_pm2_5));
+                }
+                else
+                {
+                    return GI.current_day_mp2_5;
+                }
+            }
+            else
+            {
+                if (GI.current_day_mp2_5 - (GI.day_after_pm2_5 + GI.day_before_pm2_5) > 0)
+                {
+                    return GI.current_day_mp2_5 - (9 + (10 - GI.day_before_pm2_5 - 1));
+                }
+                else
+                {
+                    return GI.current_day_mp2_5;
+                }
+            }
+        }
+        
+        private void UpdatePM2_5()
+        {
+            float time_pm = 0;
+            if ((int)TM.To_Totalday(TM.get_DateTime) <= 90)
+            {
+                time_pm = Check_Spawn_number();
+            }
+            else
+            {
+                if (GI.current_day_mp2_5 - (GI.day_after_pm2_5 + GI.day_before_pm2_5) > 0)
+                {
+                    time_pm = GI.current_day_mp2_5 - (9 + (10 - GI.day_before_pm2_5));
+                }
+                else
+                {
+                    time_pm = GI.current_day_mp2_5;
+                }
+            }
+            
+            if ((int)TM.To_Totalday(TM.get_DateTime) == time_pm && TM.getGameTimeHour == default_hour_spawn && !is_update_pm2_5)
+            {
+                print("Current Number : " + spawn_number);
+                
+                if (spawn_number <= 2)
+                {
+                    PM2_5.OnChangePM2_5_Value(GI.pm2_5_after);
+                }
+                else
+                {
+                    PM2_5.OnChangePM2_5_Value(GI.pm2_5_after - 200);
+                }
+                
+                if(spawn_number == 3)
+                    spawn_number = 0;
+                is_update_pm2_5 = true;
+            }else if (TM.getGameTimeHour == default_hour_spawn + 1)
+            {
+                is_update_pm2_5 = false;
+            }
+            
+            if ((int)TM.To_Totalday(TM.get_DateTime) == time_pm + (10 - GI.day_before_pm2_5) && TM.getGameTimeHour == default_hour_spawn && !is_update_pm2_5)
+            {
+                if (spawn_number <= 2)
+                {
+                    PM2_5.OnChangePM2_5_Value(GI.pm2_5_before);
+                }
+                else
+                {
+                    if((int)TM.To_Totalday(TM.get_DateTime) <= 30)
+                        PM2_5.OnChangePM2_5_Value(0);
+                    else
+                        PM2_5.OnChangePM2_5_Value(GI.pm2_5_before - 100);
+                }
+
+                is_update_pm2_5 = true;
+            }else if (TM.getGameTimeHour == default_hour_spawn + 1)
+            {
+                is_update_pm2_5 = false;
+            }
+        }
+        
         private void Add_PM2_5_Warning()
         {
-            print("Check Day Spawn : " + (int)TM.To_Totalday(TM.get_DateTime) + " | " + (GI.current_day_mp2_5 - offset_warning_spawn));
-            print("Check is 7 : " + TM.getGameTimeHour + " | " + default_hour_spawn);
-            print("Check is same value : " + current_datetime  + " | " + default_hour_spawn);
+            //print("Check is 7 : " + TM.getGameTimeHour + " | " + default_hour_spawn);
+            //print("Check is same value : " + current_datetime  + " | " + default_hour_spawn);
+            //print("Check Day Spawn : " + GI.current_day_mp2_5);
             if ((int)TM.To_Totalday(TM.get_DateTime) == GI.current_day_mp2_5 - offset_warning_spawn && TM.getGameTimeHour == default_hour_spawn && current_datetime != default_hour_spawn)
             {
-                print("ONLOADDDDDDDDDDDDDDDDDDDDD");
+                //print("ONLOADDDDDDDDDDDDDDDDDDDDD");
                 current_datetime = default_hour_spawn;
                 
                 GI.current_day_mp2_5 += GI.day_before_pm2_5 + GI.day_after_pm2_5;
                 pos_warning_lists = new List<float>();
-                SpawnWarning(5);
-                SpawnWarning(5 + GI.day_after_pm2_5);
+                
+                SpawnWarning(5, Resources.Load<Sprite>("Icon/pm2_5/mp2_5_Up_1_Step"), true);
+                SpawnWarning(5 + GI.day_after_pm2_5, Resources.Load<Sprite>("Icon/pm2_5/mp2_5_Down_1_Step"), false);
                 spawn_number++;
                 
                 if (spawn_number == 3 && (int)TM.To_Totalday(TM.get_DateTime) > 0 && (int)TM.To_Totalday(TM.get_DateTime) <= 90)
                 {
-                    spawn_number = 0;
                     offset_warning_spawn += 1;
                     GI.day_before_pm2_5 -= 1;
                     GI.day_after_pm2_5 += 1;
+
+                    if (GI.pm2_5_before <= 0)
+                        GI.pm2_5_before = 100;
+                    else
+                        GI.pm2_5_before += 100;
+
+                    GI.pm2_5_after += 200;
                 }
             } else if (TM.getGameTimeHour == default_hour_spawn + 1)
             {
@@ -159,9 +269,13 @@ namespace GDD
             }
         }
 
-        private void SpawnWarning(int day_number)
+        private void SpawnWarning(int day_number, Sprite sprite,  bool is_red)
         {
-            warning_pm2_5_lists.Add(Instantiate(m_prefab_pm2_5_warning, m_area_Time.transform));
+            GameObject warning_element = Instantiate(m_prefab_pm2_5_warning, m_area_Time.transform);
+            Canvas_Element_List _canvasElementList = warning_element.GetComponent<Canvas_Element_List>();
+            _canvasElementList.image[0].sprite = sprite;
+            _canvasElementList.animators[0].SetBool("IsRed", is_red);
+            warning_pm2_5_lists.Add(warning_element);
             float move = (day_number) * (175 / 4);
             pos_warning_lists.Add(move);
             RectTransform warning = warning_pm2_5_lists[warning_pm2_5_lists.Count - 1].GetComponent<RectTransform>();
@@ -200,7 +314,24 @@ namespace GDD
 
                 for (int i = 0; i < GI.timeMeasurementSaveData.pos_warning_lists.Count; i++)
                 {
-                    warning_pm2_5_lists.Add(Instantiate(m_prefab_pm2_5_warning, m_area_Time.transform));
+                    GameObject warning_element = Instantiate(m_prefab_pm2_5_warning, m_area_Time.transform);
+                    Canvas_Element_List _canvasElementList = warning_element.GetComponent<Canvas_Element_List>();
+                    if (i == 0)
+                    {
+                        _canvasElementList.image[0].sprite = Resources.Load<Sprite>("Icon/pm2_5/mp2_5_Up_1_Step");
+                        _canvasElementList.animators[0].SetBool("IsRed", true);
+                        Warning_PM2_5_UI_Script _warningPm25 = warning_element.GetComponent<Warning_PM2_5_UI_Script>();
+                        _warningPm25.action = () => { PM2_5.OnChangePM2_5_Value(GI.pm2_5_before); };
+                    }
+                    else
+                    {
+                        _canvasElementList.image[0].sprite = Resources.Load<Sprite>("Icon/pm2_5/mp2_5_Down_1_Step");
+                        _canvasElementList.animators[0].SetBool("IsRed", false);
+                        Warning_PM2_5_UI_Script _warningPm25 = warning_element.GetComponent<Warning_PM2_5_UI_Script>();
+                        _warningPm25.action = () => { PM2_5.OnChangePM2_5_Value(GI.pm2_5_after); };
+                    }
+
+                    warning_pm2_5_lists.Add(warning_element);
                     RectTransform warning = warning_pm2_5_lists[warning_pm2_5_lists.Count - 1].GetComponent<RectTransform>();
                     print("Pos Warning : " + GI.timeMeasurementSaveData.pos_warning_lists[i]);
                     warning.anchoredPosition = new Vector2(GI.timeMeasurementSaveData.pos_warning_lists[i], 0);

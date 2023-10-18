@@ -17,6 +17,7 @@ namespace GDD
         [SerializeField] protected GameObject m_warning_noti;
         [SerializeField] protected List<GameObject> m_building_Objects = new List<GameObject>();
         [SerializeField] private Sprite m_icon;
+        [SerializeField] private GameObject m_waypoint;
         
         protected BuildingSaveData _buildingSaveData = new BuildingSaveData();
         protected GameManager GM;
@@ -198,6 +199,16 @@ namespace GDD
             private set => m_Preset.job = value;
         }
 
+        public Vector3 waypoint_pos
+        {
+            get => m_waypoint.transform.position;
+        }
+
+        public Transform waypoint
+        {
+            get => m_waypoint.transform;
+        }
+        
         public string name
         {
             get

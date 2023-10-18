@@ -12,6 +12,7 @@ namespace GDD
     {
         [SerializeField] protected Static_Resource_Preset m_Resource_Preset;
         [SerializeField] protected int m_id_Resource;
+        [SerializeField] private GameObject m_waypoint;
         
         protected Static_Resource_SaveData _staticResourceSaveData = new ();
         protected GameManager GM;
@@ -58,6 +59,16 @@ namespace GDD
             get => m_Resource_Preset.max_worker;
         }
 
+        public Transform waypoint
+        {
+            get => m_waypoint.transform;
+        }
+        
+        public Vector3 waypoint_pos
+        {
+            get => m_waypoint.transform.position;
+        }
+        
         public string name
         {
             get

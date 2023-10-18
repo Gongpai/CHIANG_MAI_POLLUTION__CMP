@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 namespace GDD
 {
     public class Gate_Script : Static_Object_Resource_System_Script
     {
-        [SerializeField]private Gate_Preset m_gatePreset;
+        [SerializeField] private Gate_Preset m_gatePreset;
         [SerializeField] private GameObject InputUI;
 
         private int add_survivor_villager_count;
@@ -34,11 +36,49 @@ namespace GDD
                 if(_gateSaveData.survivors_worker > 0)
                     CreateUI_AddWorker(arg0);
             });
+            
+            if(_staticResourceSaveData.saveDataObject != null)
+            {
+                var savedata = JsonConvert.SerializeObject(_staticResourceSaveData.saveDataObject);
+                var a = JsonConvert.DeserializeObject<Gate_SaveData>(savedata);
+                //print("SaveData : " + savedata);
+                _gateSaveData = a;
+                
+                //print("Over Is : " + _generatorSaveData.IsOverdrive);
+            }
+            
+            _staticResourceSaveData.saveDataObject = _gateSaveData;
         }
 
         public override void EndStart()
         {
             
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+            
+            RandomPeoplePerTenDay();
+        }
+
+        private void RandomPeoplePerTenDay()
+        {
+            if (TM.To_Totalday(TM.get_DateTime) > 1 && (int)TM.To_Totalday(TM.get_DateTime) % 10 == 0 && TM.getGameTimeHour == 7 && (int)TM.To_Totalday(TM.get_DateTime) <= 90 && !_gateSaveData.is_set_time)
+            {
+                float max_sur = m_gatePreset.max_survivor;
+                float villager_random = Random.Range(0, max_sur);
+                max_sur -= villager_random;
+                float worker_ramdom = Random.Range(0, max_sur);
+
+                _gateSaveData.survivors_villager = (int)villager_random;
+                _gateSaveData.survivors_worker = (int)worker_ramdom;
+
+                _gateSaveData.is_set_time = true;
+            } else if (TM.getGameTimeHour > 8)
+            {
+                _gateSaveData.is_set_time = false;
+            }
         }
 
         public void CreateUI_AddVillager(object _object)

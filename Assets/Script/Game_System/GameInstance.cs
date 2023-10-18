@@ -20,6 +20,8 @@ namespace GDD
         public int day_before_pm2_5 = 9;
         public int day_after_pm2_5 = 1;
         public int current_day_mp2_5 = 0; 
+        public int pm2_5_before = 0;
+        public int pm2_5_after = 200;
         
         public GameDateTime gameDateTime;
 
@@ -188,7 +190,7 @@ namespace GDD
         public int default_hour_spawn;
         public int offset_warning_spawn;
         public int spawn_number;
-        public List<float> pos_warning_lists = new List<float>();
+        public List<float> pos_warning_lists;
 
         public Time_Measurement_Save_Data(float _pos_spawn_warning = 0, int _current_datetime = 0, int _default_hour_spawn = 7, int _offset_warning_spawn = 5, int _spawn_number = 0, List<float> _pos_warning_lists = null)
         {

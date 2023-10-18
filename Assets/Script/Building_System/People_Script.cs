@@ -1,15 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GDD
 {
     public class People_Script : Building_System_Script
     {
         [SerializeField] private People_Preset m_peoplePreset;
+        [SerializeField] private GameObject m_human_boy;
+        [SerializeField] private GameObject m_human_girl;
         private People_SaveData _peoplScriptSaveData = new People_SaveData();
+        private bool is_spawn;
+        
 
         public int get_people_count
         {
@@ -42,6 +50,21 @@ namespace GDD
             
         }
 
+        protected override void Update()
+        {
+            base.Update();
+
+            if (TM.getGameTimeHour == 8 && !is_spawn && building_is_active)
+            {
+                SpawnPeopleToWork();
+                is_spawn = true;
+            }
+            else if(TM.getGameTimeHour > 9)
+            {
+                is_spawn = false;
+            }
+        }
+
         public void OnAddPeople(PeopleSystemSaveData _peopleSaveData)
         {
             if (get_people_count < m_peoplePreset.people)
@@ -55,6 +78,88 @@ namespace GDD
             if (get_people_count > 0)
             {
                 _peoplScriptSaveData.peoples.Remove(_peopleSaveData);
+            }
+        }
+
+        protected void SpawnPeopleToWork()
+        {
+            List<Building_System_Script> buildingSystems = FindObjectsByType<Building_System_Script>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
+            List<Static_Object_Resource_System_Script> staticSystemScripts =
+                FindObjectsByType<Static_Object_Resource_System_Script>(FindObjectsInactive.Exclude,
+                    FindObjectsSortMode.None).ToList();
+            for (int i = 0; i < 3; i++)
+            {
+                float random_type = Random.Range(0, 1);
+                if (random_type == 0)
+                {
+                    if (buildingSystems != null)
+                    {
+                        float random_gender = Random.Range(0, 1);
+                        GameObject spawn = null;
+                        Building_System_Script buildingSystemScript = null;
+
+                        Parallel.ForEach(buildingSystems, (script, state) =>
+                        {
+                            if (script.villager_count > 0 || script.worker_count > 0)
+                            {
+                                buildingSystemScript = script;
+                                state.Stop();
+                            }
+                        });
+
+                        if (buildingSystemScript != null)
+                        {
+                            if (random_gender == 0)
+                                spawn = Instantiate(m_human_boy);
+                            else
+                                spawn = Instantiate(m_human_girl);
+
+                            spawn.transform.position = new Vector3(waypoint_pos.x, 0.8f, waypoint_pos.y);
+                            WaypointReachingState waypointReachingState = spawn.GetComponent<WaypointReachingState>();
+                            waypointReachingState.waypoints.Add(buildingSystemScript.waypoint);
+                            waypointReachingState.SetWaypointIndex = 0;
+                            waypointReachingState.is_Start = true;
+                            
+                            print("Spawn PP Building");
+                        }
+                    }
+                }
+                else
+                {
+                    if (staticSystemScripts != null)
+                    {
+                        float random_gender = Random.Range(0, 1);
+                        GameObject spawn = null;
+                        
+                        Static_Object_Resource_System_Script staticObjectResourceSs = null;
+
+                        Parallel.ForEach(staticSystemScripts, (script, state) =>
+                        {
+                            if (script.villager_count > 0 || script.worker_count > 0)
+                            {
+                                staticObjectResourceSs = script;
+                                state.Stop();
+                            }
+                        });
+
+
+                        if (staticObjectResourceSs != null)
+                        {
+                            if (random_gender == 0)
+                                spawn = Instantiate(m_human_boy);
+                            else
+                                spawn = Instantiate(m_human_girl);
+
+                            spawn.transform.position = new Vector3(waypoint_pos.x, 0.8f, waypoint_pos.y);
+                            WaypointReachingState waypointReachingState = spawn.GetComponent<WaypointReachingState>();
+                            waypointReachingState.waypoints.Add(staticObjectResourceSs.waypoint);
+                            waypointReachingState.SetWaypointIndex = 0;
+                            waypointReachingState.is_Start = true;
+                            
+                            print("Spawn PP StaticObject");
+                        }
+                    }
+                }
             }
         }
 
