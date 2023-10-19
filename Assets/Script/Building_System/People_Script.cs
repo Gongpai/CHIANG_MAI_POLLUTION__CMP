@@ -13,11 +13,7 @@ namespace GDD
     public class People_Script : Building_System_Script
     {
         [SerializeField] private People_Preset m_peoplePreset;
-        [SerializeField] private GameObject m_human_boy;
-        [SerializeField] private GameObject m_human_girl;
         private People_SaveData _peoplScriptSaveData = new People_SaveData();
-        private bool is_spawn;
-        
 
         public int get_people_count
         {
@@ -54,12 +50,20 @@ namespace GDD
         {
             base.Update();
 
-            if (TM.getGameTimeHour == 8 && !is_spawn && building_is_active)
+            float timehour = 8;
+            float timehour_out = 9;
+            if (_buildingSaveData.is_work_overtime)
+            {
+                timehour = 6;
+                timehour_out = 7;
+            }
+
+            if (TM.getGameTimeHour == timehour && !is_spawn && building_is_active)
             {
                 SpawnPeopleToWork();
                 is_spawn = true;
             }
-            else if(TM.getGameTimeHour > 9)
+            else if(TM.getGameTimeHour > timehour_out)
             {
                 is_spawn = false;
             }
@@ -87,6 +91,13 @@ namespace GDD
             List<Static_Object_Resource_System_Script> staticSystemScripts =
                 FindObjectsByType<Static_Object_Resource_System_Script>(FindObjectsInactive.Exclude,
                     FindObjectsSortMode.None).ToList();
+
+            int peoplecount = 0;
+            if (_peoplScriptSaveData.peoples.Count >= 3)
+                peoplecount = 3;
+            else
+                peoplecount = _peoplScriptSaveData.peoples.Count;
+            
             for (int i = 0; i < 3; i++)
             {
                 switch (i)
@@ -130,6 +141,7 @@ namespace GDD
                             else
                                 spawn = Instantiate(m_human_girl);
 
+                            buildingSystemScript.ai_pos_back_homes.Add(transform);
                             spawn.transform.position = waypoint.position;
                             WaypointReachingState waypointReachingState = spawn.GetComponent<WaypointReachingState>();
                             waypointReachingState.waypoints.Add(buildingSystemScript.waypoint);

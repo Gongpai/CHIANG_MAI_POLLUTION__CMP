@@ -82,6 +82,10 @@ MonoBehaviour:
   - {fileID: 7721959468937385748}
   m_icon: {fileID: 21300000, guid: 950066892e5d15344be2484d19bbebf3, type: 3}
   m_waypoint: {fileID: 7478685843951292266}
+  m_human_boy: {fileID: 1273963253303387551, guid: 0bfb375b2521a8a41b9371337c97bb0c,
+    type: 3}
+  m_human_girl: {fileID: 919132149155446097, guid: ef205eebd1e75504cbd32a1c08ae9790,
+    type: 3}
   m_healthPreset: {fileID: 11400000, guid: df08078ee98103b45be6a7ffd210e791, type: 2}
   ppp: []
 --- !u!65 &4760527475977498303

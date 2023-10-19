@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Outline.Scripts;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace GDD
 {
@@ -18,6 +20,8 @@ namespace GDD
         [SerializeField] protected List<GameObject> m_building_Objects = new List<GameObject>();
         [SerializeField] private Sprite m_icon;
         [SerializeField] private GameObject m_waypoint;
+        [SerializeField] protected GameObject m_human_boy;
+        [SerializeField] protected GameObject m_human_girl;
         
         protected BuildingSaveData _buildingSaveData = new BuildingSaveData();
         protected GameManager GM;
@@ -34,12 +38,14 @@ namespace GDD
         protected List<Tuple<Villager_System_Script, PeopleJob>> villagers = new();
         protected List<Tuple<Worker_System_Script, PeopleJob>> workers = new();
         protected List<Button_Action_Data> menuDatas = new List<Button_Action_Data>();
+        private List<Transform> _ai_pos_back_homes = new ();
         protected Building_Active _buildingActive;
         protected GameObject construction_zone_pivot;
         protected bool is_addSettingother = true;
         protected bool is_cant_use_resource = false;
         protected bool is_cant_use_power;
         protected bool is_road_found;
+        protected bool is_spawn;
         private LayerMask L_Road;
         private LayerMask L_Default;
         private LayerMask L_Building;
@@ -193,6 +199,12 @@ namespace GDD
             set => workers = value;
         }
 
+        public List<Transform> ai_pos_back_homes
+        {
+            get => _ai_pos_back_homes;
+            set => _ai_pos_back_homes = value;
+        }
+        
         public PeopleJob job
         {
             get => m_Preset.job;
@@ -364,7 +376,71 @@ namespace GDD
 
             GetValueBuildingInformation(0);
             
-            //print("Active : " + active);
+            float timehour = 16;
+            float timehour_out = 17;
+            if (_buildingSaveData.is_work_overtime)
+            {
+                timehour = 18;
+                timehour_out = 19;
+            }
+            
+            if (TM.getGameTimeHour == timehour && !is_spawn && building_is_active && !_buildingSaveData.is_work_24h)
+            {
+                SpawnPeopleBackToHome();
+                is_spawn = true;
+            }
+            else if(TM.getGameTimeHour > timehour_out)
+            {
+                is_spawn = false;
+            }
+        }
+
+        protected void SpawnPeopleBackToHome()
+        {
+            for (int i = 0; i < _ai_pos_back_homes.Count; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        m_human_boy.transform.position = waypoint.position;
+                        m_human_girl.transform.position = waypoint.position;
+                        break;
+                    case 1:
+                        m_human_boy.transform.position = waypoint.position + (waypoint.right * 0.1f);
+                        m_human_girl.transform.position = waypoint.position + (waypoint.right * 0.1f);
+                        break;
+                    case 2:
+                        m_human_boy.transform.position = waypoint.position - (waypoint.right * 0.1f);
+                        m_human_girl.transform.position = waypoint.position - (waypoint.right * 0.1f);
+                        break;
+                }
+
+                float random_type = Random.Range(0, 1);
+                if (random_type == 0)
+                {
+                    if (_ai_pos_back_homes != null)
+                    {
+                        float random_gender = Random.Range(0, 1);
+                        GameObject spawn = null;
+
+                        if (random_gender == 0)
+                            spawn = Instantiate(m_human_boy);
+                        else
+                            spawn = Instantiate(m_human_girl);
+
+                        spawn.transform.position = waypoint.position;
+                        WaypointReachingState waypointReachingState = spawn.GetComponent<WaypointReachingState>();
+                        waypointReachingState.waypoints.Add(_ai_pos_back_homes[i].GetComponent<Building_System_Script>().waypoint);
+                        waypointReachingState.SetWaypointIndex = 0;
+                        waypointReachingState.EnterState();
+                        waypointReachingState.is_Start = true;
+
+                        print("Spawn PP Building");
+                    }
+                }
+            }
+
+            _ai_pos_back_homes = new List<Transform>();
         }
 
         private void Create_button_action_data_for_building()

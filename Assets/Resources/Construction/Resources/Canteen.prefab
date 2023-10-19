@@ -82,6 +82,10 @@ MonoBehaviour:
   - {fileID: 116024299805126454}
   m_icon: {fileID: 21300000, guid: 6ebc53fc8f3ddeb4d9120773ce6565aa, type: 3}
   m_waypoint: {fileID: 1487715303470428605}
+  m_human_boy: {fileID: 1273963253303387551, guid: 0bfb375b2521a8a41b9371337c97bb0c,
+    type: 3}
+  m_human_girl: {fileID: 919132149155446097, guid: ef205eebd1e75504cbd32a1c08ae9790,
+    type: 3}
   m_cookhousePreset: {fileID: 11400000, guid: 22c257a14559a3046860e41166cb843f, type: 2}
 --- !u!65 &4760527475977498303
 BoxCollider:
