@@ -89,6 +89,22 @@ namespace GDD
                     FindObjectsSortMode.None).ToList();
             for (int i = 0; i < 3; i++)
             {
+                switch (i)
+                {
+                    case 0:
+                        m_human_boy.transform.position =  waypoint.position;
+                        m_human_girl.transform.position =  waypoint.position;
+                        break;
+                    case 1:
+                        m_human_boy.transform.position =  waypoint.position + (waypoint.right * 0.1f);
+                        m_human_girl.transform.position =  waypoint.position + (waypoint.right * 0.1f);
+                        break;
+                    case 2:
+                        m_human_boy.transform.position =  waypoint.position - (waypoint.right * 0.1f);
+                        m_human_girl.transform.position =  waypoint.position - (waypoint.right * 0.1f);
+                        break;
+                }
+                
                 float random_type = Random.Range(0, 1);
                 if (random_type == 0)
                 {
@@ -100,7 +116,7 @@ namespace GDD
 
                         Parallel.ForEach(buildingSystems, (script, state) =>
                         {
-                            if (script.villager_count > 0 || script.worker_count > 0)
+                            if ((script.villager_count > 0 || script.worker_count > 0) && script._buildingType != BuildingType.People)
                             {
                                 buildingSystemScript = script;
                                 state.Stop();
@@ -114,10 +130,11 @@ namespace GDD
                             else
                                 spawn = Instantiate(m_human_girl);
 
-                            spawn.transform.position = new Vector3(waypoint_pos.x, 0.8f, waypoint_pos.y);
+                            spawn.transform.position = waypoint.position;
                             WaypointReachingState waypointReachingState = spawn.GetComponent<WaypointReachingState>();
                             waypointReachingState.waypoints.Add(buildingSystemScript.waypoint);
                             waypointReachingState.SetWaypointIndex = 0;
+                            waypointReachingState.EnterState();
                             waypointReachingState.is_Start = true;
                             
                             print("Spawn PP Building");
@@ -150,10 +167,11 @@ namespace GDD
                             else
                                 spawn = Instantiate(m_human_girl);
 
-                            spawn.transform.position = new Vector3(waypoint_pos.x, 0.8f, waypoint_pos.y);
+                            spawn.transform.position = waypoint.position;
                             WaypointReachingState waypointReachingState = spawn.GetComponent<WaypointReachingState>();
                             waypointReachingState.waypoints.Add(staticObjectResourceSs.waypoint);
                             waypointReachingState.SetWaypointIndex = 0;
+                            waypointReachingState.EnterState();
                             waypointReachingState.is_Start = true;
                             
                             print("Spawn PP StaticObject");

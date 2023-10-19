@@ -22,6 +22,8 @@ namespace GDD
 
         [SerializeField] private bool m_is_Start = false;
 
+        [SerializeField] private bool is_start_now = false;
+
         public List<Transform> waypoints
         {
             get => m_Waypoints;
@@ -51,21 +53,34 @@ namespace GDD
 
         private void Update()
         {
+            if (!is_start_now)
+            {
+                EnterState();
+                is_start_now = true;
+            }
+            
             if(m_is_Start)
                 UpdateState();
+
+            print("Current " + gameObject.name + " distance : " + Mathf.Abs(Vector3.Magnitude(transform.position - m_Waypoints[m_CurrentWaypointIndex].position)));
+            if (Mathf.Abs(Vector3.Magnitude(transform.position - m_Waypoints[m_CurrentWaypointIndex].position)) <= 0.51f)
+            {
+                DestroyAI();
+            }
         }
 
         public void UpdateState()
         {
             if (m_NavMeshAgent.remainingDistance > m_NavMeshAgent.stoppingDistance)
             {
-                //print("Moveeeeeeeeeee");
+                print("Moveeeeeeeeeee");
                 m_3rdPersonControllerAI.Move(m_NavMeshAgent.desiredVelocity);
             }
             else
             {
-                DestroyAI();
-                is_Start = false;
+                m_3rdPersonControllerAI.Move(Vector3.zero);
+                //DestroyAI();
+                //is_Start = false;
                 /*
                 m_3rdPersonControllerAI.Move(Vector3.zero);
 
@@ -85,6 +100,7 @@ namespace GDD
 
         public void DestroyAI()
         {
+            print("Destroy : " + gameObject.name);
             Destroy(gameObject, 1);
         }
 

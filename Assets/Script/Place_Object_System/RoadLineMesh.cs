@@ -130,6 +130,7 @@ namespace GDD
             road_element.AddComponent<Non_asphalt_Road_Script>();
             BoxCollider boxCollider = road_element.GetComponent<BoxCollider>();
             boxCollider.size = new Vector3(boxCollider.size.x, 1, boxCollider.size.z);
+            boxCollider.isTrigger = true;
 
             if (isOnPlace)
             {
