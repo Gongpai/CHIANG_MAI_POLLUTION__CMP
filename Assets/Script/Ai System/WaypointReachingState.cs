@@ -24,6 +24,8 @@ namespace GDD
 
         [SerializeField] private bool is_start_now = false;
 
+        private TimeManager TM;
+        
         public List<Transform> waypoints
         {
             get => m_Waypoints;
@@ -42,6 +44,8 @@ namespace GDD
         
         private void Start()
         {
+            TM = TimeManager.Instance;
+            
             m_NavMeshAgent = GetComponent<NavMeshAgent>();
             m_3rdPersonControllerAI = GetComponent<ThirdPersonControllerAI>();
         }
@@ -58,14 +62,17 @@ namespace GDD
                 EnterState();
                 is_start_now = true;
             }
-            
-            if(m_is_Start)
+            if(m_is_Start && TM.timeScale > 0)
                 UpdateState();
 
-            print("Current " + gameObject.name + " distance : " + Mathf.Abs(Vector3.Magnitude(transform.position - m_Waypoints[m_CurrentWaypointIndex].position)));
+            //print("Current " + gameObject.name + " distance : " + Mathf.Abs(Vector3.Magnitude(transform.position - m_Waypoints[m_CurrentWaypointIndex].position)));
             if (Mathf.Abs(Vector3.Magnitude(transform.position - m_Waypoints[m_CurrentWaypointIndex].position)) <= 0.51f)
             {
                 DestroyAI();
+            }
+            if (Mathf.Abs(Vector3.Magnitude(transform.position - m_Waypoints[m_CurrentWaypointIndex].position)) <= 1.51f)
+            {
+                DestroyAI(10);
             }
         }
 
@@ -98,10 +105,10 @@ namespace GDD
             }
         }
 
-        public void DestroyAI()
+        public void DestroyAI(float t = 1)
         {
             print("Destroy : " + gameObject.name);
-            Destroy(gameObject, 1);
+            Destroy(gameObject, t);
         }
 
     }

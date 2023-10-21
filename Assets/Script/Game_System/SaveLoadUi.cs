@@ -10,6 +10,7 @@ namespace GDD
 {
     public class SaveLoadUi : MonoBehaviour
     {
+        [SerializeField] private LoadingSceneSystem m_loadingSceneSystem;
         [SerializeField] private TextMeshProUGUI m_save_Load_Text;
         [SerializeField] private Button m_button_new_savegame;
         [SerializeField] private GameObject m_Button_SaveLoad;
@@ -49,6 +50,9 @@ namespace GDD
             {
                 m_animator.SetBool("IsStart", true);
             }
+
+            if (m_loadingSceneSystem == null)
+                m_loadingSceneSystem = FindObjectOfType<LoadingSceneSystem>();
 
             OnOpenUi();
         }
@@ -251,11 +255,14 @@ namespace GDD
 
         public void LoadSave(string fileName)
         {
+            Destroy(TimeManager.Instance.gameObject);
+            
             var saveData = SM.LoadGamePreferencesData(Application.persistentDataPath + "/" + fileName, GM.gameInstance.GetType());
 
             GM.GetSetGameManager = saveData;
             GM.OnGameLoad();
-            SceneManager.LoadScene(2, LoadSceneMode.Single);
+            
+            m_loadingSceneSystem.LoadScene("GameLevel");
         }
 
         public void OnChangeSaveGameFile(string value)

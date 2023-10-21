@@ -22,7 +22,7 @@ public class SplashScreen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mVideoPlayer.isPaused == true && !Is_Open)
+        if (mVideoPlayer.isPaused == true && !Is_Open || Input.GetMouseButtonUp(0))
         {
             LoadingScreenWidget.GetComponent<LoadingSceneSystem>().LoadScene(Intro_Scene);
             Is_Open = true;

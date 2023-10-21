@@ -9,7 +9,8 @@ namespace GDD
 {
     public class Button_Control_Script : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private bool autoSetInstance; 
+        [SerializeField] private bool autoSetInstance;
+        [SerializeField] private bool is_static;
         private GameObject button_BG;
         private Button _button;
         private Animator _animator;
@@ -113,26 +114,32 @@ namespace GDD
 
         public void OnPointerEnter(PointerEventData pointerEventData)
         {
-            Isp = true;
-            //Debug.Log(this.gameObject.name + " was Selected");
-            
-            if(_animator != null)
-                _animator.SetBool("IsStart", true);
-            
-            if(Bg_button_sc != null)
-                Bg_animator.SetBool("IsStart", true);
+            if (!is_static)
+            {
+                Isp = true;
+                //Debug.Log(this.gameObject.name + " was Selected");
+
+                if (_animator != null)
+                    _animator.SetBool("IsStart", true);
+
+                if (Bg_button_sc != null)
+                    Bg_animator.SetBool("IsStart", true);
+            }
         }
         
         public void OnPointerExit(PointerEventData pointerEventData)
         {
-            Isp = false;
-            Debug.Log(this.gameObject.name + " was Deselected");
-            
-            if(_animator != null)
-            _animator.SetBool("IsStart", false);
-            
-            if(Bg_button_sc != null)
-                Bg_animator.SetBool("IsStart", false);
+            if (!is_static)
+            {
+                Isp = false;
+                Debug.Log(this.gameObject.name + " was Deselected");
+
+                if (_animator != null)
+                    _animator.SetBool("IsStart", false);
+
+                if (Bg_button_sc != null)
+                    Bg_animator.SetBool("IsStart", false);
+            }
         }
 
         public void OnCreateCanvas(float planeDistance = 2.0f, bool useCameraOverlay = false, int index = 0)

@@ -80,17 +80,19 @@ namespace GDD
 		public bool Jump = false;
 
 		private NavMeshAgent thisAgent;
-
+		private TimeManager TM;
 		private void Start()
 		{
+			TM = TimeManager.Instance;
+			
 			_animator = GetComponent<Animator>();
 			_controller = GetComponent<CharacterController>();
 
 			thisAgent = GetComponent<NavMeshAgent>();
 			thisAgent.updateRotation = false;
 
-			if(Sprinting) thisAgent.speed = SprintSpeed;
-			else thisAgent.speed = MoveSpeed;
+			if (Sprinting) thisAgent.speed = SprintSpeed * Mathf.Pow(TM.timeScale, 5);
+			else thisAgent.speed = MoveSpeed * Mathf.Pow(TM.timeScale, 5);
 
 			AssignAnimationIDs();
 
@@ -102,20 +104,31 @@ namespace GDD
 		private void Update()
 		{		
 			if(Target != null)
-            		{
+			{
 				thisAgent.SetDestination(Target.position);
 			}
 
 			JumpAndGravity();
 			GroundedCheck();
+			
+			if (Sprinting) thisAgent.speed = SprintSpeed * Mathf.Pow(TM.timeScale, 5);
+			else thisAgent.speed = MoveSpeed * Mathf.Pow(TM.timeScale, 5);
 
-			if (Sprinting) thisAgent.speed = SprintSpeed;
-			else thisAgent.speed = MoveSpeed;
-
-			if (thisAgent.remainingDistance > thisAgent.stoppingDistance)
-				Move(thisAgent.desiredVelocity.normalized, thisAgent.desiredVelocity.magnitude);
+			if (TM.timeScale > 0)
+			{
+				_animator.enabled = true;
+				GetComponent<Rigidbody>().isKinematic = false;
+				
+				if (thisAgent.remainingDistance > thisAgent.stoppingDistance)
+					Move(thisAgent.desiredVelocity.normalized, thisAgent.desiredVelocity.magnitude);
+				else
+					Move(thisAgent.desiredVelocity.normalized, 0f);
+			}
 			else
-				Move(thisAgent.desiredVelocity.normalized, 0f);
+			{
+				_animator.enabled = false;
+				GetComponent<Rigidbody>().isKinematic = true;
+			}
 		}
 
 		private void AssignAnimationIDs()
@@ -165,7 +178,7 @@ namespace GDD
 				{
 					_speed = AgentSpeed;
 				}
-				_animationBlend = Mathf.Lerp(_animationBlend, AgentSpeed, Time.deltaTime * SpeedChangeRate);
+				_animationBlend = Mathf.Lerp(_animationBlend, AgentSpeed, (TM.deltaTime * 0.01f) * SpeedChangeRate);
 
 				// rotate player when the player is moving
 				if (_speed != 0f)
@@ -187,7 +200,7 @@ namespace GDD
 
             		} else
             		{
-				_animationBlend = Mathf.Lerp(_animationBlend, 0f, Time.deltaTime * SpeedChangeRate);
+				_animationBlend = Mathf.Lerp(_animationBlend, 0f, (TM.deltaTime * 0.01f) * SpeedChangeRate);
 				_animator.SetFloat(_animIDSpeed, _animationBlend);
 				_animator.SetFloat(_animIDMotionSpeed, 1f);
 			}
