@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GDD
 {
@@ -88,9 +89,10 @@ namespace GDD
                 peopleDeaths = new();
             }
 
-            if (villagers_count == 0 && worker_count == 0 && !is_people_death)
+            if (villagers_count == 0 && worker_count == 0 && !is_people_death && SceneManager.GetActiveScene().buildIndex != 1 && TimeManager.Instance.getGameTimeHour > 0)
             {
                 GameManager.Instance.OnGameOver();
+                print("GAME OVERRR!!!!!!!!!!!!!!");
                 is_people_death = true;
             }
         }

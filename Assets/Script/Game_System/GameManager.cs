@@ -21,7 +21,7 @@ namespace GDD
             get { return _gameInstance; }
             set { _gameInstance = value; }
         }
-
+        
         public object GetSetGameManager
         {
             get
@@ -50,13 +50,11 @@ namespace GDD
         public int villagers_start
         {
             get => villagers_count;
-            set => villagers_count = value;
         }
         
         public int workers_start
         {
             get => workers_count;
-            set => workers_count = value;
         }
         
         /*
@@ -115,6 +113,11 @@ namespace GDD
             
         }
 
+        public void Reset()
+        {
+            _gameInstance = new GameInstance();
+        }
+        
         public void OnGameOver()
         {
             _loadingSceneSystem = FindObjectOfType<LoadingSceneSystem>();
@@ -131,6 +134,10 @@ namespace GDD
                 gameover_Ui.GetComponent<Canvas>().sortingOrder = 0;
                 _loadingSceneSystem.LoadScene("MainMenu");
                 _element.animators[0].SetBool("IsStart", false);
+                
+                Reset();
+                Destroy(HumanResourceManager.Instance.gameObject);
+                Destroy(ResourcesManager.Instance.gameObject);
             }));
         }
         

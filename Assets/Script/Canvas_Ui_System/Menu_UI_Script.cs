@@ -65,8 +65,9 @@ namespace GDD
                 m_backtomainmenu_button.onClick.AddListener((() =>
                 {
                     m_loadingSceneSystem.LoadScene("MainMenu");
-                    Destroy(GameManager.Instance.gameObject);
-                    Destroy(SaveManager.Instance.gameObject);
+                    GM.Reset();
+                    Destroy(HumanResourceManager.Instance.gameObject);
+                    Destroy(ResourcesManager.Instance.gameObject);
                 }));
             }
 
