@@ -12,6 +12,8 @@ namespace GDD
         [SerializeField] private GameObject Content_List;
         [SerializeField] private GameObject Content_Element;
 
+        private GameManager GM;
+        private GameInstance GI;
         private Resources_PreferencesData RPD;
         private Dictionary<string, string> Object_Data = new Dictionary<string, string>();
         private bool Is_UI_Open = false;
@@ -19,6 +21,9 @@ namespace GDD
 
         void Start()
         {
+            GM = GameManager.Instance;
+            GI = GM.gameInstance;
+            
             buildingPlace = gameObject.AddComponent<Building_place>();
             Is_UI_Open = true;
             Interface_Resources_PreferencesData IRPD = new SaveLoad_Resources_Data();
@@ -56,16 +61,16 @@ namespace GDD
                         Object_Element_UI road_element_ui = CreateButtonElement();
                         road_element_ui.text.text = "Remove Road";
                         road_element_ui.image.sprite = m_road_remove_Icon;
-                        road_element_ui.botton.onClick.AddListener(() =>
-                        {
-                            buildingPlace.Select_Road(null);
-                        });
+                        road_element_ui.botton.onClick.AddListener(() => { buildingPlace.Select_Road(null); });
                     }
-                    
+
                     Object_Element_UI element_ui = CreateButtonElement();
                     element_ui.text.text = ob_data.Key;
                     if (nameAsset != "Road")
-                        element_ui.image.sprite = Resources.Load<GameObject>(ob_data.Value).GetComponent<Building_System_Script>().icon;
+                        element_ui.image.sprite = Resources.Load<GameObject>(ob_data.Value)
+                            .GetComponent<Building_System_Script>().icon;
+                    else
+                        element_ui.image.sprite = Resources.Load<Sprite>("Icon/add_road_icon");
                     
                     element_ui.botton.onClick.AddListener(() =>
                     {
@@ -77,12 +82,59 @@ namespace GDD
                         {
                             buildingPlace.Select_Road(ob_data.Value);
                         }
-                        
+
                     });
+
+                    if (nameAsset != "Road" && !Get_Building_Unlock(Resources.Load<GameObject>(ob_data.Value)
+                            .GetComponent<Building_System_Script>().unlock_code))
+                    {
+                        Destroy(element_ui.gameObject);
+                    }
                 }
             }
         }
 
+        private bool Get_Building_Unlock(string code)
+        {
+            int level = int.Parse(code.Split("/")[0]);
+            int element = int.Parse(code.Split("/")[1]);
+
+            switch (level)
+            {
+                case 1:
+                    switch (element)
+                    {
+                        case 1:
+                            return GI.TUDataSave.generator_leveltwo;
+                        case 2:
+                            return GI.TUDataSave.resident_leveltwo;
+                        default:
+                            return true;
+                    }
+                    break;
+                case 2:
+                    switch (element)
+                    {
+                        case 1:
+                            return GI.TUDataSave.resident_levelthree;
+                        default:
+                            return true;
+                    }
+                    break;
+                case 3:
+                    switch (element)
+                    {
+                        case 1:
+                            return GI.TUDataSave.infirmary_unlock;
+                        default:
+                            return true;
+                    }
+                    break;
+                default:
+                    return true;
+            }
+        }
+        
         private Object_Element_UI CreateButtonElement()
         {
             GameObject element = Instantiate(Content_Element, Content_List.transform);

@@ -211,6 +211,8 @@ MonoBehaviour:
   m_pm2_5Preset: {fileID: 11400000, guid: 688b2761f50026040a62ef6d11a08047, type: 2}
   villagers_count: 25
   workers_count: 25
+  m_gameover_ui: {fileID: 7553583346917496856, guid: 9a52f3608c0319a4b9cecff06478ffaa,
+    type: 3}
 --- !u!4 &90808166
 Transform:
   m_ObjectHideFlags: 0

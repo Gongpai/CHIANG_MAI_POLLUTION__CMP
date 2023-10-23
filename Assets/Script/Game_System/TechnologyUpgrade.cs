@@ -143,7 +143,7 @@ namespace GDD
                         case 1:
                             return _TUDataSave.resident_levelthree;
                         case 2:
-                            return _TUDataSave.gate_leveltwo;
+                            return Get_Gate_Unlock(300003);
                         case 3:
                             return _TUDataSave.wood_levelthree;
                         case 4:
@@ -163,7 +163,7 @@ namespace GDD
                         case 1:
                             return _TUDataSave.infirmary_unlock;
                         case 2:
-                            return _TUDataSave.gate_levelthree;
+                            return Get_Gate_Unlock(300000);
                         case 3:
                             return _TUDataSave.wood_levelfour;
                         case 4:
@@ -183,7 +183,7 @@ namespace GDD
                         case 1:
                             return _TUDataSave.rawfood_levelfour;
                         case 2:
-                            return _TUDataSave.gate_levelfour;
+                            return Get_Gate_Unlock(300002);
                         case 3:
                             return _TUDataSave.token_levelthree;
                         case 4:
@@ -196,6 +196,31 @@ namespace GDD
             return false;
         }
 
+        private bool Get_Gate_Unlock(int id)
+        {
+            foreach (var gateScript in FindObjectsByType<Gate_Script>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (gateScript.get_resource_id == id)
+                {
+                    return gateScript.is_unlock;
+                }
+            }
+
+            return false;
+        }
+        
+        private void Set_Gate_Unlock(int id, bool value)
+        {
+            foreach (var gateScript in FindObjectsByType<Gate_Script>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (gateScript.get_resource_id == id)
+                {
+                    gateScript.is_unlock = value;
+                    break;
+                }
+            }
+        }
+        
         public int get_token_level_use(int index)
         {
             switch (index)
@@ -345,7 +370,7 @@ namespace GDD
                     _TUDataSave.resident_levelthree = true;
                     break;
                 case 2:
-                    _TUDataSave.gate_leveltwo = true;
+                    Set_Gate_Unlock(300003, true);
                     break;
                 case 3:
                     _TUDataSave.wood_levelthree = true;
@@ -377,7 +402,7 @@ namespace GDD
                     _TUDataSave.infirmary_unlock = true;
                     break;
                 case 2:
-                    _TUDataSave.gate_levelthree = true;
+                    Set_Gate_Unlock(300000, true);
                     break;
                 case 3:
                     _TUDataSave.wood_levelfour = true;
@@ -411,10 +436,13 @@ namespace GDD
                     GI.max_resources.raw_food += 500;
                     break;
                 case 2:
+                    Set_Gate_Unlock(300002, true);
+                    break;
+                case 3:
                     _TUDataSave.token_levelthree = true;
                     GI.max_resources.token += 100;
                     break;
-                case 3:
+                case 4:
                     _TUDataSave.air_purifier_levelthree = true;
                     break;
             }

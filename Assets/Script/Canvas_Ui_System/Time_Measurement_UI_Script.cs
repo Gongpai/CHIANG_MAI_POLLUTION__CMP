@@ -300,41 +300,49 @@ namespace GDD
                 float moved = (3.50000000f * (725.00000000f / 700.00000000f) / 2.00000000f);
                 float totalmoved = moved * (TM.To_TotalSecond(GI.getSaveGameDateTime()) / 3600);
                 Debug.LogWarning("Toal Line Moved from time is : " + (totalmoved - Time.deltaTime));
-                Debug.LogWarning("This time : " + TM.To_TotalSecond(TM.get_DateTime) + " | Min : " + TM.get_DateTime.Minute + " | Sec : " + TM.get_DateTime.Second + " | MilliSec : " + TM.get_DateTime.Millisecond);
+                Debug.LogWarning("This time : " + TM.To_TotalSecond(TM.get_DateTime) + " | Min : " +
+                                 TM.get_DateTime.Minute + " | Sec : " + TM.get_DateTime.Second + " | MilliSec : " +
+                                 TM.get_DateTime.Millisecond);
 
-                for(int i = 0; i < m_time_measurement_line_lists.Count; i++)
+                for (int i = 0; i < m_time_measurement_line_lists.Count; i++)
                 {
                     RectTransform _rectTransform = m_time_measurement_line_lists[i].GetComponent<RectTransform>();
-                    
+
                     if (i > 0)
                         totalmoved -= 174.00000000f;
-                    
+
                     _rectTransform.anchoredPosition = new Vector2(-totalmoved, 0);
                 }
 
-                for (int i = 0; i < GI.timeMeasurementSaveData.pos_warning_lists.Count; i++)
+                if (GI.timeMeasurementSaveData != null && GI.timeMeasurementSaveData.pos_warning_lists != null)
                 {
-                    GameObject warning_element = Instantiate(m_prefab_pm2_5_warning, m_area_Time.transform);
-                    Canvas_Element_List _canvasElementList = warning_element.GetComponent<Canvas_Element_List>();
-                    if (i == 0)
+                    for (int i = 0; i < GI.timeMeasurementSaveData.pos_warning_lists.Count; i++)
                     {
-                        _canvasElementList.image[0].sprite = Resources.Load<Sprite>("Icon/pm2_5/mp2_5_Up_1_Step");
-                        _canvasElementList.animators[0].SetBool("IsRed", true);
-                        Warning_PM2_5_UI_Script _warningPm25 = warning_element.GetComponent<Warning_PM2_5_UI_Script>();
-                        _warningPm25.action = () => { PM2_5.OnChangePM2_5_Value(GI.pm2_5_before); };
-                    }
-                    else
-                    {
-                        _canvasElementList.image[0].sprite = Resources.Load<Sprite>("Icon/pm2_5/mp2_5_Down_1_Step");
-                        _canvasElementList.animators[0].SetBool("IsRed", false);
-                        Warning_PM2_5_UI_Script _warningPm25 = warning_element.GetComponent<Warning_PM2_5_UI_Script>();
-                        _warningPm25.action = () => { PM2_5.OnChangePM2_5_Value(GI.pm2_5_after); };
-                    }
+                        GameObject warning_element = Instantiate(m_prefab_pm2_5_warning, m_area_Time.transform);
+                        Canvas_Element_List _canvasElementList = warning_element.GetComponent<Canvas_Element_List>();
+                        if (i == 0)
+                        {
+                            _canvasElementList.image[0].sprite = Resources.Load<Sprite>("Icon/pm2_5/mp2_5_Up_1_Step");
+                            _canvasElementList.animators[0].SetBool("IsRed", true);
+                            Warning_PM2_5_UI_Script _warningPm25 =
+                                warning_element.GetComponent<Warning_PM2_5_UI_Script>();
+                            _warningPm25.action = () => { PM2_5.OnChangePM2_5_Value(GI.pm2_5_before); };
+                        }
+                        else
+                        {
+                            _canvasElementList.image[0].sprite = Resources.Load<Sprite>("Icon/pm2_5/mp2_5_Down_1_Step");
+                            _canvasElementList.animators[0].SetBool("IsRed", false);
+                            Warning_PM2_5_UI_Script _warningPm25 =
+                                warning_element.GetComponent<Warning_PM2_5_UI_Script>();
+                            _warningPm25.action = () => { PM2_5.OnChangePM2_5_Value(GI.pm2_5_after); };
+                        }
 
-                    warning_pm2_5_lists.Add(warning_element);
-                    RectTransform warning = warning_pm2_5_lists[warning_pm2_5_lists.Count - 1].GetComponent<RectTransform>();
-                    print("Pos Warning : " + GI.timeMeasurementSaveData.pos_warning_lists[i]);
-                    warning.anchoredPosition = new Vector2(GI.timeMeasurementSaveData.pos_warning_lists[i], 0);
+                        warning_pm2_5_lists.Add(warning_element);
+                        RectTransform warning = warning_pm2_5_lists[warning_pm2_5_lists.Count - 1]
+                            .GetComponent<RectTransform>();
+                        print("Pos Warning : " + GI.timeMeasurementSaveData.pos_warning_lists[i]);
+                        warning.anchoredPosition = new Vector2(GI.timeMeasurementSaveData.pos_warning_lists[i], 0);
+                    }
                 }
             }
         }

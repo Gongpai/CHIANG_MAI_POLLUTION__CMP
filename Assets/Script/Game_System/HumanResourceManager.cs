@@ -18,6 +18,7 @@ namespace GDD
         private List<People_System_Script> m_patients = new();
 
         private List<People_System_Script> _peopleDeaths = new();
+        private bool is_people_death = false;
 
         public List<People_System_Script> peopleDeaths
         {
@@ -33,6 +34,16 @@ namespace GDD
         public int worker_count
         {
             get => workers.Count;
+        }
+        
+        public List<Tuple<Villager_System_Script, PeopleJob>> get_villager_datas
+        {
+            get => villagers;
+        }
+
+        public List<Tuple<Worker_System_Script, PeopleJob>> get_worker_datas
+        {
+            get => workers;
         }
 
         public List<People_System_Script> residence
@@ -75,6 +86,12 @@ namespace GDD
                 NM.AddNotification(notification);
 
                 peopleDeaths = new();
+            }
+
+            if (villagers_count == 0 && worker_count == 0 && !is_people_death)
+            {
+                GameManager.Instance.OnGameOver();
+                is_people_death = true;
             }
         }
         

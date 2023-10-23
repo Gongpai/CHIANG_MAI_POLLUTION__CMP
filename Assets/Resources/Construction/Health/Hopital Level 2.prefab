@@ -86,6 +86,7 @@ MonoBehaviour:
     type: 3}
   m_human_girl: {fileID: 919132149155446097, guid: ef205eebd1e75504cbd32a1c08ae9790,
     type: 3}
+  m_unlock_code: 3/1
   m_healthPreset: {fileID: 11400000, guid: df08078ee98103b45be6a7ffd210e791, type: 2}
   ppp: []
 --- !u!65 &4760527475977498303

@@ -1,4 +1,5 @@
-﻿using Unity.VisualScripting;
+﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GDD
@@ -8,8 +9,12 @@ namespace GDD
         [SerializeField]private PM2_5_Preset m_pm2_5Preset;
         [SerializeField]private int villagers_count = 12;
         [SerializeField]private int workers_count = 12;
+        [SerializeField] private GameObject m_gameover_ui;
         
         private GameInstance _gameInstance = new GameInstance();
+
+        private LoadingSceneSystem _loadingSceneSystem;
+        private TimeManager TM;
 
         public GameInstance gameInstance
         {
@@ -99,6 +104,35 @@ namespace GDD
             
         }
         */
+
+        private void Start()
+        {
+            TM = TimeManager.Instance;
+        }
+
+        private void OnEnable()
+        {
+            
+        }
+
+        public void OnGameOver()
+        {
+            _loadingSceneSystem = FindObjectOfType<LoadingSceneSystem>();
+            TM.timeScale = 0;
+            
+            GameObject gameover_Ui = Instantiate(m_gameover_ui);
+            gameover_Ui.GetComponent<Canvas>().planeDistance = 1;
+            gameover_Ui.GetComponent<Canvas>().worldCamera = Camera.main;
+            Canvas_Element_List _element = gameover_Ui.GetComponent<Canvas_Element_List>();
+            _element.animators[0].SetBool("IsStart", true);
+            
+            _element.buttons[0].onClick.AddListener((() =>
+            {
+                gameover_Ui.GetComponent<Canvas>().sortingOrder = 0;
+                _loadingSceneSystem.LoadScene("MainMenu");
+                _element.animators[0].SetBool("IsStart", false);
+            }));
+        }
         
         public void OnGameLoad()
         {

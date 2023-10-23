@@ -22,6 +22,7 @@ namespace GDD
         [SerializeField] private GameObject m_waypoint;
         [SerializeField] protected GameObject m_human_boy;
         [SerializeField] protected GameObject m_human_girl;
+        [SerializeField] private string m_unlock_code = "0/0";
         
         protected BuildingSaveData _buildingSaveData = new BuildingSaveData();
         protected GameManager GM;
@@ -82,6 +83,11 @@ namespace GDD
         {
             get => _buildingSaveData.Building_active;
             set => _buildingSaveData.Building_active = value;
+        }
+
+        public string unlock_code
+        {
+            get => m_unlock_code;
         }
 
         public bool building_is_active
@@ -534,10 +540,19 @@ namespace GDD
 
         public int Get_Air_Filtration_Ability()
         {
+            int air_speed = building_preset.air_filtration_ability;
+
+            if (GM.gameInstance.TUDataSave.air_purifier_leveltwo && !GM.gameInstance.TUDataSave.air_purifier_levelthree)
+                air_speed += building_preset.air_filtration_ability + 100;
+            if (!GM.gameInstance.TUDataSave.air_purifier_leveltwo && GM.gameInstance.TUDataSave.air_purifier_levelthree)
+                air_speed += building_preset.air_filtration_ability + 100;
+            if (GM.gameInstance.TUDataSave.air_purifier_leveltwo && GM.gameInstance.TUDataSave.air_purifier_levelthree)
+                air_speed += building_preset.air_filtration_ability + 200;
+            
             if (_buildingSaveData.Air_purifier_Speed_Up)
-                return building_preset.air_filtration_ability + 100;
+                return air_speed + 100;
             else
-                return building_preset.air_filtration_ability;
+                return air_speed;
         }
 
         private void Check_power_resource()

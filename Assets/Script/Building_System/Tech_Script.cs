@@ -17,6 +17,18 @@ namespace GDD
             RM.Set_Resources_Token(Mathf.RoundToInt(m_techPreset.token * efficiency));
         }
         
+        public Tuple<int, int> get_product_output()
+        {
+            if (!Check_Resource() && building_is_active)
+            {
+                return new Tuple<int, int>(0, 0);
+            }
+            else
+            {
+                return new Tuple<int, int>(Mathf.RoundToInt(m_techPreset.token * efficiency), m_techPreset.token);
+            }
+        }
+        
         protected override bool Check_Resource()
         {
             return true;

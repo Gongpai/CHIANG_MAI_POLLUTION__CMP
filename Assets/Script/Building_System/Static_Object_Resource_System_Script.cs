@@ -13,6 +13,7 @@ namespace GDD
         [SerializeField] protected Static_Resource_Preset m_Resource_Preset;
         [SerializeField] protected int m_id_Resource;
         [SerializeField] private GameObject m_waypoint;
+        [SerializeField] private bool is_unlock_resource = true;
         
         protected Static_Resource_SaveData _staticResourceSaveData = new ();
         protected GameManager GM;
@@ -37,6 +38,21 @@ namespace GDD
         public int worker_count
         {
             get => workers.Count;
+        }
+        
+        public bool is_unlock
+        {
+            get => _staticResourceSaveData.is_unlock;
+            set => _staticResourceSaveData.is_unlock = value;
+        }
+
+        public Static_Resource_SaveData set_staticResourceSaveData
+        {
+            set
+            {
+                print("Is " + gameObject.name +" Unlock : " + value.is_unlock);
+                _staticResourceSaveData = value;
+            } 
         }
         
         public int villager_data_count
@@ -95,6 +111,11 @@ namespace GDD
                 
                 return _information_Datas;
             }
+        }
+
+        public int get_resource_id
+        {
+            get => m_id_Resource;
         }
         
         public List<Button_Action_Data> buildingButtonActionDatas
@@ -164,6 +185,7 @@ namespace GDD
             {
                 print("Non Save");
                 _staticResourceSaveData.id = m_id_Resource;
+                is_unlock = is_unlock_resource;
                 _staticResourceSaveData.villagers = new List<PeopleSystemSaveData>();
                 _staticResourceSaveData.workers = new List<PeopleSystemSaveData>();
                 GM.gameInstance.staticResourceSaveDatas.Add(_staticResourceSaveData);

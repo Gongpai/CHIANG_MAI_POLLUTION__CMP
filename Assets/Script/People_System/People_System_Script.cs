@@ -180,7 +180,7 @@ namespace GDD
             RandomName rn = new RandomName(r);
             name = rn.Generate(Sex.Male);
             name_view = name;
-            print(" name is : " + name);
+            //print(" name is : " + name);
         }
         
         private void Update_per_hour()

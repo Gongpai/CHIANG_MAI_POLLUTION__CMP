@@ -88,6 +88,7 @@ MonoBehaviour:
     type: 3}
   m_human_girl: {fileID: 919132149155446097, guid: ef205eebd1e75504cbd32a1c08ae9790,
     type: 3}
+  m_unlock_code: 0/0
   m_generatorPreset: {fileID: 11400000, guid: 83b13c8ccb2a3954fb55f6c71c5822c4, type: 2}
 --- !u!65 &4760527475977498303
 BoxCollider:

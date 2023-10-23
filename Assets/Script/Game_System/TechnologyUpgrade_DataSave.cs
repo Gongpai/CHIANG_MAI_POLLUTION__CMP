@@ -13,7 +13,6 @@
 
         //Level 2
         public bool resident_levelthree = false;
-        public bool gate_leveltwo = false;
         public bool wood_levelthree = false;
         public bool rock_levelthree = false;
         public bool food_levelthree = false;
@@ -22,7 +21,6 @@
         
         //Level 3 
         public bool infirmary_unlock = false;
-        public bool gate_levelthree = false;
         public bool wood_levelfour = false;
         public bool rock_levelfour = false;
         public bool food_levelfour = false;
@@ -31,7 +29,6 @@
         
         //Level 4
         public bool rawfood_levelfour = false;
-        public bool gate_levelfour = false;
         public bool token_levelthree = false;
         public bool air_purifier_levelthree = false;
     }

@@ -38,6 +38,18 @@ namespace GDD
                 RM.Set_Resources_Raw_Food(-Mathf.CeilToInt(m_cookhousePreset.raw_food_use * efficiency));
             }
         }
+
+        public Tuple<int, int> get_product_output()
+        {
+            if (!Check_Resource() && building_is_active)
+            {
+                return new Tuple<int, int>(0, 0);
+            }
+            else
+            {
+                return new Tuple<int, int>(Mathf.RoundToInt(m_cookhousePreset.food * efficiency), m_cookhousePreset.food);
+            }
+        }
         
         protected override bool Check_Resource()
         {

@@ -82,11 +82,12 @@ MonoBehaviour:
   - {fileID: 3299923967497845497}
   m_icon: {fileID: 21300000, guid: d5b5d681aa101d642a2d6923b6c56988, type: 3}
   m_waypoint: {fileID: 2502275116712202877}
-  m_peoplePreset: {fileID: 11400000, guid: 129b8c5258125d84d8dd6bf012671d8a, type: 2}
   m_human_boy: {fileID: 1273963253303387551, guid: 0bfb375b2521a8a41b9371337c97bb0c,
     type: 3}
   m_human_girl: {fileID: 919132149155446097, guid: ef205eebd1e75504cbd32a1c08ae9790,
     type: 3}
+  m_unlock_code: 0/0
+  m_peoplePreset: {fileID: 11400000, guid: 129b8c5258125d84d8dd6bf012671d8a, type: 2}
 --- !u!65 &4760527475977498303
 BoxCollider:
   m_ObjectHideFlags: 0

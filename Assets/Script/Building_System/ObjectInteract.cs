@@ -60,7 +60,7 @@ namespace GDD
                         if(hit_objraycast.transform.parent == m_GameObjectLayer.transform)
                             Create_Buiding_Setting<Building_Setting_UI_Script>(objectHit.GetComponent<Building_System_Script>(), typeof(Building_System_Script));
                         
-                        if(hit_objraycast.transform.parent == m_ResourceLayer.transform)
+                        if(hit_objraycast.transform.parent == m_ResourceLayer.transform && objectHit.GetComponent<Static_Object_Resource_System_Script>().is_unlock)
                             Create_Buiding_Setting<Resource_Setting_UI_Script>(objectHit.GetComponent<Static_Object_Resource_System_Script>(), typeof(Static_Object_Resource_System_Script));
                     }
 

@@ -927,6 +927,7 @@ GameObject:
   - component: {fileID: 6500346094962927525}
   - component: {fileID: 5672432776676304377}
   - component: {fileID: 6991375757060445269}
+  - component: {fileID: 1577211857118418825}
   m_Layer: 5
   m_Name: Building Product Panel
   m_TagString: Untagged
@@ -1043,6 +1044,32 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1577211857118418825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3269317400380911051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385aa0cb7302e7f4c80e9f5c5769f863, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_buttons: []
+  m_texts:
+  - {fileID: 2378627100065011746}
+  - {fileID: 4829442341117268456}
+  - {fileID: 3247048216635565905}
+  m_tmp_inputfield: []
+  m_sliders: []
+  m_images:
+  - {fileID: 3083893190050505064}
+  - {fileID: 5736935732909586788}
+  - {fileID: 6473365919909796047}
+  m_animators: []
+  m_audioSources: []
+  m_canvas_gameObject: []
 --- !u!1 &3476964914558717489
 GameObject:
   m_ObjectHideFlags: 0

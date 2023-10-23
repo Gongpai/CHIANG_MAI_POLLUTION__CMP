@@ -131,10 +131,25 @@ namespace GDD
             }
             
             //Resource Save Data
+            //print("Is Sttic Save is Null : " + (GI.staticResourceSaveDatas == null));
             List<Static_Object_Resource_System_Script> resourceSystemScripts = FindObjectsOfType<Static_Object_Resource_System_Script>().ToList();
             for (int i = 0; i < resourceSystemScripts.Count; i++)
             {
                 resourceSystemScripts[i].OnGameLoad();
+
+                
+                if (GI.staticResourceSaveDatas != null)
+                {
+                    foreach (var staticResourceSaveData in GI.staticResourceSaveDatas)
+                    {
+                        //print("Save ID Is : " + staticResourceSaveData.id + " ID is : " + resourceSystemScripts[i].get_resource_id);
+                        if (staticResourceSaveData.id == resourceSystemScripts[i].get_resource_id)
+                        {
+                            resourceSystemScripts[i].set_staticResourceSaveData = staticResourceSaveData;
+                            break;
+                        }
+                    }
+                }
             }
             
             //Road Save Datas

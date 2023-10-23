@@ -339,8 +339,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0E01\u0E32\u0E23\u0E04\u0E32\u0E14\u0E01\u0E32\u0E23\u0E13\u0E4C\u0E25\u0E48\u0E27\u0E07\u0E2B\u0E19\u0E49\u0E32\u0E17\u0E23\u0E31\u0E1E\u0E22\u0E32\u0E01\u0E23\u0E44\u0E21\u0E49
-    \u0E04\u0E07\u0E40\u0E2B\u0E25\u0E37\u0E2D\u0E2D\u0E35\u0E01 10 \u0E27\u0E31\u0E19"
+  m_text: "\u0E01\u0E32\u0E23\u0E43\u0E0A\u0E49\u0E41\u0E25\u0E30\u0E40\u0E01\u0E47\u0E1A\u0E17\u0E23\u0E31\u0E1E\u0E22\u0E32\u0E01\u0E23\u0E44\u0E21\u0E49\u0E25\u0E48\u0E32\u0E2A\u0E38\u0E14"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b9c5bb4354bac9041a1e2588d1a588ba, type: 2}
   m_sharedMaterial: {fileID: -2628369632375642534, guid: b9c5bb4354bac9041a1e2588d1a588ba,
@@ -845,6 +844,7 @@ GameObject:
   - component: {fileID: 4121758904157052525}
   - component: {fileID: 3296129399339588657}
   - component: {fileID: 144370834957725085}
+  - component: {fileID: 6023789522998657299}
   m_Layer: 5
   m_Name: ResourcePanel
   m_TagString: Untagged
@@ -960,6 +960,30 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &6023789522998657299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5645334070473544707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385aa0cb7302e7f4c80e9f5c5769f863, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_buttons: []
+  m_texts:
+  - {fileID: 2306708939629127712}
+  m_tmp_inputfield: []
+  m_sliders: []
+  m_images:
+  - {fileID: 3214166129200808108}
+  - {fileID: 2330742192613927790}
+  - {fileID: 7710223100725870301}
+  m_animators: []
+  m_audioSources: []
+  m_canvas_gameObject: []
 --- !u!1 &5730894890713792215
 GameObject:
   m_ObjectHideFlags: 0
@@ -1968,7 +1992,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: -50
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0

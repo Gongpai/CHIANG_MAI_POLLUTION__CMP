@@ -28,7 +28,8 @@ namespace GDD
         public bool IsObjectEmpty()
         {
             bool isEmpty = false;
-            isEmpty = buildingSaveDatas.Count <= 0 && RoadSaveDatas.Count <= 0;
+            isEmpty = buildingSaveDatas.Count <= 0 && RoadSaveDatas.Count <= 0 && staticResourceSaveDatas.Count <= 0 && 
+                      villagerSaveDatas.Count <= 0 && workerSaveDatas.Count <= 0;
             
             return isEmpty;
         }
