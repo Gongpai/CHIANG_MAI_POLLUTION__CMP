@@ -2,18 +2,18 @@
 Real-time strategy and Simulator Game
 
 **Control**
-[W] Move Camera Forward
-[S]  Move Camera Backward
-[A] Move Camera Left
-[D] Move Camera Right
-[Q] Rotate Camera Horizontal Left
-[E] Rotate Camera Horizontal Right
-[R] Rotate Camera Vertical Down
-[T] [R] Rotate Camera Vertical Up
-[Left Mouse Button] Interact Object
-[Right Mouse Button] Open Quick Menu
-[Middle Mouse Button] Free Rotation Camera
-[Mouse Scroll Up/Down] Zoom In/Out
+- [W] Move Camera Forward
+- [S]  Move Camera Backward
+- [A] Move Camera Left
+- [D] Move Camera Right
+- [Q] Rotate Camera Horizontal Left
+- [E] Rotate Camera Horizontal Right
+- [R] Rotate Camera Vertical Down
+- [T] [R] Rotate Camera Vertical Up
+- [Left Mouse Button] Interact Object
+- [Right Mouse Button] Open Quick Menu
+- [Middle Mouse Button] Free Rotation Camera
+- [Mouse Scroll Up/Down] Zoom In/Out
 
 **Screenshot**
 ![สกรีนช็อต 2023-10-24 153128](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/857cf940-07f6-48aa-b981-e3f5b9b8188b)
