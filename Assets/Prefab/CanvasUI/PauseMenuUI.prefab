@@ -662,7 +662,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5b5c88305e4a1b808096849f46c0d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_loadingSceneSystem: {fileID: 0}
   parent_UI: {fileID: 7027285488366090957}
+  m_new_game_button: {fileID: 0}
+  m_continue_button: {fileID: 0}
   m_resume_button: {fileID: 8470405100906815993}
   m_savegame_button: {fileID: 8938858037744508071}
   savegame_ui: {fileID: 7027285488366090957, guid: 835f1c4d01f28d14387f4a748c43bdf0,
@@ -671,6 +674,8 @@ MonoBehaviour:
   loadgame_ui: {fileID: 7027285488366090957, guid: 835f1c4d01f28d14387f4a748c43bdf0,
     type: 3}
   m_setting_button: {fileID: 8938858035949086385}
+  setting_ui: {fileID: 4512108709198208489, guid: 301e47366d1c96c4a990b357759b17f0,
+    type: 3}
   m_backtomainmenu_button: {fileID: 8938858035822167724}
   m_quit_button: {fileID: 8938858037799016871}
   m_animator: {fileID: 245474179033414479}

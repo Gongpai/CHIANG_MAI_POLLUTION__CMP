@@ -19,6 +19,7 @@ namespace GDD
         [SerializeField] private Button m_loadgame_button;
         [SerializeField] private GameObject loadgame_ui;
         [SerializeField] private Button m_setting_button;
+        [SerializeField] private GameObject setting_ui;
         [SerializeField] private Button m_backtomainmenu_button;
         [SerializeField] private Button m_quit_button;
         [SerializeField] private Animator m_animator;
@@ -120,6 +121,9 @@ namespace GDD
             {
                 m_savegame_button.onClick.AddListener((() => { OpenSaveLoadUI(true); }));
             }
+            
+            if(m_setting_button != null)
+                m_setting_button.onClick.AddListener((() => { OpenSettingUI(); }));
 
             if (m_loadgame_button != null)
             {
@@ -139,6 +143,22 @@ namespace GDD
             
             SaveLoadUi _saveLoadUi = ui.transform.GetChild(1).GetComponent<SaveLoadUi>();
             _saveLoadUi.IsOpenSaveUi = isSaveUI;
+            m_animator.SetBool(anim_param_names[0], false);
+            m_animator.SetBool(anim_param_names[1], false);
+        }
+
+        public void OpenSettingUI()
+        {
+            setting_ui.GetComponent<Back_UI_Button_Script>().UI_Back = parent_UI;
+            _uiUtilities.canvasUI = setting_ui;
+            _uiUtilities.useCameraOverlay = true;
+            _uiUtilities.order_in_layer = 11;
+            _uiUtilities.planeDistance = 0.5f;
+            _uiUtilities.cameraOverlay_Index = 0;
+            GameObject set_ui = _uiUtilities.CreateUI();
+
+            set_ui.GetComponent<Animator>().enabled = true;
+            set_ui.GetComponent<Animator>().SetBool("IsStart", true);
             m_animator.SetBool(anim_param_names[0], false);
             m_animator.SetBool(anim_param_names[1], false);
         }
