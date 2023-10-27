@@ -17,10 +17,11 @@ namespace GDD
         [SerializeField] private Button m_savegame_button;
         [SerializeField] private GameObject savegame_ui;
         [SerializeField] private Button m_loadgame_button;
-        [SerializeField] private GameObject loadgame_ui;
         [SerializeField] private Button m_setting_button;
         [SerializeField] private GameObject setting_ui;
         [SerializeField] private Button m_backtomainmenu_button;
+        [SerializeField] private Button m_credits_button;
+        [SerializeField] private GameObject credits_ui;
         [SerializeField] private Button m_quit_button;
         [SerializeField] private Animator m_animator;
 
@@ -129,6 +130,9 @@ namespace GDD
             {
                 m_loadgame_button.onClick.AddListener((() => { OpenSaveLoadUI(false); }));
             }
+            
+            if(m_credits_button != null)
+                m_credits_button.onClick.AddListener((() => { OpenCreditsUI(); }));
         }
 
         public void OpenSaveLoadUI(bool isSaveUI)
@@ -151,6 +155,22 @@ namespace GDD
         {
             setting_ui.GetComponent<Back_UI_Button_Script>().UI_Back = parent_UI;
             _uiUtilities.canvasUI = setting_ui;
+            _uiUtilities.useCameraOverlay = true;
+            _uiUtilities.order_in_layer = 11;
+            _uiUtilities.planeDistance = 0.5f;
+            _uiUtilities.cameraOverlay_Index = 0;
+            GameObject set_ui = _uiUtilities.CreateUI();
+
+            set_ui.GetComponent<Animator>().enabled = true;
+            set_ui.GetComponent<Animator>().SetBool("IsStart", true);
+            m_animator.SetBool(anim_param_names[0], false);
+            m_animator.SetBool(anim_param_names[1], false);
+        }
+        
+        public void OpenCreditsUI()
+        {
+            credits_ui.GetComponent<Back_UI_Button_Script>().UI_Back = parent_UI;
+            _uiUtilities.canvasUI = credits_ui;
             _uiUtilities.useCameraOverlay = true;
             _uiUtilities.order_in_layer = 11;
             _uiUtilities.planeDistance = 0.5f;

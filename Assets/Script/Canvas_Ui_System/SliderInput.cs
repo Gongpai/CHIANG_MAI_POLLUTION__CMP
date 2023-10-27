@@ -27,7 +27,7 @@ namespace GDD
             {
                 m_result.text = _text + Mathf.FloorToInt(((_slider.value + 80) / 80) * 100) + "%";
                 m_min.text = "0";
-                m_max.text = "100";
+                m_max.text = "125";
             }
             else
             {

@@ -3021,7 +3021,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 0.88235295}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.05882353}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3102,12 +3102,13 @@ MonoBehaviour:
   savegame_ui: {fileID: 7027285488366090957, guid: 835f1c4d01f28d14387f4a748c43bdf0,
     type: 3}
   m_loadgame_button: {fileID: 7343522606934276985}
-  loadgame_ui: {fileID: 7027285488366090957, guid: 835f1c4d01f28d14387f4a748c43bdf0,
-    type: 3}
   m_setting_button: {fileID: 7343522607312226557}
   setting_ui: {fileID: 4512108709198208489, guid: 301e47366d1c96c4a990b357759b17f0,
     type: 3}
-  m_backtomainmenu_button: {fileID: 7343522607168415968}
+  m_backtomainmenu_button: {fileID: 0}
+  m_credits_button: {fileID: 7343522607168415968}
+  credits_ui: {fileID: 4110069011032506882, guid: 32216b2ae5b57ea4fb75435225701ac0,
+    type: 3}
   m_quit_button: {fileID: 7343522606527985643}
   m_animator: {fileID: 1912978254462997763}
 --- !u!114 &8999012300702618525
