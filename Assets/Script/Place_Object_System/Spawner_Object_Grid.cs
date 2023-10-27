@@ -27,6 +27,7 @@ namespace GDD
         private bool IsSelectObject = false;
         private List<string> m_ObjectData = new();
         GameObject old_objecthit = null;
+        private AudioSource m_audioSource;
         
         private int L_Landscape;
         private int L_Default;
@@ -88,6 +89,8 @@ namespace GDD
             L_AI = LayerMask.NameToLayer("AI_Layer");
             L_Resource = LayerMask.NameToLayer("Resource_Object");
 
+            m_audioSource = GetComponent<AudioSource>();
+
             if (GameObjectLayer == null)
             {
                 GameObjectLayer = gameObject;
@@ -129,6 +132,7 @@ namespace GDD
                 _renderer.material.SetColor("_ColorHighLight", activate_Color);
                 if (Input.GetMouseButtonUp(0) && _renderer.material.GetColor("_ColorHighLight") == activate_Color)
                 {
+                    m_audioSource.Play();
                     Spawner();
                 }
             }

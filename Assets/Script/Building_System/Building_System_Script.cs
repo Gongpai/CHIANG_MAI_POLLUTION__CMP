@@ -23,6 +23,8 @@ namespace GDD
         [SerializeField] protected GameObject m_human_boy;
         [SerializeField] protected GameObject m_human_girl;
         [SerializeField] private string m_unlock_code = "0/0";
+        [SerializeField] protected AudioSource m_audio_building_sfx;
+        [SerializeField] protected AudioSource m_audio_remove_building;
         
         protected BuildingSaveData _buildingSaveData = new BuildingSaveData();
         protected GameManager GM;
@@ -47,6 +49,7 @@ namespace GDD
         protected bool is_cant_use_power;
         protected bool is_road_found;
         protected bool is_spawn;
+        private bool is_set_play_sound = false;
         private LayerMask L_Road;
         private LayerMask L_Default;
         private LayerMask L_Building;
@@ -347,7 +350,7 @@ namespace GDD
             L_Default = LayerMask.NameToLayer("Default");
             L_Building = LayerMask.NameToLayer("Place_Object");
             L_Obstacle = LayerMask.NameToLayer("Obstacle_Ojbect");
-
+            
             _buildingActive = GetComponent<Building_Active>();
             
             Create_button_action_data_for_building();
@@ -583,6 +586,12 @@ namespace GDD
                         is_set_disable = false;
                         is_set_enable = true;
                         OnEnableBuilding();
+
+                        if (!is_set_play_sound)
+                        {
+                            m_audio_building_sfx.Play();
+                            is_set_play_sound = true;
+                        }
                     }
                 }
                 else
@@ -592,6 +601,11 @@ namespace GDD
                         is_set_disable = true;
                         is_set_enable = false;
                         OnDisableBuilding();
+                        if (is_set_play_sound)
+                        {
+                            m_audio_building_sfx.Stop();
+                            is_set_play_sound = false;
+                        }
                     }
                 }
             }
@@ -602,6 +616,11 @@ namespace GDD
                     is_set_disable = true;
                     is_set_enable = false;
                     OnDisableBuilding();
+                    if (is_set_play_sound)
+                    {
+                        m_audio_building_sfx.Stop();
+                        is_set_play_sound = false;
+                    }
                 }
             }
         }
@@ -736,6 +755,12 @@ namespace GDD
             bool can_remove_now = false;
             if (!is_remove_building)
             {
+                GameObject audio_remove = new GameObject();
+                audio_remove.name = "Building_Remove_Audio";
+                audio_remove.AddComponent<AudioSource>().clip = m_audio_remove_building.clip;
+                audio_remove.GetComponent<AudioSource>().Play();
+                
+                Destroy(audio_remove, 1.0f);
                 can_remove_now = true;
             }
             else

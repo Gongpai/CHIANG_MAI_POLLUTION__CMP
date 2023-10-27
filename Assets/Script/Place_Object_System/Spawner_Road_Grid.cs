@@ -15,6 +15,10 @@ namespace GDD
         [SerializeField] private Material _materialPoint;
         [SerializeField] private Vector2 StartLocation = new Vector2();
         [SerializeField] private Vector2 Endlocation = new Vector2();
+        [SerializeField] private AudioSource m_audio_begin_place_road;
+        [SerializeField] private AudioSource m_audio_end_place_road;
+        [SerializeField] private AudioSource m_audio_remove_road;
+        
         private SetPositionShowGirdUseMouse _setPositionShowGirdUseMouse;
         private float timer = 0;
         [SerializeField] private GameObject Start_X;
@@ -194,6 +198,7 @@ namespace GDD
                         if(!_roadLineMesh.enabled)
                             _roadLineMesh.enabled = true;
                         
+                        m_audio_begin_place_road.Play();
                         if(_roadMode == RoadMode.Place)
                         {
                             _roadLineMesh.Hight_Light_Alpha = 0.4f;
@@ -213,6 +218,7 @@ namespace GDD
                     IsNewRoad = false;
                     canCreateNewRoad = true;
                     IsPlaceRoad = false;
+                    m_audio_remove_road.Play();
                     _roadLineMesh.ClearRoad();
                 }
 
@@ -239,10 +245,12 @@ namespace GDD
                         IsPlaceRoad = false;
                         if (_roadMode == RoadMode.Place)
                         {
+                            m_audio_end_place_road.Play();
                             _roadLineMesh.PlaceRoad();
                         }
                         else
                         {
+                            m_audio_remove_road.Play();
                             _roadLineMesh.ClearRoad();
                             Road_Remover();
                         }

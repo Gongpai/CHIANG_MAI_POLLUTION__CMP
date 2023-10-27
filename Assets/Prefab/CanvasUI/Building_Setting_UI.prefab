@@ -2537,7 +2537,7 @@ PrefabInstance:
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
@@ -2547,7 +2547,7 @@ PrefabInstance:
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
@@ -2558,7 +2558,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 2535533422944271448}
+      objectReference: {fileID: 3489560358449131996}
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -2577,7 +2577,7 @@ PrefabInstance:
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: OnSwitchTab
+      value: Play
       objectReference: {fileID: 0}
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
@@ -2587,7 +2587,7 @@ PrefabInstance:
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: GDD.Button_Switch_Tab_Animation_Control, Assembly-CSharp
+      value: UnityEngine.AudioSource, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
@@ -2728,6 +2728,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6598391355787581447}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &3489560358449131996 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 7782036890397387227, guid: a942ae8577eb89442a426a43000eab44,
+    type: 3}
+  m_PrefabInstance: {fileID: 6598391355787581447}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8544579838298467396 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
@@ -2760,7 +2766,7 @@ PrefabInstance:
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
@@ -2770,7 +2776,7 @@ PrefabInstance:
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
@@ -2781,7 +2787,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 2535533422944271448}
+      objectReference: {fileID: 3907942131437884862}
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -2800,7 +2806,7 @@ PrefabInstance:
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: OnSwitchTab
+      value: Play
       objectReference: {fileID: 0}
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
@@ -2810,7 +2816,7 @@ PrefabInstance:
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: GDD.Button_Switch_Tab_Animation_Control, Assembly-CSharp
+      value: UnityEngine.AudioSource, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
@@ -2820,7 +2826,7 @@ PrefabInstance:
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3244355270813725763, guid: a942ae8577eb89442a426a43000eab44,
         type: 3}
@@ -2958,6 +2964,12 @@ GameObject:
 --- !u!224 &3168028607539227214 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8517306077566129707, guid: a942ae8577eb89442a426a43000eab44,
+    type: 3}
+  m_PrefabInstance: {fileID: 6756690250295966821}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &3907942131437884862 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 7782036890397387227, guid: a942ae8577eb89442a426a43000eab44,
     type: 3}
   m_PrefabInstance: {fileID: 6756690250295966821}
   m_PrefabAsset: {fileID: 0}
