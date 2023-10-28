@@ -83,6 +83,7 @@ MonoBehaviour:
   m_building_Objects:
   - {fileID: 116024299805126454}
   m_icon: {fileID: 21300000, guid: 6ebc53fc8f3ddeb4d9120773ce6565aa, type: 3}
+  m_bg_card: {fileID: 21300000, guid: 0aa8413bca775744190903d29f12f104, type: 3}
   m_waypoint: {fileID: 1487715303470428605}
   m_human_boy: {fileID: 1273963253303387551, guid: 0bfb375b2521a8a41b9371337c97bb0c,
     type: 3}

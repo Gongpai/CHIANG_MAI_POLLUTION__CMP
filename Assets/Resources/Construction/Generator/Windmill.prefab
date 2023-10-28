@@ -85,6 +85,7 @@ MonoBehaviour:
   - {fileID: 3881003008017467271}
   - {fileID: 3142329022759388634}
   m_icon: {fileID: 21300000, guid: 5b8bf65fde657494aa9fd9745cab71c7, type: 3}
+  m_bg_card: {fileID: 21300000, guid: 55fd87d29bf8eed4287f8136f5a154c8, type: 3}
   m_waypoint: {fileID: 6543631725571156054}
   m_human_boy: {fileID: 1273963253303387551, guid: 0bfb375b2521a8a41b9371337c97bb0c,
     type: 3}

@@ -134,6 +134,9 @@ MonoBehaviour:
   m_Resource_Preset: {fileID: 11400000, guid: e00169e4c0e6cfd48bad62cd37bec7b1, type: 2}
   m_id_Resource: 200000
   m_waypoint: {fileID: 8737290548646666900}
+  m_icon: {fileID: 0}
+  m_bg_card: {fileID: 21300000, guid: 760db1899d5f7b64d82c8653d6c74700, type: 3}
+  is_unlock_resource: 1
 --- !u!1 &8737290548646666900
 GameObject:
   m_ObjectHideFlags: 0
