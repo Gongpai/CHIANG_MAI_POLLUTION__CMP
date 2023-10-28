@@ -16,7 +16,6 @@ namespace GDD
         [SerializeField] private List<MonoBehaviour> m_Disable_Component;
         [SerializeField] private GameObject m_MenuUI;
         [SerializeField] private GameObject m_Building_Setting_UI;
-        [SerializeField] private GameObject m_Resource_Setting_UI;
         [SerializeField] private GameObject m_Button_list;
         [SerializeField] private GameObject m_BG_Button_list;
         [SerializeField] private GameObject m_GameObjectLayer;
@@ -153,6 +152,7 @@ namespace GDD
             GameObject setting_ui = Instantiate(m_Building_Setting_UI);
             setting_ui.AddComponent(typeof(T));
             setting_ui.GetComponent<Animator>().SetBool("IsStart", true);
+
             if (objectSystemScript != null)
             {
                 print("Is nottt nuuulllllllllll");
@@ -207,8 +207,9 @@ namespace GDD
             buildingSettingUIScript.buildingSystemScript = buildingSystemScript;
             buildingSettingUIScript.buildingSettingUIDatas = new List<Building_Setting_UI_Data>();
             buildingSettingUIScript.buildingName_text = buildingSystemScript.name;
-            buildingSettingUIScript.building_Icon = Resources.Load<Sprite>("Icon/construction");
+            buildingSettingUIScript.building_Icon = buildingSystemScript.icon;
             buildingSettingUIScript.BuildingButtonActionDatas = buildingSystemScript.buildingButtonActionDatas;
+            buildingSettingUIScript.GetComponent<Canvas_Element_List>().image[1].sprite = buildingSystemScript.bg_card;
                 
             foreach (var actionbuilding in buildingSystemScript.actionsBuilding)
             {
@@ -265,6 +266,7 @@ namespace GDD
             resourceSettingUIScript.resourceName_text = resourceSystemScript.name;
             resourceSettingUIScript.resource_Icon = Resources.Load<Sprite>("Icon/construction");
             resourceSettingUIScript.resourceButtonActionDatas = resourceSystemScript.buildingButtonActionDatas;
+            resourceSettingUIScript.GetComponent<Canvas_Element_List>().image[1].sprite = resourceSystemScript.bg_card;
             
             foreach (var actionbuilding in resourceSystemScript.actionsBuilding)
             {

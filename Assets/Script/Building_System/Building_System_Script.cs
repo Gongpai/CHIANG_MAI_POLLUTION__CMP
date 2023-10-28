@@ -19,6 +19,7 @@ namespace GDD
         [SerializeField] protected GameObject m_warning_noti;
         [SerializeField] protected List<GameObject> m_building_Objects = new List<GameObject>();
         [SerializeField] private Sprite m_icon;
+        [SerializeField] private Sprite m_bg_card;
         [SerializeField] private GameObject m_waypoint;
         [SerializeField] protected GameObject m_human_boy;
         [SerializeField] protected GameObject m_human_girl;
@@ -81,13 +82,18 @@ namespace GDD
         {
             get => m_icon;
         }
+
+        public Sprite bg_card
+        {
+            get => m_bg_card;
+        }
         
         public bool active
         {
             get => _buildingSaveData.Building_active;
             set => _buildingSaveData.Building_active = value;
         }
-
+        
         public string unlock_code
         {
             get => m_unlock_code;

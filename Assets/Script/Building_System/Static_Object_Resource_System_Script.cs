@@ -13,6 +13,8 @@ namespace GDD
         [SerializeField] protected Static_Resource_Preset m_Resource_Preset;
         [SerializeField] protected int m_id_Resource;
         [SerializeField] private GameObject m_waypoint;
+        [SerializeField] private Sprite m_icon;
+        [SerializeField] private Sprite m_bg_card;
         [SerializeField] private bool is_unlock_resource = true;
         
         protected Static_Resource_SaveData _staticResourceSaveData = new ();
@@ -53,6 +55,16 @@ namespace GDD
                 print("Is " + gameObject.name +" Unlock : " + value.is_unlock);
                 _staticResourceSaveData = value;
             } 
+        }
+        
+        public Sprite icon
+        {
+            get => m_icon;
+        }
+
+        public Sprite bg_card
+        {
+            get => m_bg_card;
         }
         
         public int villager_data_count
