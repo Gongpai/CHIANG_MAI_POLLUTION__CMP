@@ -139,7 +139,7 @@ Material:
     - Vector1_37AB74C7: 0.5
     - Vector1_3C4F0D5B: 0
     - Vector1_3F10F121: 0.9
-    - Vector1_44C748BB: 1.6
+    - Vector1_44C748BB: 1
     - Vector1_5B2CC6D2: 5
     - Vector1_5E285FC2: 0.0314
     - Vector1_7296D65E: 7
@@ -202,11 +202,11 @@ Material:
     - Vector2_E6D1CE59: {r: 0, g: 0, b: 0, a: 0}
     - Vector3_E8D869EF: {r: 1, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _CloudsOffset: {r: 478623.75, g: -478623.75, b: 0, a: 0}
+    - _CloudsOffset: {r: 482087.7, g: -482087.7, b: 0, a: 0}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SkyColor2: {r: 0.75, g: 0.3, b: 0.17, a: 1}
-    - _SkyColorNight2: {r: 0.11086864, g: 0.07215774, b: 0.06227378, a: 1}
+    - _SkyColorNight2: {r: 0.14912978, g: 0.10540207, b: 0.094122924, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _StarsOffset: {r: 0.25, g: 0, b: 0, a: 0}
     - _starsOffset: {r: 2, g: 0, b: 0, a: 0}

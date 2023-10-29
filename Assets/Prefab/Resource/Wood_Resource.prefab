@@ -173,6 +173,6 @@ MonoBehaviour:
   m_Resource_Preset: {fileID: 11400000, guid: 45344f52f14731745829a921b5efa5ed, type: 2}
   m_id_Resource: 100000
   m_waypoint: {fileID: 2275061730198983007}
-  m_icon: {fileID: 0}
-  m_bg_card: {fileID: 21300000, guid: 76864bd28c929644c86dd8761c28ef98, type: 3}
+  m_icon: {fileID: 21300000, guid: a4d6ec126cad3bf478eadffb7866bb88, type: 3}
+  m_bg_card: {fileID: 21300000, guid: 83f50812b7a61954a93b8606281a6b14, type: 3}
   is_unlock_resource: 1

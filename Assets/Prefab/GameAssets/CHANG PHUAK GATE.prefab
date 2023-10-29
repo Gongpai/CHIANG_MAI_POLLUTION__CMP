@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1007779216294975739}
   m_Layer: 9
   m_Name: Sign
-  m_TagString: Untagged
+  m_TagString: Movement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 3594786997917980096}
   - component: {fileID: -7612239662084122933}
   - component: {fileID: 7704979788333608136}
-  - component: {fileID: -7558250231465434369}
+  - component: {fileID: 6424846144772259011}
   m_Layer: 9
   m_Name: CHANG PHUAK GATE
   m_TagString: Untagged
@@ -152,29 +152,23 @@ MonoBehaviour:
   m_Resource_Preset: {fileID: 11400000, guid: 47d6561c3c00bfe4fb208a8266cd062e, type: 2}
   m_id_Resource: 300002
   m_waypoint: {fileID: 0}
-  m_icon: {fileID: 0}
-  m_bg_card: {fileID: 0}
+  m_icon: {fileID: 21300000, guid: debdfd3d067b21b4f93d334ba4d754c7, type: 3}
+  m_bg_card: {fileID: 21300000, guid: a7d9dc457858f3445a75be8a1e7e2b23, type: 3}
   is_unlock_resource: 0
   m_gatePreset: {fileID: 11400000, guid: 5e032566063b74b40b943bc8adc40f53, type: 2}
   InputUI: {fileID: 6033979217076707053, guid: 2a7f9403bd77ead438019118246c6372, type: 3}
---- !u!114 &-7558250231465434369
+--- !u!114 &6424846144772259011
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4226891128536321914}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Script: {fileID: 11500000, guid: 5931f05855524c69adf773266ae4ee00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 0, a: 1}
-  outlineWidth: 1.05
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!1 &5336170127709341191
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,7 +182,7 @@ GameObject:
   - component: {fileID: 8080591394554907248}
   m_Layer: 9
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: Movement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -282,7 +276,7 @@ GameObject:
   - component: {fileID: 6817507840899368656}
   m_Layer: 9
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: Movement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -391,7 +385,7 @@ GameObject:
   - component: {fileID: 5027056006560356189}
   m_Layer: 9
   m_Name: TagName
-  m_TagString: Untagged
+  m_TagString: Movement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -475,7 +469,7 @@ GameObject:
   - component: {fileID: 1852783546211732947}
   m_Layer: 9
   m_Name: Name
-  m_TagString: Untagged
+  m_TagString: Movement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

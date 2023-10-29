@@ -159,7 +159,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2977349118834218188}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.8917073
+  m_Size: 0.8819512
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1096,7 +1096,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 0
-  m_AspectRatio: 2.0539327
+  m_AspectRatio: 2.2156863
 --- !u!1 &5199538741303378035
 GameObject:
   m_ObjectHideFlags: 0

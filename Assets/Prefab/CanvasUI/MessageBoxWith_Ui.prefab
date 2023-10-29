@@ -87,7 +87,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.6862745}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -140,7 +140,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -10, y: 35}
+  m_SizeDelta: {x: -10, y: 45}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3411251134381784873
 CanvasRenderer:
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0E2A\u0E39\u0E0D\u0E2A\u0E34\u0E49\u0E19\u0E1C\u0E39\u0E49\u0E04\u0E19\u0E17\u0E31\u0E49\u0E07\u0E2B\u0E21\u0E14"
+  m_text: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E1C\u0E39\u0E49\u0E23\u0E2D\u0E14\u0E0A\u0E35\u0E27\u0E34\u0E15"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b9c5bb4354bac9041a1e2588d1a588ba, type: 2}
   m_sharedMaterial: {fileID: -2628369632375642534, guid: b9c5bb4354bac9041a1e2588d1a588ba,
@@ -198,8 +198,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -407,7 +407,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.98039216}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -822,8 +822,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0E40\u0E2A\u0E35\u0E22\u0E43\u0E08\u0E14\u0E49\u0E27\u0E22 \u0E04\u0E38\u0E13\u0E44\u0E14\u0E49\u0E1E\u0E22\u0E32\u0E22\u0E32\u0E21\u0E40\u0E15\u0E47\u0E21\u0E17\u0E35\u0E48\u0E41\u0E25\u0E49\u0E27
-    \u0E2D\u0E22\u0E48\u0E32\u0E07\u0E44\u0E23\u0E01\u0E47\u0E15\u0E32\u0E21\u0E04\u0E38\u0E13\u0E2A\u0E32\u0E21\u0E32\u0E23\u0E16\u0E01\u0E25\u0E31\u0E1A\u0E21\u0E32\u0E40\u0E25\u0E48\u0E19\u0E43\u0E2B\u0E21\u0E48
+  m_text: "\u0E04\u0E38\u0E13\u0E44\u0E14\u0E49\u0E1E\u0E22\u0E32\u0E22\u0E32\u0E21\u0E40\u0E15\u0E47\u0E21\u0E17\u0E35\u0E48\u0E41\u0E25\u0E49\u0E27
+    \n\u0E2D\u0E22\u0E48\u0E32\u0E07\u0E44\u0E23\u0E01\u0E47\u0E15\u0E32\u0E21\u0E04\u0E38\u0E13\u0E2A\u0E32\u0E21\u0E32\u0E23\u0E16\u0E01\u0E25\u0E31\u0E1A\u0E21\u0E32\u0E40\u0E25\u0E48\u0E19\u0E43\u0E2B\u0E21\u0E48
     \u0E2B\u0E23\u0E37\u0E2D\u0E42\u0E2B\u0E25\u0E14\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E40\u0E01\u0E21\u0E25\u0E48\u0E32\u0E2A\u0E38\u0E14
     \u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E01\u0E25\u0E31\u0E1A\u0E21\u0E32\u0E41\u0E01\u0E49\u0E44\u0E02\u0E2A\u0E34\u0E48\u0E07\u0E17\u0E35\u0E48\u0E1C\u0E34\u0E14\u0E1E\u0E25\u0E32\u0E14"
   m_isRightToLeft: 0
@@ -977,7 +977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1427,6 +1427,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8423936384454198227, guid: cc19a6adde69d014eb5cf9199ea74f1f,
+        type: 3}
+      propertyPath: m_Colors.m_NormalColor.a
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 8423936384454198227, guid: cc19a6adde69d014eb5cf9199ea74f1f,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.a
+      value: 0.78431374
       objectReference: {fileID: 0}
     - target: {fileID: 8712445683816459323, guid: cc19a6adde69d014eb5cf9199ea74f1f,
         type: 3}
