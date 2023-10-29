@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb1f3faedee1b3478a5b40f1aad264b, type: 3}
   m_Name: Health Building Preset_2
   m_EditorClassIdentifier: 
-  name: Infirmary
+  name: "\u0E28\u0E39\u0E19\u0E22\u0E4C\u0E1A\u0E23\u0E34\u0E01\u0E32\u0E23\u0E2A\u0E32\u0E18\u0E32\u0E23\u0E13\u0E2A\u0E38\u0E02"
   level: 2
   job: 2
   max_people: 10

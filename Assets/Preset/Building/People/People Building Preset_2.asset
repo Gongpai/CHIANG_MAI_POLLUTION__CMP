@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb1f3faedee1b3478a5b40f1aad264b, type: 3}
   m_Name: People Building Preset_2
   m_EditorClassIdentifier: 
-  name: Small House
+  name: "\u0E1A\u0E49\u0E32\u0E19\u0E40\u0E25\u0E47\u0E01"
   level: 2
   job: 0
   max_people: 0

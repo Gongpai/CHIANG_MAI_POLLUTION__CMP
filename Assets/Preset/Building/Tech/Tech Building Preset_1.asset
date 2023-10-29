@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb1f3faedee1b3478a5b40f1aad264b, type: 3}
   m_Name: Tech Building Preset_1
   m_EditorClassIdentifier: 
-  name: Workshop Tent
+  name: "\u0E2A\u0E16\u0E32\u0E19\u0E35\u0E27\u0E34\u0E08\u0E31\u0E22"
   level: 1
   job: 4
   max_people: 5

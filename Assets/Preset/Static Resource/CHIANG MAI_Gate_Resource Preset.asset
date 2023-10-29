@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e593ab81ab36452eaf4b2ae084bbcb11, type: 3}
+  m_Name: CHIANG MAI_Gate_Resource Preset
+  m_EditorClassIdentifier: 
+  name: "\u0E1B\u0E23\u0E30\u0E15\u0E39\u0E40\u0E0A\u0E35\u0E22\u0E07\u0E43\u0E2B\u0E21\u0E48"
+  max_people: 10
+  max_worker: 10
+  job: 5
+  product_output_resource: 20
+  product_output_use_rate: 4
+  m_static_resource_setting:
+  - setting_name: 
+    buildingSettingType: 0
+    text_enable: Add Villager
+    text_disable: Add Villager
+    icon_enable: {fileID: 21300000, guid: c9a5b6625d488f1409087f375d26cd0b, type: 3}
+    icon_disable: {fileID: 21300000, guid: c9a5b6625d488f1409087f375d26cd0b, type: 3}
+    light_Color: {r: 1, g: 1, b: 1, a: 0}
+    dark_Color: {r: 1, g: 1, b: 1, a: 0}
+  - setting_name: 
+    buildingSettingType: 0
+    text_enable: Add Worker
+    text_disable: Add Worker
+    icon_enable: {fileID: 21300000, guid: 4870b5cf142351145a9d33f35d01a938, type: 3}
+    icon_disable: {fileID: 21300000, guid: 4870b5cf142351145a9d33f35d01a938, type: 3}
+    light_Color: {r: 1, g: 1, b: 1, a: 0}
+    dark_Color: {r: 1, g: 1, b: 1, a: 0}
+  - setting_name: 
+    buildingSettingType: 1
+    text_enable: People
+    text_disable: People
+    icon_enable: {fileID: 21300000, guid: 1dc95b3b016aa9847921464bc759a39e, type: 3}
+    icon_disable: {fileID: 21300000, guid: 1dc95b3b016aa9847921464bc759a39e, type: 3}
+    light_Color: {r: 1, g: 1, b: 1, a: 0}
+    dark_Color: {r: 1, g: 1, b: 1, a: 0}
+  - setting_name: 
+    buildingSettingType: 1
+    text_enable: Worker
+    text_disable: Worker
+    icon_enable: {fileID: 21300000, guid: 1dc95b3b016aa9847921464bc759a39e, type: 3}
+    icon_disable: {fileID: 21300000, guid: 1dc95b3b016aa9847921464bc759a39e, type: 3}
+    light_Color: {r: 1, g: 1, b: 1, a: 0}
+    dark_Color: {r: 1, g: 1, b: 1, a: 0}
+  - setting_name: 
+    buildingSettingType: 0
+    text_enable: Work Time 12h
+    text_disable: Work Time 8h
+    icon_enable: {fileID: 21300000, guid: 1dc95b3b016aa9847921464bc759a39e, type: 3}
+    icon_disable: {fileID: 21300000, guid: 1dc95b3b016aa9847921464bc759a39e, type: 3}
+    light_Color: {r: 1, g: 1, b: 1, a: 0}
+    dark_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_static_resource_status:
+  - title: "\u0E1B\u0E23\u0E30\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E20\u0E32\u0E1E"
+    text: "\u0E1B\u0E23\u0E30\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E20\u0E32\u0E1E\u0E01\u0E32\u0E23\u0E1C\u0E25\u0E34\u0E14\u0E44\u0E21\u0E49\u0E43\u0E19\u0E02\u0E13\u0E30\u0E19\u0E35\u0E49
+      : "
+  - title: "\u0E08\u0E33\u0E19\u0E27\u0E19\u0E0A\u0E32\u0E27\u0E1A\u0E49\u0E32\u0E19"
+    text: "\u0E08\u0E33\u0E19\u0E27\u0E19\u0E0A\u0E32\u0E27\u0E1A\u0E49\u0E32\u0E19\u0E17\u0E35\u0E48\u0E15\u0E49\u0E2D\u0E07\u0E01\u0E32\u0E23\u0E40\u0E02\u0E49\u0E32\u0E21\u0E32\u0E2D\u0E22\u0E39\u0E48\u0E43\u0E19\u0E40\u0E21\u0E37\u0E2D\u0E07
+      : "
+  - title: "\u0E08\u0E33\u0E19\u0E27\u0E19\u0E04\u0E19\u0E07\u0E32\u0E19"
+    text: "\u0E08\u0E33\u0E19\u0E27\u0E19\u0E04\u0E19\u0E07\u0E32\u0E19\u0E17\u0E35\u0E48\u0E15\u0E49\u0E2D\u0E07\u0E01\u0E32\u0E23\u0E40\u0E02\u0E49\u0E32\u0E21\u0E32\u0E2D\u0E22\u0E39\u0E48\u0E43\u0E19\u0E40\u0E21\u0E37\u0E2D\u0E07
+      : "
+  m_static_resource_information:
+  - title: Wood Resource
+    text: '- test
+
+      - test
+
+      - test
+
+      - test
+
+      - test
+
+      -
+      test
+
+      - test'

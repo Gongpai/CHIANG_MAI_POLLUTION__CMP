@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb1f3faedee1b3478a5b40f1aad264b, type: 3}
   m_Name: People Building Preset_1
   m_EditorClassIdentifier: 
-  name: Tent
+  name: "\u0E40\u0E15\u0E47\u0E19\u0E17\u0E4C"
   level: 1
   job: 0
   max_people: 0

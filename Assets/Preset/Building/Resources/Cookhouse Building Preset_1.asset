@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb1f3faedee1b3478a5b40f1aad264b, type: 3}
   m_Name: Cookhouse Building Preset_1
   m_EditorClassIdentifier: 
-  name: Wood
+  name: "\u0E42\u0E23\u0E07\u0E2D\u0E32\u0E2B\u0E32\u0E23"
   level: 1
   job: 3
   max_people: 10

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb1f3faedee1b3478a5b40f1aad264b, type: 3}
   m_Name: Health Building Preset_1
   m_EditorClassIdentifier: 
-  name: Medical Post
+  name: "\u0E28\u0E39\u0E19\u0E22\u0E4C\u0E2D\u0E19\u0E32\u0E21\u0E31\u0E22"
   level: 1
   job: 2
   max_people: 5
