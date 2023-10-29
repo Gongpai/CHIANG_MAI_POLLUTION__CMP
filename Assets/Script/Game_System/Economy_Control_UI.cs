@@ -21,6 +21,16 @@ namespace GDD
             m_scrollRect.horizontal = m_elements[i].scrollMode == Economy_Data.ScrollMode.Horizontal || m_elements[i].scrollMode == Economy_Data.ScrollMode.HorizontalAndVertical;
             m_scrollRect.vertical = m_elements[i].scrollMode == Economy_Data.ScrollMode.Vertical || m_elements[i].scrollMode == Economy_Data.ScrollMode.HorizontalAndVertical;
         }
+
+        private void Update()
+        {
+            //Time_Controll_UI_Script.SetSpeed(0);
+        }
+
+        private void OnDestroy()
+        {
+            //Time_Controll_UI_Script.auto_Resume_Time();
+        }
     }
 
     [Serializable]

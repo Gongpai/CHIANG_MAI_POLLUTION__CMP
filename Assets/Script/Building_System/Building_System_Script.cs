@@ -238,20 +238,7 @@ namespace GDD
         
         public string name
         {
-            get
-            {
-                if(_buildingSaveData == null)
-                    _buildingSaveData = new BuildingSaveData();
-                
-                return _buildingSaveData.nameObject;
-            }
-            set
-            {
-                if(_buildingSaveData == null)
-                    _buildingSaveData = new BuildingSaveData();
-                
-                _buildingSaveData.nameObject = value;
-            }
+            get => m_Preset.name;
         }
 
         public string path

@@ -21,8 +21,8 @@ namespace GDD
             {
                 addListenerTimeSpeed(0, 0);
                 addListenerTimeSpeed(1, 1);
-                addListenerTimeSpeed(2, 1.3f);
-                addListenerTimeSpeed(3, 1.6f);
+                addListenerTimeSpeed(2, 2);
+                addListenerTimeSpeed(3, 3);
             }
             
             print("Time Speed : " + timeSpeed);
@@ -68,27 +68,48 @@ namespace GDD
                 });
             }
         }
-
-        public void SetSpeed(float speed)
+        
+        public static void SetSpeed(float speed)
         {
-            TM.timeScale = speed;
+            if (speed == 0)
+            {
+                TimeManager.Instance.timeScale = 0;
+            }
+
+            if (speed == 1)
+            {
+                TimeManager.Instance.timeScale = 1;
+                timeSpeed = 1;
+            }
+
+            if (speed == 2)
+            {
+                TimeManager.Instance.timeScale = 1.3f;
+                timeSpeed = 2;
+            }
+
+            if (speed >= 3)
+            {
+                TimeManager.Instance.timeScale = 1.6f;
+                timeSpeed = 3;
+            }
         }
 
-        public void auto_Resume_Time()
+        public static void auto_Resume_Time()
         {
             switch (timeSpeed)
             {
                 case 0:
-                    TM.timeScale = 0;
+                    TimeManager.Instance.timeScale = 0;
                     break;
                 case 1:
-                    TM.timeScale = 1;
+                    TimeManager.Instance.timeScale = 1;
                     break;
                 case 2:
-                    TM.timeScale = 1.3f;
+                    TimeManager.Instance.timeScale = 1.3f;
                     break;
                 case 3:
-                    TM.timeScale = 1.6f;
+                    TimeManager.Instance.timeScale = 1.6f;
                     break;
                 default:
                     break;

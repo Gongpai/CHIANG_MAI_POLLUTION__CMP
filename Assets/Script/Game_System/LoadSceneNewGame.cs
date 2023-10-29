@@ -25,6 +25,8 @@ namespace GDD
                 HRM.OnSpawnPeople(GM.villagers_start, GM.workers_start);
                 Destroy(transform.gameObject);
             }
+            
+            Destroy(gameObject);
         }
     }
 }

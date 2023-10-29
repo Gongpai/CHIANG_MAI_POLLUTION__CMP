@@ -23,6 +23,7 @@ namespace GDD
 
         private void Start()
         {
+            /*
             Notification notification = new Notification();
             notification.text = "Load Scene With Save Data";
             notification.icon = Resources.Load<Sprite>("Icon/settings_icon");
@@ -30,6 +31,7 @@ namespace GDD
             notification.duration = 5.0f;
             notification.isWaitTrigger = false;
             AddNotification(notification);
+            */
         }
 
         private void Update()

@@ -70,6 +70,7 @@ namespace GDD
                     GM.Reset();
                     Destroy(HumanResourceManager.Instance.gameObject);
                     Destroy(ResourcesManager.Instance.gameObject);
+                    Destroy(FindObjectOfType<LoadSceneWithSaveData>().gameObject);
                 }));
             }
 
@@ -81,8 +82,13 @@ namespace GDD
                     {
                         Destroy(TimeManager.Instance.gameObject);
                         Destroy(SaveManager.Instance.gameObject);
+                        GameManager.Instance.Reset();
                     };
                     
+                    GameObject newGameData = new GameObject();
+                    newGameData.name = "New Game Data";
+                    DontDestroyOnLoad(newGameData);
+                    newGameData.AddComponent<LoadSceneNewGame>();
                     m_animator.SetBool(anim_param_names[0], false);
                     m_loadingSceneSystem.LoadScene("GameLevel");
                 });

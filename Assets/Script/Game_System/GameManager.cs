@@ -1,6 +1,7 @@
 ﻿using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace GDD
 {
@@ -121,11 +122,13 @@ namespace GDD
         public void OnGameOver()
         {
             _loadingSceneSystem = FindObjectOfType<LoadingSceneSystem>();
-            TM.timeScale = 0;
             
             GameObject gameover_Ui = Instantiate(m_gameover_ui);
             gameover_Ui.GetComponent<Canvas>().planeDistance = 1;
             gameover_Ui.GetComponent<Canvas>().worldCamera = Camera.main;
+
+            Time_Controll_UI_Script.SetSpeed(0);
+            
             Canvas_Element_List _element = gameover_Ui.GetComponent<Canvas_Element_List>();
             _element.animators[0].SetBool("IsStart", true);
             
@@ -138,6 +141,7 @@ namespace GDD
                 Reset();
                 Destroy(HumanResourceManager.Instance.gameObject);
                 Destroy(ResourcesManager.Instance.gameObject);
+                Destroy(FindObjectOfType<LoadSceneWithSaveData>().gameObject);
             }));
         }
         

@@ -170,6 +170,39 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "In/Out",
+                    "id": "a304ba40-a472-4321-9e8f-3b00a5f7f5f3",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ZoomCamera",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "53f02221-534f-4862-a925-3e5124295551",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ZoomCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "fde3a4b0-5e2b-4924-89ad-07eb65f41581",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ZoomCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "1D Axis",
                     "id": "af48b03d-27b4-497d-bc42-bf09edffc8ff",
                     "path": "1DAxis",

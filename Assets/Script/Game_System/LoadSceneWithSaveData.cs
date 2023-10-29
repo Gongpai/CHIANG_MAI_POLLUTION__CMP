@@ -27,14 +27,14 @@ namespace GDD
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
-            //SceneManager.sceneUnloaded += OnSceneUnLoaded;
+            
         }
 
         public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (scene.buildIndex != 0)
+            if (scene.buildIndex != 0 && this != null)
             {
                 this.enabled = true;
                 time = 0;
@@ -60,7 +60,15 @@ namespace GDD
                     spawnerObjectGrid.enabled = false;
                 if (spawnerRoadGrid != null)
                     spawnerRoadGrid.enabled = false;
-
+                
+                Notification notification = new Notification();
+                notification.text = "Successfully loaded saved data.";
+                notification.icon = Resources.Load<Sprite>("Icon/save_icon");
+                notification.iconColor = Color.white;
+                notification.duration = 5.0f;
+                notification.isWaitTrigger = false;
+                NotificationManager.Instance.AddNotification(notification); 
+                
                 SceneManager.sceneLoaded -= OnSceneLoaded;
             }
         }

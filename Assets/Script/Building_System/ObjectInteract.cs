@@ -20,7 +20,9 @@ namespace GDD
         [SerializeField] private GameObject m_BG_Button_list;
         [SerializeField] private GameObject m_GameObjectLayer;
         [SerializeField] private GameObject m_ResourceLayer;
+        [SerializeField] private List<AudioClip> _audioClips;
         
+        private AudioSource _audioSource;
         private GameObject old_objecthit;
         private GameObject objectHit;
         private GameObject old_menu = null;
@@ -33,6 +35,8 @@ namespace GDD
         {
             L_Place_Object = LayerMask.NameToLayer("Place_Object");
             L_Resource_Object = LayerMask.NameToLayer("Resource_Object");
+
+            _audioSource = GetComponent<AudioSource>();
         }
         private void Update()
         {
@@ -56,6 +60,9 @@ namespace GDD
                 {
                     if (Input.GetMouseButtonUp(0))
                     {
+                        _audioSource.clip = _audioClips[0];
+                        _audioSource.Play();
+                        
                         if(hit_objraycast.transform.parent == m_GameObjectLayer.transform)
                             Create_Buiding_Setting<Building_Setting_UI_Script>(objectHit.GetComponent<Building_System_Script>(), typeof(Building_System_Script));
                         
@@ -67,6 +74,9 @@ namespace GDD
                     {
                         DestroyUI(old_menu);
                         DestroyUI(old_buiding_setting_ui);
+                        
+                        _audioSource.clip = _audioClips[1];
+                        _audioSource.Play();
                         
                         if(hit_objraycast.transform.parent == m_GameObjectLayer.transform)
                             CreateMenu<Building_System_Script>();
@@ -264,7 +274,7 @@ namespace GDD
             resourceSettingUIScript.resourceSystemScript = resourceSystemScript;
             resourceSettingUIScript.resourceSettingUIDatas = new List<Resource_Setting_UI_Data>();
             resourceSettingUIScript.resourceName_text = resourceSystemScript.name;
-            resourceSettingUIScript.resource_Icon = Resources.Load<Sprite>("Icon/construction");
+            resourceSettingUIScript.resource_Icon = resourceSystemScript.icon;
             resourceSettingUIScript.resourceButtonActionDatas = resourceSystemScript.buildingButtonActionDatas;
             resourceSettingUIScript.GetComponent<Canvas_Element_List>().image[1].sprite = resourceSystemScript.bg_card;
             

@@ -19,7 +19,11 @@ namespace GDD
         private List<People_System_Script> m_patients = new();
 
         private List<People_System_Script> _peopleDeaths = new();
+        private List<Notification> _notifications = new List<Notification>();
         private bool is_people_death = false;
+        private int old_hour = 0;
+
+        private TimeManager TM;
 
         public List<People_System_Script> peopleDeaths
         {
@@ -69,6 +73,8 @@ namespace GDD
         {
             _villagerObjectPool = FindObjectOfType<Villager_Object_Pool_Script>();
             _workerObjectPool = FindObjectOfType<Worker_Object_Pool_Script>();
+
+            TM = TimeManager.Instance;
         }
 
         private void LateUpdate()
@@ -89,11 +95,72 @@ namespace GDD
                 peopleDeaths = new();
             }
 
+            if (patients.Count > 0 && old_hour == TimeManager.Instance.getGameTimeHour)
+            {
+                Notification notification = new Notification();
+                notification.text = "People are sick";
+                notification.icon = Resources.Load<Sprite>("Icon/emergency_icon");
+                notification.iconColor = Color.white;
+                notification.duration = 10.0f;
+                notification.isWaitTrigger = false;
+                _notifications.Add(notification);
+            }
+            
+            if (((worker_count + villagers_count) - residence.Count) > 0 && old_hour == TimeManager.Instance.getGameTimeHour)
+            {
+                Notification notification = new Notification();
+                notification.text = "People need housing";
+                notification.icon = Resources.Load<Sprite>("Icon/remove_home");
+                notification.iconColor = Color.white;
+                notification.duration = 10.0f;
+                notification.isWaitTrigger = false;
+                _notifications.Add(notification);
+            }
+
+            if (_notifications.Count > 0 && old_hour == TimeManager.Instance.getGameTimeHour)
+            {
+                foreach (var notification in _notifications)
+                {
+                    NotificationManager.Instance.AddNotification(notification);
+                }
+                
+                Set_Old_hour_Noti_Showing();
+                _notifications = new List<Notification>();
+            }
+
             if (villagers_count == 0 && worker_count == 0 && !is_people_death && SceneManager.GetActiveScene().buildIndex != 1 && TimeManager.Instance.getGameTimeHour > 0)
             {
                 GameManager.Instance.OnGameOver();
                 print("GAME OVERRR!!!!!!!!!!!!!!");
                 is_people_death = true;
+                
+                Notification notification = new Notification();
+                notification.text = "All People Death";
+                notification.icon = Resources.Load<Sprite>("Icon/person");
+                notification.iconColor = Color.white;
+                notification.duration = 5.0f;
+                notification.isWaitTrigger = false;
+                NotificationManager.Instance.AddNotification(notification);
+            }
+        }
+
+        private void Set_Old_hour_Noti_Showing()
+        {
+            if (TM.getGameTimeHour >= 0)
+            {
+                old_hour = 6;
+            }
+            if (TM.getGameTimeHour >= 6)
+            {
+                old_hour = 12;
+            }
+            if (TM.getGameTimeHour >= 12)
+            {
+                old_hour = 18;
+            }
+            if (TM.getGameTimeHour >= 18)
+            {
+                old_hour = 0;
             }
         }
         

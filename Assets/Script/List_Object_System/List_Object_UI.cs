@@ -59,13 +59,18 @@ namespace GDD
                     if (nameAsset == "Road")
                     {
                         Object_Element_UI road_element_ui = CreateButtonElement();
-                        road_element_ui.text.text = "Remove Road";
+                        road_element_ui.text.text = "ลบถนน";
                         road_element_ui.image.sprite = m_road_remove_Icon;
                         road_element_ui.botton.onClick.AddListener(() => { buildingPlace.Select_Road(null); });
                     }
 
                     Object_Element_UI element_ui = CreateButtonElement();
-                    element_ui.text.text = ob_data.Key;
+                    
+                    if (nameAsset != "Road")
+                        element_ui.text.text = Resources.Load<GameObject>(ob_data.Value).GetComponent<Building_System_Script>().name;
+                    else
+                        element_ui.text.text = "วางถนน";
+                    
                     if (nameAsset != "Road")
                         element_ui.image.sprite = Resources.Load<GameObject>(ob_data.Value)
                             .GetComponent<Building_System_Script>().icon;
@@ -141,8 +146,15 @@ namespace GDD
             return element.GetComponent<Object_Element_UI>();
         }
         
+        private void Update()
+        {
+            Time_Controll_UI_Script.SetSpeed(0);
+        }
+        
         private void OnDestroy()
         {
+            Time_Controll_UI_Script.auto_Resume_Time();
+            
             buildingPlace.OnDisabledRoad_Place();
             buildingPlace.OnDisabledBuilding_Place();
             Is_UI_Open = false;

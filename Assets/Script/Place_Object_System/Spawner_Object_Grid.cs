@@ -305,7 +305,6 @@ namespace GDD
 
                 Get_Outliner(Old_ObjectSpawn);
 
-                Old_ObjectSpawn.GetComponent<Building_System_Script>().name = objectData[0];
                 Old_ObjectSpawn.GetComponent<Building_System_Script>().path = objectData[1];
                 if (halfObjectSize.x > 0.5f)
                 {

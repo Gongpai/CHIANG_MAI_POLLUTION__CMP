@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using Object = System.Object;
 
@@ -19,7 +20,7 @@ namespace GDD
             get { return list_Panel; }
             set { list_Panel = value; }
         }
-
+        
         public Object Ui_Script
         {
             get { return ui_Script; }

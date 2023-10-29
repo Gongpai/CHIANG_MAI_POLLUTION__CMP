@@ -272,6 +272,8 @@ namespace GDD
 
         private void Update()
         {
+            Time_Controll_UI_Script.SetSpeed(0);
+            
             int i = 1;
             foreach (var button in m_button_level)
             {
@@ -280,6 +282,11 @@ namespace GDD
             }
         }
 
+        private void OnDestroy()
+        {
+            Time_Controll_UI_Script.auto_Resume_Time();
+        }
+        
         public void CreateUI_Message_Level_Button(Button button, int i, int token_resource)
         {
             Ui_Utilities _uiUtilities;

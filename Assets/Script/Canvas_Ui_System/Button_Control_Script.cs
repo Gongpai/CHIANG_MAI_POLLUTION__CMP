@@ -60,6 +60,11 @@ namespace GDD
             set { CanvasSpawn = value; }
         }
 
+        public UnityEvent get_button_onclick
+        {
+            get => _button.onClick;
+        }
+
         private void OnEnable()
         {
             if (autoSetInstance)
