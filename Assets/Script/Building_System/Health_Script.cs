@@ -43,11 +43,13 @@ namespace GDD
         {
             is_addSettingother = false;
             add_action.Add(SetAirPurifierSpeedUp);
+            add_action.Add(RemoveAndAddPeople);
+            add_action.Add(RemoveAndAddWorker);
             
             BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[1].title, m_Preset.m_building_status[1].text, Building_Information_Type.ShowStatus, Building_Show_mode.TextOnly));
             BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[2].title, m_Preset.m_building_status[2].text + get_patient_count + "/" + get_patient_max + " คน", Building_Information_Type.ShowStatus, Building_Show_mode.TextWith_ProgressBar));
             BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[3].title, m_Preset.m_building_status[3].text + get_nurse_patient_count + "/" + (m_Preset.max_people + m_Preset.max_worker) + " คน", Building_Information_Type.ShowStatus, Building_Show_mode.TextWith_ProgressBar));
-            BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[4].title, m_Preset.m_building_status[4].text + " " + efficiency, Building_Information_Type.ShowStatus, Building_Show_mode.TextWith_ProgressBar));
+            //BI_datas.Add(new Building_Information_Data(m_Preset.m_building_status[4].title, m_Preset.m_building_status[4].text + " " + efficiency, Building_Information_Type.ShowStatus, Building_Show_mode.TextWith_ProgressBar));
         }
 
         public override void EndStart()
@@ -108,6 +110,8 @@ namespace GDD
         protected override void OnUpdateSettingValue()
         {
             list_setting_values.Add(_buildingSaveData.Air_purifier_Speed_Up);
+            list_setting_values.Add(new Tuple<float, float>(villager_count, m_Preset.max_people));
+            list_setting_values.Add(new Tuple<float, float>(worker_count, m_Preset.max_worker));
         }
 
         protected override bool OnUpdateInformationValue()

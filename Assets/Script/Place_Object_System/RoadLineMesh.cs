@@ -161,9 +161,12 @@ namespace GDD
                     print("End : " + _element[i].End);
                     roadSystemScript.roadSaveData.Start_Position = new Vector2D(_element[i].Start.x, _element[i].Start.z);
                     roadSystemScript.roadSaveData.End_Position = new Vector2D(_element[i].End.x, _element[i].End.z);
-                    roadSystemScript.OnPlaceRoad();
+                    bool can_place = roadSystemScript.OnPlaceRoad();
                     roadSystemScript.roadSaveData.name = _spawnerRoadGrid.objectData[0];
                     roadSystemScript.roadSaveData.path = _spawnerRoadGrid.objectData[1];
+
+                    if (!can_place)
+                        ClearRoad();
                 }
             }
 

@@ -989,6 +989,15 @@ namespace GDD
             if (!RM.Can_Set_Resources_Tree(-m_Preset.wood_build) || !RM.Can_Set_Resources_Rock(-m_Preset.rock_build))
             {
                 print("Cont Place ");
+                
+                Notification notification = new Notification();
+                notification.text = "Not enough resources";
+                notification.icon = Resources.Load<Sprite>("Icon/warning_icon");
+                notification.iconColor = Color.white;
+                notification.duration = 5.0f;
+                notification.isWaitTrigger = false;
+                NotificationManager.Instance.AddNotification(notification);
+                
                 return false;
             }
             else

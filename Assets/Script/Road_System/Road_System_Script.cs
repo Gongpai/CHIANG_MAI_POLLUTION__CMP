@@ -162,31 +162,52 @@ namespace GDD
             OnEndPlace();
         }
 
-        public void OnPlaceRoad()
+        public bool OnPlaceRoad()
         {
-            TM = TimeManager.Instance;
-            GM = GameManager.Instance;
-            RM = ResourcesManager.Instance;
-            Renderer renderer = GetComponent<Renderer>();
-            m_construction_Road_material = renderer.sharedMaterial;
+            int resource_use = Resources_Build();
             
-            Material[] m_roads = new Material[2];
-            m_roads[0] = renderer.sharedMaterial;
-            m_roads[1] = m_construction_progress_material;
-            GetComponent<Renderer>().sharedMaterials = m_roads;
-            
-            _roadSaveData.is_complete = false;
-            is_place_road = true;
-            is_remove_road = false;
+            if (!RM.Can_Set_Resources_Tree(-resource_use) || !RM.Can_Set_Resources_Rock(-resource_use))
+            {
+                print("Cont Place ");
+                
+                Notification notification = new Notification();
+                notification.text = "Not enough resources";
+                notification.icon = Resources.Load<Sprite>("Icon/warning_icon");
+                notification.iconColor = Color.white;
+                notification.duration = 5.0f;
+                notification.isWaitTrigger = false;
+                NotificationManager.Instance.AddNotification(notification);
+                
+                return false;
+            }
+            else
+            {
+                TM = TimeManager.Instance;
+                GM = GameManager.Instance;
+                RM = ResourcesManager.Instance;
+                Renderer renderer = GetComponent<Renderer>();
+                m_construction_Road_material = renderer.sharedMaterial;
 
-            Resources_Build();
-            OnBeginPlace();
-            
-            OnEndPlace();
-            GM.gameInstance.RoadSaveDatas.Add(_roadSaveData);
+                Material[] m_roads = new Material[2];
+                m_roads[0] = renderer.sharedMaterial;
+                m_roads[1] = m_construction_progress_material;
+                GetComponent<Renderer>().sharedMaterials = m_roads;
+
+                _roadSaveData.is_complete = false;
+                is_place_road = true;
+                is_remove_road = false;
+
+                RM.Set_Resources_Tree(-resource_use);
+                RM.Set_Resources_Rock(-resource_use);
+                OnBeginPlace();
+
+                OnEndPlace();
+                GM.gameInstance.RoadSaveDatas.Add(_roadSaveData);
+                return true;
+            }
         }
 
-        public virtual void Resources_Build()
+        public virtual int Resources_Build()
         {
             float road_length_origin = Mathf.Abs(_roadSaveData.Start_Position.X -_roadSaveData.End_Position.X);
             print("Road Data Origin : " + " X : " + _roadSaveData.Start_Position.X + " Y : " + _roadSaveData.Start_Position.Y);
@@ -197,8 +218,7 @@ namespace GDD
             float road_length = Mathf.Abs(road_length_origin + road_length_end);
             print("Road Lenght Sum : " + road_length);
             
-            RM.Set_Resources_Tree(-(int)road_length);
-            RM.Set_Resources_Rock(-(int)road_length);
+            return (int)road_length;
         }
 
         public virtual void OnProgress()
