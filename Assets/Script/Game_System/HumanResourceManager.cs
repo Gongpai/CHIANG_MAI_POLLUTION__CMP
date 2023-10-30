@@ -128,7 +128,7 @@ namespace GDD
                 _notifications = new List<Notification>();
             }
 
-            if (villagers_count == 0 && worker_count == 0 && !is_people_death && SceneManager.GetActiveScene().buildIndex != 1 && TimeManager.Instance.getGameTimeHour > 0)
+            if (GameManager.Instance.gameInstance.villagerSaveDatas.Count == 0 && GameManager.Instance.gameInstance.workerSaveDatas.Count == 0 && !is_people_death && SceneManager.GetActiveScene().buildIndex != 1 && TimeManager.Instance.getGameTimeHour > 0)
             {
                 GameManager.Instance.OnGameOver();
                 print("GAME OVERRR!!!!!!!!!!!!!!");

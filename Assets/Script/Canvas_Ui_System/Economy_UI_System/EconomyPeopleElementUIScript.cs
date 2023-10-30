@@ -9,7 +9,7 @@ namespace GDD.Economy_UI_System
         [SerializeField] private GameObject m_element;
         [SerializeField] private GameObject m_empty;
         [SerializeField] private Canvas_Element_List _canvasElementList;
-        private HumanResourceManager HRM;
+        private GameManager GM;
         private List<GameObject> villagers = new List<GameObject>();
         private GameObject villager_empty;
         private List<GameObject> workers = new List<GameObject>();
@@ -17,7 +17,7 @@ namespace GDD.Economy_UI_System
         
         private void Start()
         {
-            HRM = HumanResourceManager.Instance;
+            GM = GameManager.Instance;
 
             if (_canvasElementList == null)
                 _canvasElementList = GetComponent<Canvas_Element_List>();
@@ -32,7 +32,7 @@ namespace GDD.Economy_UI_System
 
         private void Create_People_Element()
         {
-            if (HRM.get_villager_datas.Count <= 0 )
+            if (GM.gameInstance.villagerSaveDatas.Count <= 0 )
             {
                 if (villager_empty == null)
                 {
@@ -50,21 +50,21 @@ namespace GDD.Economy_UI_System
                 }
                 
                 villagers = new List<GameObject>();
-                foreach (var data in HRM.get_villager_datas)
+                foreach (var data in GM.gameInstance.villagerSaveDatas)
                 {
                     GameObject villager = Instantiate(m_element, _canvasElementList.canvas_gameObjects[0].transform);
                     Canvas_Element_List element = villager.GetComponent<Canvas_Element_List>();
-                    element.texts[0].text = data.Item1.saveData.name;
-                    element.texts[1].text = "สุภาพ : " + (int)(data.Item1.health * 100) + "%";
-                    element.texts[2].text = "ความหิว : " + (int)((1 - data.Item1.hunger) * 100) + "%";
-                    element.texts[3].text = "ความพึงพอใจ : " + (int)(data.Item1.content * 100) + "%";
-                    element.texts[4].text = "งาน : " + data.Item1.peopleJob;
+                    element.texts[0].text = data.name;
+                    element.texts[1].text = "สุภาพ : " + (int)(data.health * 100) + "%";
+                    element.texts[2].text = "ความหิว : " + (int)((1 - data.hunger) * 100) + "%";
+                    element.texts[3].text = "ความพึงพอใจ : " + (int)(data.content * 100) + "%";
+                    element.texts[4].text = "งาน : " + (PeopleJob)data.job;
                     
                     villagers.Add(villager);
                 }
             }
 
-            if (HRM.get_worker_datas.Count <= 0)
+            if (GM.gameInstance.workerSaveDatas.Count <= 0)
             {
                 if (worker_empty == null)
                 {
@@ -82,15 +82,15 @@ namespace GDD.Economy_UI_System
                 }
                 
                 workers = new List<GameObject>();
-                foreach (var data in HRM.get_worker_datas)
+                foreach (var data in GM.gameInstance.workerSaveDatas)
                 {
                     GameObject worker = Instantiate(m_element, _canvasElementList.canvas_gameObjects[1].transform);
                     Canvas_Element_List element = worker.GetComponent<Canvas_Element_List>();
-                    element.texts[0].text = data.Item1.saveData.name;
-                    element.texts[1].text = "สุภาพ : " + (int)(data.Item1.health * 100) + "%";
-                    element.texts[2].text = "ความหิว : " + (int)((1 - data.Item1.hunger) * 100) + "%";
-                    element.texts[3].text = "ความพึงพอใจ : " + (int)(data.Item1.content * 100) + "%";
-                    element.texts[4].text = "งาน : " + data.Item1.peopleJob;
+                    element.texts[0].text = data.name;
+                    element.texts[1].text = "สุภาพ : " + (int)(data.health * 100) + "%";
+                    element.texts[2].text = "ความหิว : " + (int)((1 - data.hunger) * 100) + "%";
+                    element.texts[3].text = "ความพึงพอใจ : " + (int)(data.content * 100) + "%";
+                    element.texts[4].text = "งาน : " + (PeopleJob)data.job;
                     
                     workers.Add(worker);
                 }
