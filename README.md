@@ -19,7 +19,7 @@ Real-time strategy and Simulator Game
 - [Middle Mouse Button] Free Rotation Camera
 - [Mouse Scroll Up/Down] Zoom In/Out
 
-**Screenshot**=
+**Screenshot**
 ![สกรีนช็อต 2023-10-30 151028](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/8a1bfbd7-0941-48f0-b13b-e6eb4aaa06f3)
 ![สกรีนช็อต 2023-10-30 151132](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/b1b45afa-f4d3-4fce-92f8-8a85e7096493)
 ![สกรีนช็อต 2023-10-30 151250](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/b2bed993-0a9d-40d7-a9b9-9ff45dc5a802)
