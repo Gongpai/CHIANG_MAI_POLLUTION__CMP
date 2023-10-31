@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfEntry xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Entry>
+    <Key xsi:type="xsd:string">PowerPlant</Key>
+    <Value xsi:type="xsd:string">Construction/Generator/PowerPlant</Value>
+  </Entry>
+  <Entry>
     <Key xsi:type="xsd:string">Windmill</Key>
     <Value xsi:type="xsd:string">Construction/Generator/Windmill</Value>
   </Entry>

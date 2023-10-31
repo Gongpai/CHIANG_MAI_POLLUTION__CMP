@@ -35,5 +35,6 @@ MonoBehaviour:
   token_leveltwo: 50
   level_four: 125
   rawfood_levelfour: 125
+  gate_levelfour: 125
   token_levelthree: 75
   air_purifier_levelthree: 75
