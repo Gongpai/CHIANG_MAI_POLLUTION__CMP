@@ -10,20 +10,27 @@ Real-time strategy and Simulator Game
 - [E] Rotate Camera Horizontal Right
 - [R] Rotate Camera Vertical Down
 - [T] [R] Rotate Camera Vertical Up
+- [1] Time Speed 1X
+- [2] Time Speed 2X
+- [3] Time Speed 3X
+- [Space] Time Pause
 - [Left Mouse Button] Interact Object
 - [Right Mouse Button] Open Quick Menu
 - [Middle Mouse Button] Free Rotation Camera
 - [Mouse Scroll Up/Down] Zoom In/Out
 
 **Screenshot**
-![สกรีนช็อต 2023-10-24 153128](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/857cf940-07f6-48aa-b981-e3f5b9b8188b)
-![สกรีนช็อต 2023-10-24 153303](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/e9235b88-8811-4139-8748-99a0937a023d)
-![สกรีนช็อต 2023-10-24 153256](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/30f95604-f78d-4624-8e68-e0cd81c64187)
-![สกรีนช็อต 2023-10-24 153245](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/d9341464-b2d9-4970-b888-2dcbdb88a4cb)
-![สกรีนช็อต 2023-10-24 153231](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/5bb2aa38-ba11-4496-83bf-1fc4df660c74)
-![สกรีนช็อต 2023-10-24 153224](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/27147e1a-b198-4471-8121-2deafa85da3f)
-![สกรีนช็อต 2023-10-24 153217](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/d0af1fd1-fa23-42a2-953c-7bb7229033a6)
-![สกรีนช็อต 2023-10-24 153207](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/56903694-f6cf-41df-b07f-2878c84fbb6a)
+![สกรีนช็อต 2023-10-30 151028](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/8a1bfbd7-0941-48f0-b13b-e6eb4aaa06f3)
+![สกรีนช็อต 2023-10-30 151132](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/b1b45afa-f4d3-4fce-92f8-8a85e7096493)
+![สกรีนช็อต 2023-10-30 151250](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/b2bed993-0a9d-40d7-a9b9-9ff45dc5a802)
+![สกรีนช็อต 2023-10-30 151244](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/813f1c85-a521-4397-ab86-a8c5798e6860)
+![สกรีนช็อต 2023-10-30 151236](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/86a6a526-7088-4776-921f-e820012ae23d)
+![สกรีนช็อต 2023-10-30 151227](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/97380bbb-b660-427a-b149-998c0fcdec09)
+![สกรีนช็อต 2023-10-30 151217](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/cd204017-8d00-4ef0-8ee5-f1f1ef0c8adc)
+![สกรีนช็อต 2023-10-30 151208](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/2d842b80-8391-4596-b55b-b8b91e969413)
+![สกรีนช็อต 2023-10-30 151200](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/0237cfc2-2834-496e-b4c8-f599d7d86c9c)
+![สกรีนช็อต 2023-10-30 151149](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/5c1e77e2-80f9-4a50-a3be-1278424a825a)
+![สกรีนช็อต 2023-10-30 151140](https://github.com/Gongpai/CHIANG_MAI_POLLUTION__CMP/assets/31787868/20c8e345-c18d-41b5-995a-a5c9183d7cf5)
 
 --------------------------------------------
 **Unity version 2021.3.27f1**
