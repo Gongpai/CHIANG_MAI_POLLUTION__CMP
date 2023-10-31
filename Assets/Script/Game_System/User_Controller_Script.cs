@@ -39,6 +39,12 @@ namespace GDD
                 is_pause = false;
             }
             
+            if (Input.GetKeyUp(KeyCode.Alpha9))
+            {
+                Time_Controll_UI_Script.SetSpeed(4);
+                is_pause = false;
+            }
+            
             if (Input.GetKeyUp(KeyCode.Space))
             {
                 if (!is_pause)

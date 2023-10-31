@@ -37,7 +37,25 @@ namespace GDD
 
             Get_Sum_Resources_Power();
         }
-        
+
+        private void FixedUpdate()
+        {
+            /*
+            float food_per = ((float)GI.get_raw_food_resource() / (float)GI.max_resources.raw_food);
+            //print("Food Per : " + (food_per * 100) + " % || " + GI.get_raw_food_resource() + ": " + GI.max_resources.raw_food);
+            if (!GI.is_enable_resource_low && food_per > 0.5f)
+                GI.is_enable_resource_low = true;
+            
+            //print("IS FOOD : " + (food_per <= 0.1f) + " Enable : " + GI.is_enable_resource_low);
+            if (food_per <= 0.1f && GI.is_enable_resource_low)
+            {
+                //print("OnReource Low!!!!!!!!!!");
+                GI.is_enable_resource_low = false;
+                GM.OnReourceLow();
+            }
+            */
+        }
+
         private void Get_Sum_Resources_Power()
         {
             float sum_power = 0;
@@ -89,8 +107,12 @@ namespace GDD
         public void Set_Resources_Tree(int tree)
         {
             int resource = GI.get_tree_resource() + tree;
-            if(resource >= 0 && (resource < GI.max_resources.tree || tree <= 0)) 
+            if(resource >= GI.max_resources.tree)
+                GI.set_tree_resource(GI.max_resources.tree);
+            else if(resource >= 0 && (resource < GI.max_resources.tree || tree <= 0)) 
                 GI.set_tree_resource(GI.get_tree_resource() + tree);
+            else if (resource <= 0)
+                GI.set_tree_resource(0);
         }
         
         public bool Can_Set_Resources_Tree(int tree)
@@ -112,9 +134,19 @@ namespace GDD
         
         public void Set_Resources_Rock(int rock)
         {
+            /*
             int resource = GI.get_rock_resource() + rock;
             if(resource >= 0 && (resource < GI.max_resources.rock || rock <= 0)) 
                 GI.set_rock_resource(GI.get_rock_resource() + rock);
+            */
+            
+            int resource = GI.get_rock_resource() + rock;
+            if(resource >= GI.max_resources.rock)
+                GI.set_rock_resource(GI.max_resources.rock);
+            else if(resource >= 0 && (resource < GI.max_resources.rock || rock <= 0)) 
+                GI.set_rock_resource(GI.get_rock_resource() + rock);
+            else if (resource <= 0)
+                GI.set_rock_resource(0);
         }
 
         public bool Can_Set_Resources_Rock(int rock)
@@ -136,9 +168,19 @@ namespace GDD
         
         public void Set_Resources_Raw_Food(int raw_food)
         {
+            /*
             int resource = GI.get_raw_food_resource() + raw_food;
             if(resource >= 0 && (resource < GI.max_resources.raw_food || raw_food <= 0))  
                 GI.set_raw_food_resource(GI.get_raw_food_resource() + raw_food);
+            */
+            
+            int resource = GI.get_raw_food_resource() + raw_food;
+            if(resource >= GI.max_resources.raw_food)
+                GI.set_raw_food_resource(GI.max_resources.raw_food);
+            else if(resource >= 0 && (resource < GI.max_resources.raw_food || raw_food <= 0)) 
+                GI.set_raw_food_resource(GI.get_raw_food_resource() + raw_food);
+            else if (resource <= 0)
+                GI.set_raw_food_resource(0);
         }
         
         public bool Can_Set_Resources_Raw_Food(int raw_food)
@@ -153,9 +195,19 @@ namespace GDD
         
         public void Set_Resources_Food(int food)
         {
+            /*
             int resource = GI.get_food_resource() + food;
             if(resource >= 0 && (resource < GI.max_resources.food || food <= 0)) 
                 GI.set_food_resource(GI.get_food_resource() + food);
+            */
+            
+            int resource = GI.get_food_resource() + food;
+            if(resource >= GI.max_resources.food)
+                GI.set_food_resource(GI.max_resources.food);
+            else if(resource >= 0 && (resource < GI.max_resources.food || food <= 0)) 
+                GI.set_food_resource(GI.get_food_resource() + food);
+            else if (resource <= 0)
+                GI.set_food_resource(0);
         }
         
         public bool Can_Set_Resources_Food(int food)
@@ -194,9 +246,19 @@ namespace GDD
         
         public void Set_Resources_Token(int token)
         {
+            /*
             int resource = GI.get_token_resource() + token;
             if(resource >= 0 && (resource < GI.max_resources.token || token <= 0)) 
                 GI.set_token_resource(GI.get_token_resource() + token);
+            */
+            
+            int resource = GI.get_token_resource() + token;
+            if(resource >= GI.max_resources.token)
+                GI.set_token_resource(GI.max_resources.token);
+            else if(resource >= 0 && (resource < GI.max_resources.token || token <= 0)) 
+                GI.set_token_resource(GI.get_token_resource() + token);
+            else if (resource <= 0)
+                GI.set_token_resource(0);
         }
         
         public bool Can_Set_Resources_Token(int token)

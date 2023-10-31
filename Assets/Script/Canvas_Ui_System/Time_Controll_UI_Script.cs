@@ -88,9 +88,15 @@ namespace GDD
                 timeSpeed = 2;
             }
 
-            if (speed >= 3)
+            if (speed == 3)
             {
                 TimeManager.Instance.timeScale = 1.6f;
+                timeSpeed = 3;
+            }
+
+            if (speed >= 4)
+            {
+                TimeManager.Instance.timeScale = 2.5f;
                 timeSpeed = 3;
             }
         }

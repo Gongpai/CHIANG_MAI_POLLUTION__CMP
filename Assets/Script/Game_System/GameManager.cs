@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,6 +14,8 @@ namespace GDD
         [SerializeField]private int villagers_count = 12;
         [SerializeField]private int workers_count = 12;
         [SerializeField] private GameObject m_gameover_ui;
+        [SerializeField] private GameObject m_resourcelow_ui;
+        [SerializeField] private GameObject m_backtocity_ui;
         
         private GameInstance _gameInstance = new GameInstance();
 
@@ -134,7 +139,7 @@ namespace GDD
             
             _element.buttons[0].onClick.AddListener((() =>
             {
-                gameover_Ui.GetComponent<Canvas>().sortingOrder = 0;
+                gameover_Ui.GetComponent<Canvas>().sortingOrder = 20;
                 _loadingSceneSystem.LoadScene("MainMenu");
                 _element.animators[0].SetBool("IsStart", false);
                 
@@ -144,7 +149,90 @@ namespace GDD
                 Destroy(FindObjectOfType<LoadSceneWithSaveData>().gameObject);
             }));
         }
-        
+
+        public void OnReourceLow()
+        {
+            _loadingSceneSystem = FindObjectOfType<LoadingSceneSystem>();
+            
+            GameObject reourceLow_Ui = Instantiate(m_resourcelow_ui);
+            reourceLow_Ui.GetComponent<Canvas>().planeDistance = 1;
+            reourceLow_Ui.GetComponent<Canvas>().worldCamera = Camera.main;
+
+            Time_Controll_UI_Script.SetSpeed(0);
+            
+            Canvas_Element_List _element = reourceLow_Ui.GetComponent<Canvas_Element_List>();
+            _element.animators[0].SetBool("IsStart", true);
+            
+            _element.buttons[0].onClick.AddListener((() =>
+            {
+                string defaultPath = Application.persistentDataPath;
+                string location;
+                var default_info = new DirectoryInfo(defaultPath);
+                bool is_fount = false;
+
+                //Location Save
+                if (gameInstance.auto_save_count > 0)
+                    location = Application.persistentDataPath + "/AutoSaveDay " + TimeManager.Instance.getTotalDay + " (" + gameInstance.auto_save_count + ")";
+                else
+                    location = Application.persistentDataPath + "/AutoSaveDay " + TimeManager.Instance.getTotalDay;
+                
+                gameInstance.savefile_backtocity = location;
+                
+                if (gameInstance.day_save_count != TM.getTotalDay)
+                {
+                    gameInstance.auto_save_count = 0;
+                    gameInstance.day_save_count = TM.getTotalDay;
+                }
+
+                List<FileInfo> allFiles = default_info.GetFiles("*.json*")
+                    .OrderByDescending(f => f.LastWriteTime.Year <= 1601 ? f.CreationTime : f.LastWriteTime).ToList();
+
+                //SaveGame
+                foreach (var fileInfo in allFiles)
+                {
+                    print(fileInfo.Name + " || " + "AutoSaveDay " + TimeManager.Instance.getTotalDay + ".json");
+                    if (fileInfo.Name == "AutoSaveDay " + TimeManager.Instance.getTotalDay + ".json")
+                    {
+                        gameInstance.auto_save_count++;
+                        SaveManager.Instance.SaveGamePreferencesData(gameInstance, location);
+                        
+                        is_fount = true;
+                    }
+                }
+
+                if(!is_fount)
+                    SaveManager.Instance.SaveGamePreferencesData(gameInstance, location);
+                
+                //LoadSave
+                m_resourcelow_ui.GetComponent<Canvas>().sortingOrder = 19;
+                _loadingSceneSystem.LoadScene("Menu");
+                _element.animators[0].SetBool("IsStart", false);
+                
+                Destroy(FindObjectOfType<LoadSceneWithSaveData>().gameObject);
+            }));
+
+            _element.buttons[1].onClick.AddListener(() =>
+            {
+                Ui_Utilities _uiUtilities;
+                if (_element.GetComponent<Ui_Utilities>() == null)
+                {
+                    _uiUtilities = _element.AddComponent<Ui_Utilities>();
+                }
+                else
+                {
+                    _uiUtilities = _element.GetComponent<Ui_Utilities>();
+                }
+
+                _uiUtilities.canvasUI = reourceLow_Ui;
+                _uiUtilities.RemoveUI();
+            });
+        }
+
+        private void Update()
+        {
+            //print("Building Count " + gameInstance.buildingSaveDatas.Count);
+        }
+
         public void OnGameLoad()
         {
             if (!FindObjectOfType<LoadSceneWithSaveData>())

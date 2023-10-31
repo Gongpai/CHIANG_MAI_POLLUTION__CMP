@@ -52,7 +52,7 @@ namespace GDD
 
         public override void EndStart()
         {
-            
+            add_action.Add(arg => { GM.OnReourceLow(); });
         }
 
         protected override void Update()
@@ -187,6 +187,7 @@ namespace GDD
             list_gate_setting_values.Add(list_setting_values[0]);
             list_gate_setting_values.Add(list_setting_values[1]);
             list_gate_setting_values.Add(list_setting_values[2]);
+            list_gate_setting_values.Add(true);
             list_setting_values = list_gate_setting_values;
         }
 

@@ -48,6 +48,11 @@ namespace GDD
                 _villagerObjectPool = FindObjectOfType<Villager_Object_Pool_Script>();
                 _workerObjectPool = FindObjectOfType<Worker_Object_Pool_Script>();
 
+                if (((float)GI.get_raw_food_resource() / (float)GI.max_resources.raw_food) <= 0.1f && GI.is_resource_low)
+                {
+                    GM.OnReourceLow();
+                }
+
                 if (!GI.IsObjectEmpty())
                 {
                     print("Gotoloaddddd");

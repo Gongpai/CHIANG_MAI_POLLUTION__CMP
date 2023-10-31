@@ -213,6 +213,10 @@ MonoBehaviour:
   workers_count: 25
   m_gameover_ui: {fileID: 7553583346917496856, guid: 9a52f3608c0319a4b9cecff06478ffaa,
     type: 3}
+  m_resourcelow_ui: {fileID: 7553583346917496856, guid: aef5aee51d30a9048a42b3ba2a3ea7d6,
+    type: 3}
+  m_backtocity_ui: {fileID: 7553583346917496856, guid: 9f82e326e6d8003488591713ed084751,
+    type: 3}
 --- !u!4 &90808166
 Transform:
   m_ObjectHideFlags: 0

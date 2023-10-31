@@ -84,10 +84,10 @@ namespace GDD
         
         private void UpdateFogDistance()
         {
-            float pm25_max = 310;
+            float pm25_max = 800;
             MinMax distance_minmax = new MinMax();
-            distance_minmax.min = 15;
-            distance_minmax.max = 300;
+            distance_minmax.min = 120;
+            distance_minmax.max = 400;
             float pm25_scale = pm2_5_value / pm25_max;
             float pm25_distance = (distance_minmax.max - distance_minmax.min) * pm25_scale + distance_minmax.min;
             RenderSettings.fogEndDistance = (distance_minmax.max + distance_minmax.min) - pm25_distance;

@@ -22,6 +22,10 @@ namespace GDD
         public int current_day_mp2_5 = 0; 
         public int pm2_5_before = 0;
         public int pm2_5_after = 200;
+        public int auto_save_count = 0;
+        public int day_save_count = 0;
+        public bool is_resource_low = false;
+        public string savefile_backtocity;
         
         public GameDateTime gameDateTime;
 
